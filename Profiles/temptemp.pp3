@@ -13,38 +13,38 @@ Auto=false
 Clip=0
 Compensation=0
 Brightness=10
-Contrast=10
-Saturation=10
-Black=0
+Contrast=20
+Saturation=0
+Black=-16384
 HighlightCompr=70
-HighlightComprThreshold=50
+HighlightComprThreshold=49
 ShadowCompr=50
-Curve=2;0.25;0.5;0.75;0;100;60;-40;
+Curve=2;0.25;0.5;0.75;0;0;0;0;
 
 [Channel Mixer]
-Red=100;20;40;
-Green=20;100;40;
-Blue=20;20;100;
+Red=100;0;0;
+Green=0;100;0;
+Blue=-40;0;100;
 
 [Luminance Curve]
 Brightness=0
 Contrast=0
 Saturation=0
-AvoidColorClipping=false
+AvoidColorClipping=true
 SaturationLimiter=false
-SaturationLimit=50
+SaturationLimit=40
 LCurve=0;
-aCurve=0;
-bCurve=0;
+aCurve=1;0;1;1;0;
+bCurve=1;0;1;1;0;
 
 [Sharpening]
 Enabled=false
 Method=usm
-Radius=0.29999999999999999
-Amount=250
-Threshold=0
-OnlyEdges=true
-EdgedetectionRadius=1
+Radius=0.5
+Amount=125
+Threshold=512
+OnlyEdges=false
+EdgedetectionRadius=1.8999999999999999
 EdgeTolerance=1800
 HalocontrolEnabled=false
 HalocontrolAmount=85
@@ -78,12 +78,12 @@ Uniformity=50
 Amount=0
 AvoidColorClipping=false
 SaturationLimiter=false
-SaturationLimit=50
+SaturationLimit=75
 
 [White Balance]
 Setting=Custom
-Temperature=5200
-Green=1.2
+Temperature=5000
+Green=5
 
 [Color Shift]
 ChannelA=0
@@ -100,23 +100,23 @@ Threshold=25
 
 [Directional Pyramid Denoising]
 Enabled=true
-Luma=20
-Chroma=20
+Luma=14
+Chroma=50
 Gamma=3
 LumCurve=0;
 ChromCurve=0;
 
 [EPD]
 Enabled=true
-Strength=0.10000000000000001
+Strength=0.25
 EdgeStopping=0.10000000000000001
 Scale=0.10000000000000001
 ReweightingIterates=0
 
 [Luminance Denoising]
 Enabled=false
-Radius=1.8999999999999999
-EdgeTolerance=2000
+Radius=2.5
+EdgeTolerance=1500
 
 [Chrominance Denoising]
 Enabled=false
@@ -124,20 +124,20 @@ Amount=20
 
 [Shadows & Highlights]
 Enabled=false
-HighQuality=false
-Highlights=10
+HighQuality=true
+Highlights=40
 HighlightTonalWidth=80
-Shadows=10
+Shadows=40
 ShadowTonalWidth=80
-LocalContrast=10
+LocalContrast=20
 Radius=30
 
 [Crop]
 Enabled=false
 X=0
 Y=0
-W=3900
-H=2594
+W=3676
+H=2752
 FixedRatio=false
 Ratio=3:2
 Orientation=Landscape
@@ -152,24 +152,24 @@ VerticalFlip=false
 AutoFill=true
 
 [Rotation]
-Degree=0
+Degree=0.60000000000000042
 
 [Distortion]
-Amount=0
+Amount=-0.050000000000000003
 UseLensFun=false
 
 [Perspective]
 Horizontal=0
-Vertical=0
+Vertical=7
 
 [CACorrection]
 Red=0
 Blue=0
 
 [Vignetting Correction]
-Amount=-100
+Amount=0
 Radius=50
-Strength=5
+Strength=1
 CenterX=0
 CenterY=0
 
@@ -179,19 +179,19 @@ Method=Color
 
 [Resize]
 Enabled=false
-Scale=0.23000000000000001
+Scale=1
 AppliesTo=Cropped area
-Method=Lanczos
-DataSpecified=3
-Width=900
-Height=900
+Method=Bicubic
+DataSpecified=0
+Width=3676
+Height=2752
 
 [Color Management]
-InputProfile=file:/Users/mattintosh/Dropbox/RawTherapee/icc/CNZEU1A1.icc
+InputProfile=file:/Users/mattintosh/Dropbox/RawTherapee/icc/AdobeRGB.icc
 BlendCMSMatrix=true
-WorkingProfile=ProPhoto
-OutputProfile=sRGB Color Space Profile
-Gammafree=sRGB_g2.4_s12.92
+WorkingProfile=Adobe RGB
+OutputProfile=No ICM: sRGB output
+Gammafree=BT709_g2.2_s4.5
 Freegamma=false
 GammaValue=2.2200000000000002
 GammaSlope=4.5
@@ -211,19 +211,19 @@ VCurve=0;
 
 [RAW]
 DarkFrame=
-DarkFrameAuto=true
+DarkFrameAuto=false
 FlatFieldFile=
 FlatFieldAutoSelect=false
 FlatFieldBlurRadius=32
 FlatFieldBlurType=Area Flatfield
-CA=true
+CA=false
 CARed=0
 CABlue=0
 HotDeadPixels=true
 HotDeadPixelThresh=40
 LineDenoise=0
-GreenEqThreshold=0
-CcSteps=5
+GreenEqThreshold=100
+CcSteps=1
 Method=amaze
 DCBIterations=2
 DCBEnhance=false

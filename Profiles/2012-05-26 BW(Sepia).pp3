@@ -13,9 +13,9 @@ Auto=false
 Clip=0
 Compensation=0
 Brightness=0
-Contrast=50
+Contrast=40
 Saturation=0
-Black=-16384
+Black=-1024
 HighlightCompr=70
 HighlightComprThreshold=50
 ShadowCompr=50
@@ -100,9 +100,9 @@ Threshold=25
 
 [Directional Pyramid Denoising]
 Enabled=false
-Luma=5
-Chroma=5
-Gamma=2
+Luma=10
+Chroma=10
+Gamma=3
 LumCurve=0;
 ChromCurve=0;
 
@@ -136,8 +136,8 @@ Radius=30
 Enabled=false
 X=0
 Y=0
-W=2594
-H=3900
+W=3900
+H=2594
 FixedRatio=false
 Ratio=3:2
 Orientation=Landscape
@@ -167,9 +167,9 @@ Red=0
 Blue=0
 
 [Vignetting Correction]
-Amount=-50
-Radius=50
-Strength=5
+Amount=-100
+Radius=10
+Strength=1
 CenterX=0
 CenterY=0
 
@@ -183,18 +183,18 @@ Scale=1
 AppliesTo=Cropped area
 Method=Bicubic
 DataSpecified=0
-Width=2594
-Height=3900
+Width=3900
+Height=2594
 
 [Color Management]
-InputProfile=(none)
+InputProfile=file:/Users/mattintosh/Dropbox/RawTherapee/icc/CNZEU1A1.icc
 BlendCMSMatrix=false
 WorkingProfile=ProPhoto
 OutputProfile=RT_sRGB
-Gammafree=linear_g1.0
+Gammafree=sRGB_g2.4_s12.92
 Freegamma=false
 GammaValue=2.2200000000000002
-GammaSlope=4.5
+GammaSlope=0
 
 [Directional Pyramid Equalizer]
 Enabled=false
@@ -211,7 +211,7 @@ VCurve=0;
 
 [RAW]
 DarkFrame=
-DarkFrameAuto=false
+DarkFrameAuto=true
 FlatFieldFile=
 FlatFieldAutoSelect=false
 FlatFieldBlurRadius=32

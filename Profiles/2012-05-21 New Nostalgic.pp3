@@ -169,13 +169,13 @@ Blue=0
 [Vignetting Correction]
 Amount=-100
 Radius=50
-Strength=5
+Strength=1
 CenterX=0
 CenterY=0
 
 [HLRecovery]
 Enabled=true
-Method=Luminance
+Method=Color
 
 [Resize]
 Enabled=false
@@ -189,9 +189,9 @@ Height=900
 [Color Management]
 InputProfile=(camera)
 BlendCMSMatrix=true
-WorkingProfile=Adobe RGB
+WorkingProfile=ProPhoto
 OutputProfile=sRGB Color Space Profile
-Gammafree=default
+Gammafree=sRGB_g2.4_s12.92
 Freegamma=false
 GammaValue=2.2200000000000002
 GammaSlope=4.5
@@ -211,19 +211,19 @@ VCurve=0;
 
 [RAW]
 DarkFrame=
-DarkFrameAuto=false
+DarkFrameAuto=true
 FlatFieldFile=
 FlatFieldAutoSelect=false
 FlatFieldBlurRadius=32
 FlatFieldBlurType=Area Flatfield
-CA=false
+CA=true
 CARed=0
 CABlue=0
-HotDeadPixels=false
+HotDeadPixels=true
 HotDeadPixelThresh=40
 LineDenoise=0
 GreenEqThreshold=0
-CcSteps=1
+CcSteps=5
 Method=amaze
 DCBIterations=2
 DCBEnhance=false
