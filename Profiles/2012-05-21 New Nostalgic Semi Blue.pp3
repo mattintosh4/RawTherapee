@@ -11,7 +11,7 @@ InTrash=false
 [Exposure]
 Auto=false
 Clip=0
-Compensation=-0.49999999999999917
+Compensation=-0.5
 Brightness=0
 Contrast=50
 Saturation=0
@@ -38,7 +38,7 @@ aCurve=0;
 bCurve=0;
 
 [Sharpening]
-Enabled=true
+Enabled=false
 Method=usm
 Radius=0.29999999999999999
 Amount=250
@@ -82,7 +82,7 @@ SaturationLimit=50
 
 [White Balance]
 Setting=Custom
-Temperature=5400
+Temperature=5200
 Green=1.2
 
 [Color Shift]
@@ -99,10 +99,10 @@ Radius=2
 Threshold=25
 
 [Directional Pyramid Denoising]
-Enabled=false
+Enabled=true
 Luma=10
-Chroma=10
-Gamma=1
+Chroma=19
+Gamma=3
 LumCurve=0;
 ChromCurve=0;
 
@@ -169,13 +169,13 @@ Blue=0
 [Vignetting Correction]
 Amount=-100
 Radius=50
-Strength=5
+Strength=1
 CenterX=0
 CenterY=0
 
 [HLRecovery]
 Enabled=true
-Method=Blend
+Method=Color
 
 [Resize]
 Enabled=false
@@ -189,9 +189,9 @@ Height=900
 [Color Management]
 InputProfile=(camera)
 BlendCMSMatrix=true
-WorkingProfile=Adobe RGB
+WorkingProfile=ProPhoto
 OutputProfile=sRGB Color Space Profile
-Gammafree=default
+Gammafree=sRGB_g2.4_s12.92
 Freegamma=false
 GammaValue=2.2200000000000002
 GammaSlope=4.5
@@ -211,7 +211,7 @@ VCurve=0;
 
 [RAW]
 DarkFrame=
-DarkFrameAuto=false
+DarkFrameAuto=true
 FlatFieldFile=
 FlatFieldAutoSelect=false
 FlatFieldBlurRadius=32
@@ -219,12 +219,12 @@ FlatFieldBlurType=Area Flatfield
 CA=false
 CARed=0
 CABlue=0
-HotDeadPixels=false
+HotDeadPixels=true
 HotDeadPixelThresh=40
 LineDenoise=0
 GreenEqThreshold=0
-CcSteps=2
-Method=dcb
+CcSteps=5
+Method=amaze
 DCBIterations=2
 DCBEnhance=false
 ALLEnhance=false
