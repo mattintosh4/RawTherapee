@@ -11,7 +11,7 @@ InTrash=false
 [Exposure]
 Auto=false
 Clip=0
-Compensation=0.5
+Compensation=-0.75000000000000022
 Brightness=0
 Contrast=0
 Saturation=0
@@ -22,9 +22,9 @@ ShadowCompr=50
 Curve=2;0.25;0.28999999999999998;0.75;0;100;-100;0;
 
 [Channel Mixer]
-Red=50;0;-25;
-Green=0;50;-25;
-Blue=0;-10;50;
+Red=100;0;-45;
+Green=5;100;-50;
+Blue=0;-10;100;
 
 [Luminance Curve]
 Brightness=0
@@ -32,16 +32,16 @@ Contrast=0
 Saturation=0
 AvoidColorClipping=false
 SaturationLimiter=false
-SaturationLimit=40
+SaturationLimit=50
 LCurve=0;
 aCurve=0;
 bCurve=0;
 
 [Sharpening]
 Enabled=false
-Method=usm
+Method=rld
 Radius=0.5
-Amount=250
+Amount=125
 Threshold=512
 OnlyEdges=false
 EdgedetectionRadius=1.8999999999999999
@@ -51,7 +51,7 @@ HalocontrolAmount=85
 DeconvRadius=0.75
 DeconvAmount=75
 DeconvDamping=20
-DeconvIterations=30
+DeconvIterations=5
 
 [Vibrance]
 Enabled=false
@@ -100,8 +100,8 @@ Threshold=25
 
 [Directional Pyramid Denoising]
 Enabled=true
-Luma=10
-Chroma=20
+Luma=0
+Chroma=10
 Gamma=3
 LumCurve=0;
 ChromCurve=0;
@@ -109,7 +109,7 @@ ChromCurve=0;
 [EPD]
 Enabled=true
 Strength=0.25
-EdgeStopping=0.10000000000000001
+EdgeStopping=1
 Scale=1
 ReweightingIterates=0
 
@@ -223,7 +223,7 @@ HotDeadPixels=false
 HotDeadPixelThresh=40
 LineDenoise=0
 GreenEqThreshold=0
-CcSteps=5
+CcSteps=4
 Method=amaze
 DCBIterations=2
 DCBEnhance=false
