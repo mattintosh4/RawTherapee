@@ -11,9 +11,9 @@ InTrash=false
 [Exposure]
 Auto=false
 Clip=0
-Compensation=-0.75
+Compensation=0
 Brightness=5
-Contrast=10
+Contrast=5
 Saturation=0
 Black=-16384
 HighlightCompr=70
@@ -22,9 +22,9 @@ ShadowCompr=50
 Curve=2;0.25;0.28999999999999998;0.75;0;100;-100;0;
 
 [Channel Mixer]
-Red=100;0;-45;
-Green=5;100;-50;
-Blue=-10;-10;100;
+Red=120;-10;-25;
+Green=-10;120;-25;
+Blue=-10;-10;120;
 
 [Luminance Curve]
 Brightness=0
@@ -38,7 +38,7 @@ aCurve=0;
 bCurve=0;
 
 [Sharpening]
-Enabled=false
+Enabled=true
 Method=rld
 Radius=0.5
 Amount=125
@@ -83,7 +83,7 @@ SaturationLimit=75
 [White Balance]
 Setting=Custom
 Temperature=5200
-Green=1.1000000000000001
+Green=1.2
 
 [Color Shift]
 ChannelA=0
@@ -107,7 +107,7 @@ LumCurve=0;
 ChromCurve=0;
 
 [EPD]
-Enabled=true
+Enabled=false
 Strength=0.10000000000000001
 EdgeStopping=1
 Scale=1
@@ -216,7 +216,7 @@ FlatFieldFile=
 FlatFieldAutoSelect=false
 FlatFieldBlurRadius=32
 FlatFieldBlurType=Area Flatfield
-CA=false
+CA=true
 CARed=0
 CABlue=0
 HotDeadPixels=false
