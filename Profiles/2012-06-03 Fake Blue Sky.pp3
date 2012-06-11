@@ -13,7 +13,7 @@ Auto=false
 Clip=0
 Compensation=0
 Brightness=5
-Contrast=5
+Contrast=0
 Saturation=0
 Black=-16384
 HighlightCompr=70
@@ -91,7 +91,7 @@ ChannelB=0
 
 [Impulse Denoising]
 Enabled=true
-Threshold=75
+Threshold=50
 
 [Defringing]
 Enabled=true

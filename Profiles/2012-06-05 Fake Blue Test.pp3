@@ -10,38 +10,38 @@ InTrash=false
 
 [Exposure]
 Auto=false
-Clip=0.001
-Compensation=1
+Clip=0
+Compensation=0
 Brightness=0
 Contrast=0
-Saturation=-10
+Saturation=0
 Black=0
-HighlightCompr=0
+HighlightCompr=70
 HighlightComprThreshold=0
-ShadowCompr=0
-Curve=2;0.25;0.5;0.75;0;100;0;-100;
+ShadowCompr=50
+Curve=2;0.25;0.28999999999999998;0.75;0;50;-50;0;
 
 [Channel Mixer]
-Red=-10;0;100;
-Green=0;100;0;
-Blue=100;0;0;
+Red=100;0;-50;
+Green=0;100;-50;
+Blue=0;-25;100;
 
 [Luminance Curve]
 Brightness=0
 Contrast=0
-Saturation=0
+Saturation=5
 AvoidColorClipping=false
 SaturationLimiter=false
-SaturationLimit=50
+SaturationLimit=40
 LCurve=0;
 aCurve=0;
-bCurve=2;0.25;0.5;0.75;0;0;0;0;
+bCurve=0;
 
 [Sharpening]
 Enabled=false
 Method=usm
 Radius=0.5
-Amount=125
+Amount=250
 Threshold=512
 OnlyEdges=false
 EdgedetectionRadius=1.8999999999999999
@@ -81,9 +81,9 @@ SaturationLimiter=false
 SaturationLimit=75
 
 [White Balance]
-Setting=Custom
-Temperature=2400
-Green=1.8
+Setting=Camera
+Temperature=4942
+Green=1.113
 
 [Color Shift]
 ChannelA=0
@@ -99,9 +99,9 @@ Radius=2
 Threshold=25
 
 [Directional Pyramid Denoising]
-Enabled=true
-Luma=50
-Chroma=100
+Enabled=false
+Luma=5
+Chroma=5
 Gamma=2
 LumCurve=0;
 ChromCurve=0;
@@ -125,9 +125,9 @@ Amount=20
 [Shadows & Highlights]
 Enabled=false
 HighQuality=false
-Highlights=0
+Highlights=10
 HighlightTonalWidth=80
-Shadows=0
+Shadows=10
 ShadowTonalWidth=80
 LocalContrast=0
 Radius=30
@@ -136,8 +136,8 @@ Radius=30
 Enabled=false
 X=0
 Y=0
-W=3900
-H=2594
+W=2594
+H=3900
 FixedRatio=false
 Ratio=3:2
 Orientation=Landscape
@@ -149,7 +149,7 @@ HorizontalFlip=false
 VerticalFlip=false
 
 [Common Properties for Transformations]
-AutoFill=true
+AutoFill=false
 
 [Rotation]
 Degree=0
@@ -174,8 +174,8 @@ CenterX=0
 CenterY=0
 
 [HLRecovery]
-Enabled=false
-Method=CIELab blending
+Enabled=true
+Method=Color
 
 [Resize]
 Enabled=false
@@ -183,26 +183,26 @@ Scale=1
 AppliesTo=Cropped area
 Method=Bicubic
 DataSpecified=0
-Width=3900
-Height=2594
+Width=2594
+Height=3900
 
 [Color Management]
 InputProfile=(camera)
 BlendCMSMatrix=false
-WorkingProfile=sRGB
-OutputProfile=AdobeRGB
-Gammafree=default
+WorkingProfile=ProPhoto
+OutputProfile=No ICM: sRGB output
+Gammafree=sRGB_g2.4_s12.92
 Freegamma=false
 GammaValue=2.2200000000000002
 GammaSlope=4.5
 
 [Directional Pyramid Equalizer]
-Enabled=false
-Mult0=1
+Enabled=true
+Mult0=3
 Mult1=1
 Mult2=1
 Mult3=1
-Mult4=0
+Mult4=0.20000000000000001
 
 [HSV Equalizer]
 HCurve=0;
@@ -223,7 +223,7 @@ HotDeadPixels=false
 HotDeadPixelThresh=40
 LineDenoise=0
 GreenEqThreshold=0
-CcSteps=1
+CcSteps=2
 Method=amaze
 DCBIterations=2
 DCBEnhance=false
@@ -231,7 +231,7 @@ ALLEnhance=false
 PreExposure=1
 PrePreserv=0
 PreBlackzero=0
-PreBlackone=0
+PreBlackone=5
 PreBlacktwo=0
 PreBlackthree=0
 PreTwoGreen=true
