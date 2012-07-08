@@ -82,8 +82,8 @@ SaturationLimit=75
 
 [White Balance]
 Setting=Camera
-Temperature=
-Green=
+Temperature=5463
+Green=1.1140000000000001
 
 [Color Shift]
 ChannelA=0
@@ -108,7 +108,7 @@ ChromCurve=0;
 
 [EPD]
 Enabled=false
-Strength=0.1
+Strength=0.10000000000000001
 EdgeStopping=1
 Scale=1
 ReweightingIterates=0
@@ -136,8 +136,8 @@ Radius=30
 Enabled=false
 X=0
 Y=0
-W=
-H=
+W=3900
+H=2594
 FixedRatio=false
 Ratio=3:2
 Orientation=Landscape
@@ -183,8 +183,8 @@ Scale=1
 AppliesTo=Cropped area
 Method=Bicubic
 DataSpecified=0
-Width=
-Height=
+Width=3900
+Height=2594
 
 [Color Management]
 InputProfile=(camera)
@@ -193,7 +193,7 @@ WorkingProfile=ProPhoto
 OutputProfile=AdobeRGB
 Gammafree=default
 Freegamma=false
-GammaValue=2.2
+GammaValue=2.2200000000000002
 GammaSlope=4.5
 
 [Directional Pyramid Equalizer]
@@ -223,7 +223,7 @@ HotDeadPixels=true
 HotDeadPixelThresh=40
 LineDenoise=0
 GreenEqThreshold=0
-CcSteps=2
+CcSteps=0
 Method=amaze
 DCBIterations=2
 DCBEnhance=false
