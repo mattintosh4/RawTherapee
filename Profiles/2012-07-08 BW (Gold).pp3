@@ -11,9 +11,9 @@ InTrash=false
 [Exposure]
 Auto=false
 Clip=0
-Compensation=4.5
+Compensation=4
 Brightness=0
-Contrast=20
+Contrast=0
 Saturation=0
 Black=0
 HighlightCompr=50
@@ -81,9 +81,9 @@ SaturationLimiter=false
 SaturationLimit=75
 
 [White Balance]
-Setting=Custom
-Temperature=5400
-Green=1.2
+Setting=Camera
+Temperature=4058
+Green=1.0129999999999999
 
 [Color Shift]
 ChannelA=0

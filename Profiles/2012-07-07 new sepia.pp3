@@ -167,8 +167,8 @@ Red=0
 Blue=0
 
 [Vignetting Correction]
-Amount=-100
-Radius=10
+Amount=0
+Radius=50
 Strength=1
 CenterX=0
 CenterY=0

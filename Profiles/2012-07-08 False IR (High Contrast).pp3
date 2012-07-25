@@ -24,7 +24,7 @@ Curve=2;0.25;0.5;0.75;0;80;39.710144927536248;-40;
 [Channel Mixer]
 Red=100;5;-40;
 Green=100;5;-39;
-Blue=100;0;-29;
+Blue=100;5;-29;
 
 [Luminance Curve]
 Brightness=0
@@ -49,7 +49,7 @@ EdgeTolerance=1000
 HalocontrolEnabled=true
 HalocontrolAmount=75
 DeconvRadius=0.75
-DeconvAmount=100
+DeconvAmount=75
 DeconvDamping=20
 DeconvIterations=5
 
@@ -82,8 +82,8 @@ SaturationLimit=75
 
 [White Balance]
 Setting=Camera
-Temperature=5447
-Green=1.135
+Temperature=5465
+Green=1.1200000000000001
 
 [Color Shift]
 ChannelA=0
@@ -100,7 +100,7 @@ Threshold=25
 
 [Directional Pyramid Denoising]
 Enabled=true
-Luma=10
+Luma=0
 Chroma=10
 Gamma=3
 LumCurve=0;

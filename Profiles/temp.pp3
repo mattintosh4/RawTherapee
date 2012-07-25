@@ -10,21 +10,21 @@ InTrash=false
 
 [Exposure]
 Auto=false
-Clip=0.001
-Compensation=1
-Brightness=0
-Contrast=0
-Saturation=-10
-Black=0
+Clip=0
+Compensation=0
+Brightness=20
+Contrast=30
+Saturation=0
+Black=-16384
 HighlightCompr=0
 HighlightComprThreshold=0
-ShadowCompr=0
-Curve=2;0.25;0.5;0.75;0;100;0;-100;
+ShadowCompr=50
+Curve=2;0.25;0.5;0.75;0;100;0;-80;
 
 [Channel Mixer]
-Red=-10;0;100;
-Green=0;100;0;
-Blue=100;0;0;
+Red=200;50;50;
+Green=50;200;50;
+Blue=50;50;200;
 
 [Luminance Curve]
 Brightness=0
@@ -35,11 +35,11 @@ SaturationLimiter=false
 SaturationLimit=50
 LCurve=0;
 aCurve=0;
-bCurve=2;0.25;0.5;0.75;0;0;0;0;
+bCurve=0;
 
 [Sharpening]
-Enabled=false
-Method=usm
+Enabled=true
+Method=rld
 Radius=0.5
 Amount=125
 Threshold=512
@@ -51,7 +51,7 @@ HalocontrolAmount=85
 DeconvRadius=0.75
 DeconvAmount=75
 DeconvDamping=20
-DeconvIterations=30
+DeconvIterations=5
 
 [Vibrance]
 Enabled=false
@@ -81,9 +81,9 @@ SaturationLimiter=false
 SaturationLimit=75
 
 [White Balance]
-Setting=Custom
-Temperature=2400
-Green=1.8
+Setting=Camera
+Temperature=5480
+Green=1.119
 
 [Color Shift]
 ChannelA=0
@@ -94,15 +94,15 @@ Enabled=false
 Threshold=50
 
 [Defringing]
-Enabled=false
+Enabled=true
 Radius=2
 Threshold=25
 
 [Directional Pyramid Denoising]
 Enabled=true
-Luma=50
-Chroma=100
-Gamma=2
+Luma=0
+Chroma=10
+Gamma=3
 LumCurve=0;
 ChromCurve=0;
 
@@ -125,9 +125,9 @@ Amount=20
 [Shadows & Highlights]
 Enabled=false
 HighQuality=false
-Highlights=0
+Highlights=10
 HighlightTonalWidth=80
-Shadows=0
+Shadows=10
 ShadowTonalWidth=80
 LocalContrast=0
 Radius=30
@@ -149,7 +149,7 @@ HorizontalFlip=false
 VerticalFlip=false
 
 [Common Properties for Transformations]
-AutoFill=true
+AutoFill=false
 
 [Rotation]
 Degree=0
@@ -174,8 +174,8 @@ CenterX=0
 CenterY=0
 
 [HLRecovery]
-Enabled=false
-Method=CIELab blending
+Enabled=true
+Method=Color
 
 [Resize]
 Enabled=false
@@ -189,7 +189,7 @@ Height=2594
 [Color Management]
 InputProfile=(camera)
 BlendCMSMatrix=false
-WorkingProfile=sRGB
+WorkingProfile=BestRGB
 OutputProfile=AdobeRGB
 Gammafree=default
 Freegamma=false
@@ -202,7 +202,7 @@ Mult0=1
 Mult1=1
 Mult2=1
 Mult3=1
-Mult4=0
+Mult4=0.20000000000000001
 
 [HSV Equalizer]
 HCurve=0;
@@ -216,7 +216,7 @@ FlatFieldFile=
 FlatFieldAutoSelect=false
 FlatFieldBlurRadius=32
 FlatFieldBlurType=Area Flatfield
-CA=false
+CA=true
 CARed=0
 CABlue=0
 HotDeadPixels=false
@@ -224,14 +224,14 @@ HotDeadPixelThresh=40
 LineDenoise=0
 GreenEqThreshold=0
 CcSteps=1
-Method=amaze
+Method=dcb
 DCBIterations=2
 DCBEnhance=false
 ALLEnhance=false
-PreExposure=1
+PreExposure=0.10000000000000001
 PrePreserv=0
-PreBlackzero=0
+PreBlackzero=-5
 PreBlackone=0
 PreBlacktwo=0
-PreBlackthree=0
+PreBlackthree=-5
 PreTwoGreen=true
