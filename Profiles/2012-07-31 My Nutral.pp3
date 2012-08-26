@@ -10,20 +10,20 @@ InTrash=false
 [Exposure]
 Auto=false
 Clip=0
-Compensation=1
+Compensation=0
 Brightness=5
 Contrast=10
 Saturation=0
-Black=-16384
-HighlightCompr=0
-HighlightComprThreshold=0
+Black=0
+HighlightCompr=70
+HighlightComprThreshold=50
 ShadowCompr=50
-Curve=2;0.25;0.40000000000000002;0.75;0;80;-80;0;
+Curve=2;0.25;0.5;0.75;0;0;0;0;
 
 [Channel Mixer]
-Red=200;50;50;
-Green=50;200;50;
-Blue=50;50;200;
+Red=150;0;0;
+Green=0;150;0;
+Blue=-5;-5;150;
 
 [Luminance Curve]
 Brightness=0
@@ -43,7 +43,7 @@ Enabled=true
 Method=rld
 Radius=0.5
 Amount=125
-Threshold=512;512;2000;2000;
+Threshold=20;80;2000;1200;
 OnlyEdges=false
 EdgedetectionRadius=1.8999999999999999
 EdgeTolerance=1800
@@ -56,9 +56,9 @@ DeconvIterations=5
 
 [Vibrance]
 Enabled=false
-Pastels=0
-Saturated=0
-PSThreshold=75;75;
+Pastels=50
+Saturated=50
+PSThreshold=0;75;
 ProtectSkins=false
 AvoidColorShift=true
 PastSatTog=true
@@ -78,8 +78,8 @@ Uniformity=50
 
 [White Balance]
 Setting=Camera
-Temperature=5163
-Green=1.077
+Temperature=5309
+Green=1.0940000000000001
 
 [Impulse Denoising]
 Enabled=false
@@ -92,14 +92,14 @@ Threshold=25
 
 [Directional Pyramid Denoising]
 Enabled=true
-Luma=0
-Chroma=10
+Luma=20
+Chroma=20
 Gamma=3
 
 [EPD]
 Enabled=true
-Strength=0.10000000000000001
-EdgeStopping=1.3999999999999999
+Strength=0.14999999999999999
+EdgeStopping=1
 Scale=1
 ReweightingIterates=0
 
@@ -117,8 +117,8 @@ Radius=30
 Enabled=false
 X=0
 Y=0
-W=2594
-H=3900
+W=3900
+H=2594
 FixedRatio=false
 Ratio=3:2
 Orientation=Landscape
@@ -130,7 +130,7 @@ HorizontalFlip=false
 VerticalFlip=false
 
 [Common Properties for Transformations]
-AutoFill=false
+AutoFill=true
 
 [Rotation]
 Degree=0
@@ -153,7 +153,7 @@ Red=0
 Blue=0
 
 [Vignetting Correction]
-Amount=-100
+Amount=0
 Radius=50
 Strength=1
 CenterX=0
@@ -165,16 +165,16 @@ Method=Color
 
 [Resize]
 Enabled=false
-Scale=1
+Scale=0.23000000000000001
 AppliesTo=Cropped area
-Method=Bicubic
-DataSpecified=0
-Width=2594
-Height=3900
+Method=Lanczos
+DataSpecified=3
+Width=900
+Height=900
 
 [Color Management]
-InputProfile=(camera)
-BlendCMSMatrix=false
+InputProfile=(cameraICC)
+BlendCMSMatrix=true
 PreferredProfile=true
 WorkingProfile=BestRGB
 OutputProfile=AdobeRGB
@@ -208,19 +208,19 @@ FlatFieldFile=
 FlatFieldAutoSelect=false
 FlatFieldBlurRadius=32
 FlatFieldBlurType=Area Flatfield
-CA=true
+CA=false
 CARed=0
 CABlue=0
 HotDeadPixels=false
 HotDeadPixelThresh=40
 LineDenoise=0
 GreenEqThreshold=0
-CcSteps=1
+CcSteps=2
 Method=dcb
 DCBIterations=2
 DCBEnhance=false
 ALLEnhance=false
-PreExposure=0.10000000000000001
+PreExposure=1
 PrePreserv=0
 PreBlackzero=-5
 PreBlackone=0

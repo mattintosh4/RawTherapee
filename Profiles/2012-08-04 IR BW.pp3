@@ -10,20 +10,20 @@ InTrash=false
 [Exposure]
 Auto=false
 Clip=0
-Compensation=1
-Brightness=5
-Contrast=10
+Compensation=0
+Brightness=0
+Contrast=0
 Saturation=0
-Black=-16384
-HighlightCompr=0
+Black=5120
+HighlightCompr=20
 HighlightComprThreshold=0
-ShadowCompr=50
-Curve=2;0.25;0.40000000000000002;0.75;0;80;-80;0;
+ShadowCompr=80
+Curve=2;0.25;0.5;0.75;0;100;80;0;
 
 [Channel Mixer]
-Red=200;50;50;
-Green=50;200;50;
-Blue=50;50;200;
+Red=100;0;0;
+Green=0;100;0;
+Blue=0;0;100;
 
 [Luminance Curve]
 Brightness=0
@@ -31,7 +31,7 @@ Contrast=0
 Chromaticity=0
 AvoidColorShift=true
 SaturationLimit=0
-BWtoning=false
+BWtoning=true
 LCurve=0;
 aCurve=0;
 bCurve=0;
@@ -39,11 +39,11 @@ ccCurve=0;
 chCurve=0;
 
 [Sharpening]
-Enabled=true
-Method=rld
+Enabled=false
+Method=usm
 Radius=0.5
 Amount=125
-Threshold=512;512;2000;2000;
+Threshold=20;80;2000;1200;
 OnlyEdges=false
 EdgedetectionRadius=1.8999999999999999
 EdgeTolerance=1800
@@ -52,13 +52,13 @@ HalocontrolAmount=85
 DeconvRadius=0.75
 DeconvAmount=75
 DeconvDamping=20
-DeconvIterations=5
+DeconvIterations=30
 
 [Vibrance]
 Enabled=false
-Pastels=0
-Saturated=0
-PSThreshold=75;75;
+Pastels=50
+Saturated=50
+PSThreshold=0;75;
 ProtectSkins=false
 AvoidColorShift=true
 PastSatTog=true
@@ -78,28 +78,28 @@ Uniformity=50
 
 [White Balance]
 Setting=Camera
-Temperature=5163
-Green=1.077
+Temperature=6490
+Green=1.002
 
 [Impulse Denoising]
-Enabled=false
+Enabled=true
 Threshold=50
 
 [Defringing]
-Enabled=true
+Enabled=false
 Radius=2
 Threshold=25
 
 [Directional Pyramid Denoising]
 Enabled=true
-Luma=0
-Chroma=10
-Gamma=3
+Luma=20
+Chroma=20
+Gamma=2
 
 [EPD]
 Enabled=true
 Strength=0.10000000000000001
-EdgeStopping=1.3999999999999999
+EdgeStopping=1
 Scale=1
 ReweightingIterates=0
 
@@ -117,8 +117,8 @@ Radius=30
 Enabled=false
 X=0
 Y=0
-W=2594
-H=3900
+W=2736
+H=3648
 FixedRatio=false
 Ratio=3:2
 Orientation=Landscape
@@ -130,7 +130,7 @@ HorizontalFlip=false
 VerticalFlip=false
 
 [Common Properties for Transformations]
-AutoFill=false
+AutoFill=true
 
 [Rotation]
 Degree=0
@@ -153,30 +153,30 @@ Red=0
 Blue=0
 
 [Vignetting Correction]
-Amount=-100
+Amount=0
 Radius=50
 Strength=1
 CenterX=0
 CenterY=0
 
 [HLRecovery]
-Enabled=true
-Method=Color
+Enabled=false
+Method=Blend
 
 [Resize]
 Enabled=false
-Scale=1
+Scale=0.25
 AppliesTo=Cropped area
-Method=Bicubic
-DataSpecified=0
-Width=2594
-Height=3900
+Method=Lanczos
+DataSpecified=3
+Width=900
+Height=900
 
 [Color Management]
-InputProfile=(camera)
-BlendCMSMatrix=false
+InputProfile=(embedded)
+BlendCMSMatrix=true
 PreferredProfile=true
-WorkingProfile=BestRGB
+WorkingProfile=Adobe RGB
 OutputProfile=AdobeRGB
 Gammafree=default
 Freegamma=false
@@ -208,22 +208,22 @@ FlatFieldFile=
 FlatFieldAutoSelect=false
 FlatFieldBlurRadius=32
 FlatFieldBlurType=Area Flatfield
-CA=true
+CA=false
 CARed=0
 CABlue=0
 HotDeadPixels=false
 HotDeadPixelThresh=40
 LineDenoise=0
 GreenEqThreshold=0
-CcSteps=1
-Method=dcb
+CcSteps=0
+Method=amaze
 DCBIterations=2
 DCBEnhance=false
 ALLEnhance=false
-PreExposure=0.10000000000000001
+PreExposure=1
 PrePreserv=0
-PreBlackzero=-5
+PreBlackzero=0
 PreBlackone=0
 PreBlacktwo=0
-PreBlackthree=-5
+PreBlackthree=0
 PreTwoGreen=true
