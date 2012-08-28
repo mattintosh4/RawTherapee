@@ -4,9 +4,9 @@ cd /usr/local/src/rawtherapee
 curl -O https://raw.github.com/mattintosh4/RawTherapee/master/patch/start.patch
 curl -O https://raw.github.com/mattintosh4/RawTherapee/master/patch/make-app-bundle.patch
 curl -O https://raw.github.com/mattintosh4/RawTherapee/master/patch/info.plist.patch
-patch -u -p0 < start.patch
-patch -u -p0 < make-app-bundle.patch
-patch -u -p0 < info.plist.patch
+patch -ubN -p0 < start.patch
+patch -ubN -p0 < make-app-bundle.patch
+patch -ubN -p0 < info.plist.patch
 rm -rf ./build ./Release
 mkdir build
 cd build
@@ -22,6 +22,7 @@ cmake \
 make install
 cd - > /dev/null
 mv ./build/Release ./
+cp -r /opt/local/share/locale ./Release/share/locale
 sed -i "" -e "s/ccache/gcc-mp-4/g" ./Release/AboutThisBuild.txt
 cat <<EOF >> ./Release/AboutThisBuild.txt
 
