@@ -1,0 +1,23 @@
+--- ./tools/osx/info.plist	2012-08-28 20:26:34.000000000 +0900
++++ ./tools/osx.diff/info.plist	2012-08-26 22:42:28.000000000 +0900
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
++<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+ <plist version="1.0">
+ <dict>
+ 	<key>CFBundleDevelopmentRegion</key>
+@@ -17,11 +17,11 @@
+ 	<key>CFBundlePackageType</key>
+ 	<string>APPL</string>
+ 	<key>CFBundleShortVersionString</key>
+-	<string>3.0a</string>
++	<string>4.0</string>
+ 	<key>CFBundleSignature</key>
+ 	<string>APPL</string>
+ 	<key>CFBundleVersion</key>
+-	<string>3.0 Alpha</string>
++	<string>4.0.9</string>
+ 	<key>NSAppleScriptEnabled</key>
+ 	<string>NO</string>
+ </dict>
