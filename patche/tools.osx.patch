@@ -1,0 +1,68 @@
+diff -u ./tools/osx/Info.plist ./tools/osx.diff/Info.plist
+--- ./tools/osx/Info.plist	2012-08-28 19:47:29.000000000 +0900
++++ ./tools/osx.diff/Info.plist	2012-08-26 22:42:28.000000000 +0900
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
++<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+ <plist version="1.0">
+ <dict>
+ 	<key>CFBundleDevelopmentRegion</key>
+@@ -17,11 +17,11 @@
+ 	<key>CFBundlePackageType</key>
+ 	<string>APPL</string>
+ 	<key>CFBundleShortVersionString</key>
+-	<string>3.0a</string>
++	<string>4.0</string>
+ 	<key>CFBundleSignature</key>
+ 	<string>APPL</string>
+ 	<key>CFBundleVersion</key>
+-	<string>3.0 Alpha</string>
++	<string>4.0.9</string>
+ 	<key>NSAppleScriptEnabled</key>
+ 	<string>NO</string>
+ </dict>
+diff -u ./tools/osx/make-app-bundle ./tools/osx.diff/make-app-bundle
+--- ./tools/osx/make-app-bundle	2012-08-28 19:47:29.000000000 +0900
++++ ./tools/osx.diff/make-app-bundle	2012-08-27 04:27:32.000000000 +0900
+@@ -72,8 +72,8 @@
+ cp -R $MACPORTS_PREFIX/etc/gtk-2.0 ${ETC}
+ cp -R $MACPORTS_PREFIX/etc/pango ${ETC}
+ ESCAPED_MACPORTS_PREFIX=`echo ${MACPORTS_PREFIX} | sed -e 's/\\//\\\\\\//g'`
+-sed -i .bak -e "s/${ESCAPED_MACPORTS_PREFIX}/@executable_path/g" ${ETC}/gtk-2.0/gdk-pixbuf.loaders ${ETC}/gtk-2.0/gtk.immodules ${ETC}/pango/pango.modules
+-echo -e "[Pango]\nModuleFiles = /tmp/${EXECUTABLE}_pango.modules" > ${ETC}/pango/pangorc
++sed -i .bak -e "s/${ESCAPED_MACPORTS_PREFIX}/\/tmp\/RawTherapee.app\/Contents\/MacOS/g" ${ETC}/gtk-2.0/gdk-pixbuf.loaders ${ETC}/gtk-2.0/gtk.immodules ${ETC}/pango/pango.modules
++echo -e "[Pango]\nModuleFiles = /tmp/RawTherapee.app/Contents/MacOS/etc/pango/pango.modules" > ${ETC}/pango/pangorc
+ rm ${LIB}/gdk-pixbuf-2.0/2.10.0/loaders.cache
+ 
+ #Copy over the release files
+diff -u ./tools/osx/start ./tools/osx.diff/start
+--- ./tools/osx/start	2012-08-28 19:47:29.000000000 +0900
++++ ./tools/osx.diff/start	2012-08-28 03:59:36.000000000 +0900
+@@ -2,18 +2,24 @@
+ 
+ CWD=`dirname "$0"`
+ echo $CWD
++cd "${CWD}/../.."
++APPDIR=`pwd`
++cd - > /dev/null
++LNDIR=/tmp/RawTherapee.app
+ 
+ export DYLD_LIBRARY_PATH="${CWD}/lib:$DYLD_LIBRARY_PATH"
+ export GTK_DATA_PREFIX="${CWD}"
+ export GTK_DATA_DIRS="${CWD}"
+ export GTK_EXE_PREFIX="${CWD}"
+ export GTK_PATH="${CWD}"
++export XDG_DATA_DIRS="${CWD}/share"
+ 
+ export GTK2_RC_FILES="${CWD}/etc/gtk-2.0/gtkrc"
+-export GTK_IM_MODULE_FILE="${CWD}/gtk-2.0/gtk.immodules"
++export GTK_IM_MODULE_FILE="${CWD}/etc/gtk-2.0/gtk.immodules"
+ export GDK_PIXBUF_MODULE_FILE="${CWD}/etc/gtk-2.0/gdk-pixbuf.loaders"
+ export PANGO_RC_FILE="${CWD}/etc/pango/pangorc"
+ 
+-cp "${CWD}/etc/pango/pango.modules" /tmp/rawtherapee_pango.modules
++rm -f "${LNDIR}"
++ln -s "${APPDIR}" "${LNDIR}"
+ 
+ "${CWD}/rawtherapee"
