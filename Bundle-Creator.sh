@@ -12,7 +12,7 @@ cmake \
 -DCMAKE_OSX_ARCHITECTURES="x86_64" \
 -DCMAKE_OSX_DEPLOYMENT_TARGET="10.6" \
 -DCMAKE_OSX_SYSROOT="/Developer/SDKs/MacOSX10.6.sdk" \
--DPROC_TARGET_NUMBER="2" ..
+-DPROC_TARGET_NUMBER="1" ..
 make install -j3
 cd - > /dev/null
 mv ./build/Release ./
