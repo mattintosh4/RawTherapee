@@ -22,7 +22,6 @@ cmake \
 make install
 cd - > /dev/null
 mv ./build/Release ./
-cp -r /opt/local/share/locale ./Release/share/locale
 sed -i "" -e "s/ccache/gcc-mp-4/g" ./Release/AboutThisBuild.txt
 cat <<EOF >> ./Release/AboutThisBuild.txt
 
