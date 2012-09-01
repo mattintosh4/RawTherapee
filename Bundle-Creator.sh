@@ -12,8 +12,7 @@ cmake \
 -DCMAKE_OSX_ARCHITECTURES:STRING="x86_64" \
 -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING="10.6" \
 -DCMAKE_OSX_SYSROOT:STRING="/Developer/SDKs/MacOSX10.6.sdk" \
--DPROC_TARGET_NUMBER:STRING="1" ..
-make install -j3
+-DPROC_TARGET_NUMBER:STRING="1" .. && make install -j3
 cd - > /dev/null
 mv ./build/Release ./
 sed -i "" -e "s/ccache/gcc-mp-4/g" ./Release/AboutThisBuild.txt
