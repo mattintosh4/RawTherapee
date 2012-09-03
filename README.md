@@ -1,6 +1,8 @@
-RawTherapee for MacOS のビルドテストなどをしています。ビルドしたバンドルは「非公式版」として配布していますのでご自由にお使い下さい（ただし無保証です）。
+# RawTherapee 4.0.9 for MacOS Unofficial Bundle #
 
-非公式版の AboutThisBuild.txt には以下の表記が入っています。
+ここでは RawTherapee 4.0.9 for MacOS のビルドテストなどをしています。（[開発記録はこちら](http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1)）
+
+ビルドしたバンドルは「非公式版」として配布していますのでご自由にお使い下さい（ただし無保証です）。非公式版の AboutThisBuild.txt には以下の表記が入っています。
 
 ```no-highlight:AboutThisBuild.txt
 ***** Unofficial Bundle for MacOS *****
