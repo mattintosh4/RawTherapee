@@ -58,13 +58,13 @@ RawTherapee 4.0.9.118 Universal (32/64bit) をアップしました。`OSX_DEPLO
 
 ### 2012.8.28 ###
 
--	一部のアイコンが表示されない問題を修正しました。（不正な MIME タイプ問題［[詳細](http://mattintosh.blog.so-net.ne.jp/2012-08-29)］）
+-	一部のアイコンが表示されない問題を修正しました。［不正な MIME タイプ問題 - [詳細](http://mattintosh.blog.so-net.ne.jp/2012-08-29)］］
 -	AboutThisBuild.txt に「非公式」の表記を追加しました。
 -	バンドル用改造パッチを更新しました。
 
 ### 2012.8.26 ###
 
--	起動スクリプトを修正し、Pango モジュールのエラーを解消しました。（pango.modules の @executable_path の問題［[詳細](http://mattintosh.blog.so-net.ne.jp/2012-08-26)］）
+-	起動スクリプトを修正し、Pango モジュールのエラーを解消しました。［pango.modules の @executable_path の問題 [詳細](http://mattintosh.blog.so-net.ne.jp/2012-08-26)］］
 -	info.plist の内容が古かったので更新しました。
 -	以下のバンドル用改造パッチをアップしました。
 	-	start.path
