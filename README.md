@@ -26,12 +26,19 @@ RawTherapee 公式サイト
 
 ## 64bit 版に関する重要なお知らせ ##
 
-現行版の 64bit ライブラリは __Google 日本語入力 および MacUIM と相性が悪く、キー操作を行った際に暫く操作を受け付けなくなるバグがあります__。64bit バンドルを使用する場合は起動前に IME を __Google 日本語入力、MacUIM 以外__に変更して下さい（ことえりは動作確認済みです）。起動中にを変更するとシャットダウンする可能性もありますので、お使いの IME で一度テストすることをおすすめします。
+現行版の 64bit ライブラリは __Google 日本語入力 および MacUIM と相性が悪く、キー操作を行った際に暫く操作を受け付けなくなるバグがあります__。64bit バンドルを使用する場合は起動前に IME を __Google 日本語入力、MacUIM 以外__に変更して下さい（ことえりは動作確認済みです）。起動中にを変更するとシャットダウンする可能性もありますのでお使いの IME で一度テストすることをおすすめします。
 
 エラー内容についてはバンドル内の `start` から起動すると確認出来ます。
 
 ```bash
 open /Applications/RawTherapee.app/Contents/MacOS/start
+```
+
+以下のメッセージが出た場合は一定時間操作が無効になります。
+
+```
+(rawtherapee:582): GLib-CRITICAL **: g_hash_table_lookup: assertion `hash_table != NULL' failed
+(rawtherapee:582): GLib-CRITICAL **: g_hash_table_insert_internal: assertion `hash_table != NULL' failed
 ```
 
 ## 更新履歴 ##
