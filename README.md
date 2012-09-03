@@ -1,6 +1,6 @@
 # RawTherapee 4.0.9 for MacOS Unofficial Bundle #
 
-<div style="text-align:center">![RawTherapee 4.0.9 for MacOS](https://lh6.googleusercontent.com/-XOgIMjjl2bY/UEUFkOOMw-I/AAAAAAAAIZ8/1eVSEMEjfII/s800/RawTherapee%25204.0.9.122.png)</div>
+![RawTherapee 4.0.9 for MacOS](https://lh6.googleusercontent.com/-XOgIMjjl2bY/UEUFkOOMw-I/AAAAAAAAIZ8/1eVSEMEjfII/w852/RawTherapee%25204.0.9.122.png)
 
 ここでは RawTherapee 4.0.9 for MacOS のビルドテストなどをしています。（[開発記録はこちら](http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1)）
 
