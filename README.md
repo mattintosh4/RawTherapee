@@ -13,6 +13,10 @@ https://github.com/mattintosh4/RawTherapee
 Thanks to all developers.
 ```
 
+## RawTherapee（ロウ・セラピー）とは？ ##
+
+RawTherapee は Windows、MacOS、Linux に対応した強力な 64-bit オープンソース RAW コンバーターです。現在、GNU GPL ライセンス下でソースコードが公開されています。
+
 RawTherapee 公式サイト
 
 -	[http://rawtherapee.com/](http://rawtherapee.com/)
