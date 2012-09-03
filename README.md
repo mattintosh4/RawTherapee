@@ -32,7 +32,7 @@ open /Applications/RawTherapee.app/Contents/MacOS/start
 
 ### 2012.9.4 ###
 
-RawTherapee 4.0.9.122 64bit をアップしました。ビルド時のインクルード設定を修正しました。
+__RawTherapee 4.0.9.122 64bit__ をアップしました。ビルド時のインクルード設定を修正しました。
 
 ```no-highlight:AboutThisBuild.txt
 Branch: default
