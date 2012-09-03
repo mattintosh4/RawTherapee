@@ -1,5 +1,7 @@
 # RawTherapee 4.0.9 for MacOS Unofficial Bundle #
 
+![RawTherapee 4.0.9 for MacOS](https://lh6.googleusercontent.com/-XOgIMjjl2bY/UEUFkOOMw-I/AAAAAAAAIZ8/1eVSEMEjfII/s800/RawTherapee%25204.0.9.122.png)
+
 ここでは RawTherapee 4.0.9 for MacOS のビルドテストなどをしています。（[開発記録はこちら](http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1)）
 
 ビルドしたバンドルは「非公式版」として配布していますのでご自由にお使い下さい（ただし無保証です）。非公式版の AboutThisBuild.txt には以下の表記が入っています。
@@ -15,7 +17,7 @@ Thanks to all developers.
 
 ## RawTherapee（ロウ・セラピー）とは？ ##
 
-RawTherapee は Windows、MacOS、Linux に対応した強力な 64-bit オープンソース RAW コンバーターです。現在、GNU GPL ライセンス下でソースコードが公開されています。
+RawTherapee は Windows、MacOS、Linux に対応した強力な 64-bit オープンソース RAW コンバーターです。現在、GNU GPL ライセンス下でソースコードが公開されています。英語はもちろんのこと、日本語にも対応しています。
 
 RawTherapee 公式サイト
 
