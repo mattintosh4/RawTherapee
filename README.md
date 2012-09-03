@@ -24,7 +24,7 @@ RawTherapee 公式サイト
 -	[http://rawtherapee.com/](http://rawtherapee.com/)
 -	[http://code.google.com/p/rawtherapee/](http://code.google.com/p/rawtherapee/)
 
-## 64bit 版に関する重要なお知らせ ##
+## 64bit バンドルに関する重要なお知らせ ##
 
 現行版の 64bit ライブラリは __Google 日本語入力 および MacUIM と相性が悪く、キー操作を行った際に暫く操作を受け付けなくなるバグがあります__。64bit バンドルを使用する場合は起動前に IME を __Google 日本語入力、MacUIM 以外__に変更して下さい（ことえりは動作確認済みです）。起動中にを変更するとシャットダウンする可能性もありますのでお使いの IME で一度テストすることをおすすめします。
 
