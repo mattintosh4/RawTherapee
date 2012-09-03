@@ -32,7 +32,7 @@ open /Applications/RawTherapee.app/Contents/MacOS/start
 
 ### 2012.9.4 ###
 
-RawTherapee 4.0.9.122 64bit for MacOS をアップしました。ビルド時のインクルード設定を修正しました。
+RawTherapee 4.0.9.122 64bit をアップしました。ビルド時のインクルード設定を修正しました。
 
 ```no-highlight:AboutThisBuild.txt
 Branch: default
@@ -54,7 +54,7 @@ MMAP support: ON
 
 RawTherapee 4.0.9.118 Universal (32/64bit) をアップしました。`OSX_DEPLOYMENT_TARGET=10.5` を指定しているので 10.5 でも起動出来るかもしれません。
 
-（※後で調べましたが 10.5 でも 64bit アプリケーションは起動出来るそうです…）
+（※後で調べましたが 10.5 でも 64bit アプリケーションは起動出来るみたいなので不要かもしれません）
 
 ### 2012.8.28 ###
 
@@ -66,11 +66,14 @@ RawTherapee 4.0.9.118 Universal (32/64bit) をアップしました。`OSX_DEPLO
 
 -	起動スクリプトを修正し、Pango モジュールのエラーを解消しました。［[詳細](http://mattintosh.blog.so-net.ne.jp/2012-08-26)］
 -	info.plist の内容が古かったので更新しました。
--	バンドル用改造パッチ（start.patch、make-app-bundle.patch、info.plist.patch）をアップしました。
+-	以下のバンドル用改造パッチをアップしました。
+	-	start.path
+	-	make-app-bundle.patch
+	-	info.plist.patch
 
 ### 2012.8.24 ###
 
-最適化対象 CPU を Generic x86 に統一しました。
+公式の指針に則り、最適化対象 CPU を Generic x86 に統一しました。
 
 ### 2012.7.25 ###
 
