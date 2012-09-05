@@ -40,6 +40,14 @@ MMAP support: ON
 
 [issue 1545 #3](http://code.google.com/p/rawtherapee/issues/detail?id=1546&sort=-modified&colspec=ID%20Opened%20Modified%20Type%20Status%20Priority%20Milestone%20Summary%20Owner%20Stars) より natureh.510 氏のパッチを使わせていただきました。感謝します。
 
+### 2012.8.28 ###
+
+一部のアイコンが表示されない問題を修正。［[不正な MIME タイプの問題](http://mattintosh.blog.so-net.ne.jp/2012-08-29)］
+
+### 2012.8.26 ###
+
+起動スクリプト変更と Pango モジュールのエラーを修正［[pango.modules の @executable_path の問題](http://mattintosh.blog.so-net.ne.jp/2012-08-26)］
+
 ## 64bit 版使用時の注意事項 ##
 
 IM に Google 日本語入力や MacUIM などを使用していると一定時間操作を受け付けないバグがあります（ことえりでの動作は問題ありません）。起動中に IM を切り替えるとアプリケーションがクラッシュする可能性がありますので事前にお使いの IM でテストすることをおすすめします。
@@ -49,52 +57,4 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 ```no-highlight:rawtherapee
 (rawtherapee:582): GLib-CRITICAL **: g_hash_table_lookup: assertion `hash_table != NULL' failed
 (rawtherapee:582): GLib-CRITICAL **: g_hash_table_insert_internal: assertion `hash_table != NULL' failed
-```
-
-## 不具合修正など ##
-
-### pango.modules と gtk.immodules の内部パス変更 ###
-
-`@executable_path` が動作しなかったため、`/tmp` に RawTherapee.app のシンボリックリンクを配置し、各ファイルの内部パスを絶対パスに変更しています。
-
-エラー内容
-
-```no-highlight:rawtherapee
-(rawtherapee:2057): Pango-WARNING **: dlopen(/tmp/@executable_path/lib/pango/1.6.0/modules/pango-basic-coretext.so, 2): image not found
-(rawtherapee:2057): Pango-WARNING **: failed to choose a font, expect ugly output. engine-type='PangoRenderCoreText', script='common'
-(rawtherapee:2057): Pango-WARNING **: failed to choose a font, expect ugly output. engine-type='PangoRenderCoreText', script='hiragana'
-(rawtherapee:2057): Pango-WARNING **: failed to choose a font, expect ugly output. engine-type='PangoRenderCoreText', script='han'
-(rawtherapee:2057): Pango-WARNING **: failed to choose a font, expect ugly output. engine-type='PangoRenderCoreText', script='latin'
-(rawtherapee:2057): Pango-WARNING **: failed to choose a font, expect ugly output. engine-type='PangoRenderCoreText', script='katakana'
-```
-
-変更前
-
-```no-highlight:pango.modules
-@executable_path/lib/pango/1.6.0/modules/pango-basic-coretext.so BasicScriptEngineCoreText PangoEngineShape PangoRenderCoreText common:
-```
-
-変更後
-
-```no-highlight:pango.modules
-/tmp/RawTherapee.app/Contents/MacOS/lib/pango/1.6.0/modules/pango-basic-coretext.so BasicScriptEngineCoreText PangoEngineShape PangoRenderCoreText common:
-```
-
-### 不正な MIME タイプへの対処 ###
-
-一部のアイコンの MIME タイプが不正と判断されていたため、`MacOS/share/mime` を読みに行くように起動スクリプトに `XDG_DATA_DIRS` 変数を追加しました。
-
-エラー内容
-
-```no-highlight:rawtherapee
-(rawtherapee:6357): Gtk-WARNING **: Error loading theme icon 'edit-find' for stock: Unrecognized image file format
-(rawtherapee:6357): Gtk-WARNING **: Error loading theme icon 'edit-find' for stock: Unrecognized image file format
-(rawtherapee:6357): Gtk-WARNING **: Error loading theme icon 'document-open' for stock: Unrecognized image file format
-(rawtherapee:6357): Gtk-WARNING **: Error loading theme icon 'folder' for stock: Unrecognized image file format
-```
-
-`start` への `XDG_DATA_DIRS` の追加
-
-```bash:start
-export XDG_DATA_DIRS="${CWD}/share:$XDG_DATA_DIRS"
 ```
