@@ -48,7 +48,7 @@ open /Applications/RawTherapee.app/Contents/MacOS/start
 
 ### 2012.9.5 ###
 
-[RawTherapee 4.0.9.123 (Denoise branch)](https://github.com/mattintosh4/RawTherapee/downloads) をアップしました。64bit の UIM 問題が解決していないので 32bit 版も置いてあります。公式の [issue 1546](http://code.google.com/p/rawtherapee/issues/detail?id=1546#c3) で natureh.510 さんがパッチを提供して下さいました（Thanks natureh.510)。
+__[RawTherapee 4.0.9.123 (Denoise branch)](https://github.com/mattintosh4/RawTherapee/downloads)__ をアップしました。64bit の UIM 問題が解決していないので 32bit 版も置いてあります。公式の [issue #1546](http://code.google.com/p/rawtherapee/issues/detail?id=1546#c3) で natureh.510 さんがパッチを提供して下さいました（Thanks natureh.510)。
 
 ```no-highlight:AboutThisBuild.txt
 Branch: denoise
