@@ -1,4 +1,4 @@
-export ARCH="i386"
+export ARCH="x86_64"
 export FLAGS="-isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -arch ${ARCH} -lm -I/Library/Frameworks -I/System/Library/Frameworks -I/opt/local/include/gcc47/c++ -I/opt/local/include/gcc47/c++/backward -I/opt/local/include/gcc47/c++/x86_64-apple-darwin10 -I/opt/local/lib/gcc47/gcc/x86_64-apple-darwin10/4.7.1/include -I/opt/local/lib/gcc47/gcc/x86_64-apple-darwin10/4.7.1/include-fixed"
 cmake \
 -DBUILD_BUNDLE="ON" \
