@@ -45,7 +45,7 @@ open /Applications/RawTherapee.app/Contents/MacOS/start
 
 ### 2012.9.4 ###
 
-__[RawTherapee 4.0.9.122 64bit](https://github.com/mattintosh4/RawTherapee/downloads)__ をアップしました。ビルド時のインクルード設定を修正しています。また、<code>BUILD_TYPE=Release</code> を基本に一部のコンパイルオプションを変更したためビルドタイプの表記を「Release (_Development_)」に変更しました。
+__[RawTherapee 4.0.9.122 64bit](https://github.com/mattintosh4/RawTherapee/downloads)__ をアップしました。ビルド時のインクルード設定を修正しています。また、`BUILD_TYPE=Release` を基本に一部のコンパイルオプションを変更したためビルドタイプの表記を「Release (_Development_)」に変更しました。
 
 ```no-highlight:AboutThisBuild.txt
 Branch: default
