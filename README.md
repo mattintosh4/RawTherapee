@@ -2,11 +2,12 @@
 
 ![RawTherapee 4.0.9 for MacOS](https://lh6.googleusercontent.com/-XOgIMjjl2bY/UEUFkOOMw-I/AAAAAAAAIZ8/1eVSEMEjfII/w852/RawTherapee%25204.0.9.122.png)
 
-ここでは RawTherapee 4.0.9 for MacOS のビルドテストなどをしています。（[開発記録はこちら](http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1)）
+ここでは RawTherapee 4.0.9 for MacOS のビルドテストなどをしています。開発は mattintosh4 が個人で行なっています。動作確認、バグ情報などいただけると助かります。
 
-開発は mattintosh4 が個人で行なっています。動作確認、バグ情報などは [Twitter:@mattintosh4](https://twitter.com/mattintosh4) へご連絡下さい。
+-	開発記録：[http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1](http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1)
+-	Twitter：[@mattintosh4](https://twitter.com/mattintosh4)
 
-ビルドしたバンドルは「非公式版」として配布していますのでご自由にお使い下さい（ただし無保証です）。非公式版の AboutThisBuild.txt には以下の表記が入っています。
+ビルドしたバンドルは「非公式版」として配布していますのでご自由にお使い下さい（ただし無保証です）。非公式版の AboutThisBuild.txt には公式版と判別しやすくするために以下の表記が入っています。
 
 ```no-highlight:AboutThisBuild.txt
 ***** Unofficial Bundle for MacOS *****
