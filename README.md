@@ -2,14 +2,21 @@
 
 時期バージョンが正式にリリースされるまで勉強としてビルドテストなどを行っています。
 
-動作報告などをいただけると助かります。
-
--	[Twitter:@mattintosh4](https://twitter.com/mattintosh4)
-
 RawTherapee のソースコードやマニュアル、既知の問題については公式ページで確認して下さい。
 
 -	http://rawtherapee.com/
 -	http://code.google.com/p/rawtherapee/
+
+## RawTherapee 4.0.9 for MacOS 非公式版について ##
+
+あくまで個人でビルドしている開発版であり、正常に動作することが確認されたわけではありません。ご利用される場合は自己責任でお願いします。また、このページは公式とは無関係です（フォーラムの内容等は確認させていただいています。全ての開発者の皆さんに感謝します）。
+
+CPU 最適化は公式の指針に乗っ取り `-mtune=generic` を設定しています。しかし、`BUILD_TYPE=Release` をベースに一部フラグを変更している箇所があるためビルドタイプの表記を「Release (Development)」としています。同梱の AboutThisBuild.txt には公式版との見分けがつけやすいように「非公式」の表記が追加されています。設定画面左下の「About」から確認が出来ます。
+
+動作報告等いただけると助かります。
+
+-	[開発記録](http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1)
+-	[Twitter:@mattintosh4](https://twitter.com/mattintosh4)
 
 ## 更新履歴 ##
 
@@ -43,12 +50,6 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 (rawtherapee:582): GLib-CRITICAL **: g_hash_table_lookup: assertion `hash_table != NULL' failed
 (rawtherapee:582): GLib-CRITICAL **: g_hash_table_insert_internal: assertion `hash_table != NULL' failed
 ```
-
-## RawTherapee 4.0.9 for MacOS 非公式版について ##
-
-あくまで個人でビルドしている開発版であり、正常に動作することが確認されたわけではありません。ご利用される場合は自己責任でお願いします。また、このページは公式とは無関係です（フォーラムの内容等は確認させていただいています。全ての開発者の皆さんに感謝します）。
-
-CPU 最適化は公式の指針に乗っ取り `-mtune=generic` を設定しています。しかし、`BUILD_TYPE=Release` をベースに一部フラグを変更している箇所があるためビルドタイプの表記を「Release (Development)」としています。同梱の AboutThisBuild.txt には公式版との見分けがつけやすいように「非公式」の表記が追加されています。設定画面左下の「About」から確認が出来ます。
 
 ## 不具合修正など ##
 
