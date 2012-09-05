@@ -46,7 +46,7 @@ MMAP support: ON
 
 ### 2012.8.26 ###
 
-起動スクリプト変更と Pango モジュールのエラーを修正［[pango.modules の @executable_path の問題](http://mattintosh.blog.so-net.ne.jp/2012-08-26)］
+起動スクリプト変更と Pango モジュールのエラーを修正。［[pango.modules の @executable_path の問題](http://mattintosh.blog.so-net.ne.jp/2012-08-26)］
 
 ## 64bit 版使用時の注意事項 ##
 
