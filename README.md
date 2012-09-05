@@ -55,7 +55,7 @@ MMAP support: ON
 
 ### 2012.8.28 ###
 
-一部のアイコンが表示されない問題を修正。［[不正な MIME タイプの問題](http://mattintosh.blog.so-net.ne.jp/2012-08-29)］
+一部のアイコンが表示されない問題を修正。［[不正な MIME タイプの問題と XDG_DATA_DIRS](http://mattintosh.blog.so-net.ne.jp/2012-08-29)］
 
 ### 2012.8.26 ###
 
