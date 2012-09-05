@@ -16,11 +16,13 @@ RawTherapee のソースコードやマニュアル、既知の問題につい�
 
 ### 非公式版の仕様について ###
 
+日本語入力には対応していません。また、64bit 版では一部の IM との不具合が確認されています。
+
 CPU 最適化は公式の指針に乗っ取り `-mtune=generic` を設定しています。その他は `BUILD_TYPE=Release` をベースにしていますが、一部変更している箇所があるためビルドタイプの表記を「Release (Development)」としています。
 
 同梱の AboutThisBuild.txt には公式版との見分けがつけやすいように「非公式」の表記が追加されています。設定画面左下の「About」から確認が出来ます。
 
-### 64bit 版の注意事項 ###
+### 64bit 版の利用時の注意事項 ###
 
 IM に Google 日本語入力や MacUIM などを使用していると一定時間操作を受け付けないバグがあります（ことえりでの動作は問題ありません）。起動中に IM を切り替えるとアプリケーションがクラッシュする可能性がありますので事前にお使いの IM でテストすることをおすすめします。
 
@@ -51,7 +53,7 @@ OpenMP support: ON
 MMAP support: ON
 ```
 
-[issue 1545 #3](http://code.google.com/p/rawtherapee/issues/detail?id=1546&sort=-modified&colspec=ID%20Opened%20Modified%20Type%20Status%20Priority%20Milestone%20Summary%20Owner%20Stars) より natureh.510 氏のパッチを使わせていただきました。Thanks natureh.510.
+[issue 1545 #3](http://code.google.com/p/rawtherapee/issues/detail?id=1546&sort=-modified&colspec=ID%20Opened%20Modified%20Type%20Status%20Priority%20Milestone%20Summary%20Owner%20Stars) より natureh.510 氏のパッチを使わせていただきました。Thanks natureh.510 !!
 
 ### 2012.8.28 ###
 
