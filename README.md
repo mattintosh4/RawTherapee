@@ -58,3 +58,7 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 (rawtherapee:582): GLib-CRITICAL **: g_hash_table_lookup: assertion `hash_table != NULL' failed
 (rawtherapee:582): GLib-CRITICAL **: g_hash_table_insert_internal: assertion `hash_table != NULL' failed
 ```
+
+---
+
+Thanks to all developers.
