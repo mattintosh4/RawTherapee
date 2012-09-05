@@ -4,6 +4,8 @@
 
 ここでは RawTherapee 4.0.9 for MacOS のビルドテストなどをしています。（[開発記録はこちら](http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1)）
 
+開発は mattintosh4 が個人で行なっています。動作確認、バグ情報などは [Twitter:@mattintosh4](https://twitter.com/mattintosh4) へご連絡下さい。
+
 ビルドしたバンドルは「非公式版」として配布していますのでご自由にお使い下さい（ただし無保証です）。非公式版の AboutThisBuild.txt には以下の表記が入っています。
 
 ```no-highlight:AboutThisBuild.txt
@@ -45,7 +47,7 @@ open /Applications/RawTherapee.app/Contents/MacOS/start
 
 ### 2012.9.4 ###
 
-__[RawTherapee 4.0.9.122 64bit](https://github.com/mattintosh4/RawTherapee/downloads)__ をアップしました。ビルド時のインクルード設定を修正しています。また、<code>BUILD_TYPE=Release</code> を基本に一部のコンパイルオプションを変更したためビルドタイプの表記を「Release (_Development_)」に変更しました。
+__[RawTherapee 4.0.9.122 64bit](https://github.com/mattintosh4/RawTherapee/downloads)__ をアップしました。ビルド時のインクルード設定を修正しています。また、`BUILD_TYPE=Release` を基本に一部のコンパイルオプションを変更したためビルドタイプの表記を「Release (_Development_)」に変更しました。
 
 ```no-highlight:AboutThisBuild.txt
 Branch: default
