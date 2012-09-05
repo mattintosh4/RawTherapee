@@ -51,7 +51,7 @@ OpenMP support: ON
 MMAP support: ON
 ```
 
-[issue 1545 #3](http://code.google.com/p/rawtherapee/issues/detail?id=1546&sort=-modified&colspec=ID%20Opened%20Modified%20Type%20Status%20Priority%20Milestone%20Summary%20Owner%20Stars) より natureh.510 氏のパッチを使わせていただきました。感謝します。
+[issue 1545 #3](http://code.google.com/p/rawtherapee/issues/detail?id=1546&sort=-modified&colspec=ID%20Opened%20Modified%20Type%20Status%20Priority%20Milestone%20Summary%20Owner%20Stars) より natureh.510 氏のパッチを使わせていただきました。Thanks natureh.510.
 
 ### 2012.8.28 ###
 
