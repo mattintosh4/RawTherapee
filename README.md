@@ -2,11 +2,6 @@
 
 時期バージョンが正式にリリースされるまで勉強としてビルドテストなどを行っています。
 
-RawTherapee のソースコードやマニュアル、既知の問題については公式ページで確認して下さい。
-
--	http://rawtherapee.com/
--	http://code.google.com/p/rawtherapee/
-
 ## RawTherapee 4.0.9 for MacOS 非公式版について ##
 
 あくまで個人でビルドしている開発版であり、正常に動作することが確認されたわけではありません。ご利用される場合は自己責任でお願いします。また、このページは公式とは無関係です（フォーラムの内容等は確認させていただいています。全ての開発者の皆さんに感謝します）。
@@ -17,6 +12,11 @@ CPU 最適化は公式の指針に乗っ取り `-mtune=generic` を設定して�
 
 -	[開発記録](http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1)
 -	[Twitter:@mattintosh4](https://twitter.com/mattintosh4)
+
+RawTherapee のソースコードやマニュアル、既知の問題については公式ページで確認して下さい。
+
+-	http://rawtherapee.com/
+-	http://code.google.com/p/rawtherapee/
 
 ## 更新履歴 ##
 
