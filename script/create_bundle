@@ -7,15 +7,18 @@ patch -ubN -p0 < ~/GitHub/RawTherapee/patch/info.plist.patch
 rm -rf ./build ./Release
 mkdir build && cd $_
 
+# ARCHITECTURE SETTING
 if [ ! "${ARCH}" ]; then
+	# DEFAULT
 	export ARCH="x86_64"
 else
+	# CUSTOM
 	export ARCH="${ARCH}"
 fi
 
 echo "BUILD_ARCHITECTURE: ${ARCH}"
 
-test -x ~/GitHub/RawTherapee/script/compile_commands.sh && $_ && /opt/local/bin/gmake install -j3
+test -x ~/GitHub/RawTherapee/script/compile_commands && $_ && /opt/local/bin/gmake install -j3
 cd - > /dev/null && mv ./build/Release . && sed \
 -i "" \
 -e "4s/ccache/gcc-mp-4/" \
