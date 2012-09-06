@@ -6,7 +6,7 @@ patch -ubN -p0 < ~/GitHub/RawTherapee/patch/make-app-bundle.patch
 patch -ubN -p0 < ~/GitHub/RawTherapee/patch/info.plist.patch
 rm -rf ./build ./Release
 mkdir build && cd $_
-test -x ~/GitHub/RawTherapee/compile_commands.sh && $_ && /opt/local/bin/gmake install -j3
+test -x ~/GitHub/RawTherapee/script/compile_commands.sh && $_ && /opt/local/bin/gmake install -j3
 cd - > /dev/null && mv ./build/Release . && sed -i "" \
 -e "4s/ccache/gcc-mp-4/" \
 -e "9s/$/ (Development)/" ./Release/AboutThisBuild.txt
