@@ -35,12 +35,12 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 
 ## 更新履歴 ##
 
-__[RawTherapee 4.0.9.124](https://github.com/mattintosh4/RawTherapee/downloads)__ をアップしました。UIM 使用時の不具合があるため 32bit 版も置いてあります。
+__[RawTherapee 4.0.9.123](https://github.com/mattintosh4/RawTherapee/downloads)__ をアップしました。UIM 使用時の不具合があるため 32bit 版も置いてあります。
 
 ```no-highlight:AboutThisBuild.txt
 Branch: denoise
-Version: 4.0.9.124
-Changeset: 50bf15b11495
+Version: 4.0.9.123
+Changeset: 65ecb9acc978
 Compiler: gcc-mp-4 4.7.1
 Processor: generic x86
 System: Apple
@@ -53,7 +53,7 @@ OpenMP support: ON
 MMAP support: ON
 ```
 
-[issue 1545 #3](http://code.google.com/p/rawtherapee/issues/detail?id=1546&sort=-modified&colspec=ID%20Opened%20Modified%20Type%20Status%20Priority%20Milestone%20Summary%20Owner%20Stars) で natureh.510 氏がパッチを作って下さいました。Thanks natureh.510 !!
+[issue 1545 #3](http://code.google.com/p/rawtherapee/issues/detail?id=1546&sort=-modified&colspec=ID%20Opened%20Modified%20Type%20Status%20Priority%20Milestone%20Summary%20Owner%20Stars) より natureh.510 氏のパッチを使わせていただきました。Thanks natureh.510 !!
 
 ### 2012.8.28 ###
 
