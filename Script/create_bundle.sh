@@ -13,8 +13,11 @@ else
 	export ARCH="${ARCH}"
 fi
 
+echo "BUILD_ARCHITECTURE: ${ARCH}"
+
 test -x ~/GitHub/RawTherapee/script/compile_commands.sh && $_ && /opt/local/bin/gmake install -j3
-cd - > /dev/null && mv ./build/Release . && sed -i "" \
+cd - > /dev/null && mv ./build/Release . && sed \
+-i "" \
 -e "4s/ccache/gcc-mp-4/" \
 -e "9s/$/ (Development)/" ./Release/AboutThisBuild.txt
 cat <<EOF >> ./Release/AboutThisBuild.txt
