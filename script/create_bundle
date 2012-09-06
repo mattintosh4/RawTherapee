@@ -11,6 +11,8 @@ mkdir build && cd $_
 if [ ! "${ARCH}" ]; then
 	# DEFAULT
 	export ARCH="x86_64"
+	# SYSTEM DEFAULT
+	# export ARCH="`uname -m`"
 else
 	# CUSTOM
 	export ARCH="${ARCH}"
