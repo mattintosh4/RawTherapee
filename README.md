@@ -20,6 +20,10 @@ RawTherapee のソースコードやマニュアル、既知の問題につい�
 
 CPU 最適化は公式の指針に乗っ取り `-mtune=generic` を設定しています。その他は `BUILD_TYPE=Release` をベースにしていますが、一部変更している箇所があるためビルドタイプの表記を「Release (Development)」としています。
 
+-	`CMAKE_OSX_DEPLOYMENT_TARGET="10.6"`
+-	`CMAKE_OSX_SYSROOT="/Developer/SDKs/MacOSX10.6.sdk`
+-	`RTENGINE_CXX_FLAGS="-ffast-math -funroll-loops -fomit-frame-pointer"`
+
 同梱の AboutThisBuild.txt には公式版との見分けがつけやすいように「非公式」の表記が追加されています。設定画面左下の「About」から確認が出来ます。
 
 ### 64bit 版の利用時の注意事項 ###
