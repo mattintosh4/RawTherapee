@@ -41,6 +41,12 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 
 ## 更新履歴 ##
 
+### 2012.09.12 ###
+
+MacPorts で GTK のアップデートがあったのでバンドルを更新しました。
+
+### 2012.09.06 ###
+
 __[RawTherapee 4.0.9.124](https://github.com/mattintosh4/RawTherapee/downloads)__ をアップしました。UIM 使用時の不具合があるため 32bit 版も置いてあります。
 
 ```no-highlight:AboutThisBuild.txt

@@ -12,7 +12,7 @@ if [ ! "${ARCH}" ]; then
 	# DEFAULT
 	export ARCH="x86_64"
 	# SYSTEM DEFAULT
-	# export ARCH="`uname -m`"
+	# export ARCH=`uname -m`
 else
 	# CUSTOM
 	export ARCH="${ARCH}"
@@ -24,7 +24,7 @@ test -x ~/GitHub/RawTherapee/script/compile_commands && $_ && /opt/local/bin/gma
 cd - > /dev/null && mv ./build/Release . && sed \
 -i "" \
 -e "4s/ccache/gcc-mp-4/" \
--e "9s/$/ (Development)/" ./Release/AboutThisBuild.txt
+-e "9s/$/ (Development)/" "./Release/AboutThisBuild.txt"
 cat <<EOF >> ./Release/AboutThisBuild.txt
 
 ***** Unofficial Bundle for MacOS *****
