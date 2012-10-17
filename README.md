@@ -41,6 +41,10 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 
 ## 更新履歴 ##
 
+### 2012.10.18 ###
+
+X11 版 RawTherapee をアップしました。XQuartz.app の他、pango、cairo、fontconfig などが必要です。MacPorts からインストールできます。
+
 ### 2012.09.12 ###
 
 MacPorts で GTK のアップデートがあったのでバンドルを更新しました。

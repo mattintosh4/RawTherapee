@@ -1,40 +1,57 @@
 #!/bin/sh
 
-export CMAKE_SOURCE_DIR="/usr/local/src/rawtherapee"
-cd "${CMAKE_SOURCE_DIR}"
+source_dir="/usr/local/src/rawtherapee"
+build_dir="${source_dir}/build"
+finalize_dir="${source_dir}/Release"
 
-patch -ubN -p0 < ~/GitHub/RawTherapee/patch/start.patch
-patch -ubN -p0 < ~/GitHub/RawTherapee/patch/make-app-bundle.patch
-patch -ubN -p0 < ~/GitHub/RawTherapee/patch/info.plist.patch
+flags="-isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -arch x86_64 -lm -I/Library/Frameworks -I/System/Library/Frameworks -I/opt/local/include/gcc47/c++ -I/opt/local/include/gcc47/c++/backward -I/opt/local/include/gcc47/c++/x86_64-apple-darwin10 -I/opt/local/lib/gcc47/gcc/x86_64-apple-darwin10/4.7.1/include -I/opt/local/lib/gcc47/gcc/x86_64-apple-darwin10/4.7.1/include-fixed"
 
-rm -rf ./build ./Release
-mkdir build && cd $_
+_patch(){
+	patch -ubN -p0 < ~/GitHub/RawTherapee/patch/start.patch
+	patch -ubN -p0 < ~/GitHub/RawTherapee/patch/make-app-bundle.patch
+	patch -ubN -p0 < ~/GitHub/RawTherapee/patch/info.plist.patch
+}
 
-# ARCHITECTURE SETTING
-if [ ! "${ARCH}" ]; then
-	# DEFAULT
-	export ARCH="x86_64"
-	# SYSTEM DEFAULT
-	# export ARCH=`uname -m`
+_compile(){
+	cmake \
+		-DBUILD_BUNDLE="ON" \
+		-DCMAKE_BUILD_TYPE="Release" \
+		-DCMAKE_CXX_COMPILER="/opt/local/bin/ccache" \
+		-DCMAKE_CXX_COMPILER_ARG1="/opt/local/bin/g++-mp-4.7 ${flags}" \
+		-DCMAKE_C_COMPILER="/opt/local/bin/ccache" \
+		-DCMAKE_C_COMPILER_ARG1="/opt/local/bin/gcc-mp-4.7 ${flags}" \
+		-DCMAKE_EXPORT_COMPILE_COMMANDS="ON" \
+		-DOPTION_OMP="ON" \
+		-DPROC_TARGET_NUMBER="1" \
+		-DRTENGINE_CXX_FLAGS="-ffast-math -funroll-loops -fomit-frame-pointer" "${source_dir}"
+}
+
+_add_comment(){
+	sed -i "" \
+		-e "4s|ccache|gcc-mp-4|" \
+		-e "9s|$| (Development)|" ${finalize_dir}/AboutThisBuild.txt
+	
+	cat <<-__EOS__ >> ${finalize_dir}/AboutThisBuild.txt
+	
+	***** Unofficial Bundle for MacOS *****
+	
+	Bundle created by mattintosh4
+	https://github.com/mattintosh4/RawTherapee
+	
+	Thanks to all developers.
+	__EOS__
+}
+
+if cd "${source_dir}" ; then
+	
+	_patch
+	
+	rm -rf "${build_dir}" "${finalize_dir}"
+	mkdir "${build_dir}"
+	( cd "${build_dir}" ; _compile && make install -j3 )
+	mv "${build_dir}"/Release "${finalize_dir}"
+	_add_comment
+	./tools/osx/make-app-bundle
 else
-	# CUSTOM
-	export ARCH="${ARCH}"
+	return
 fi
-
-echo "BUILD_ARCHITECTURE: ${ARCH}"
-
-test -x "$HOME/GitHub/RawTherapee/script/compile_commands" && $_ && make install -j3
-cd - > /dev/null && mv ./build/Release . && sed \
--i "" \
--e "4s/ccache/gcc-mp-4/" \
--e "9s/$/ (Development)/" "./Release/AboutThisBuild.txt"
-cat <<EOF >> ./Release/AboutThisBuild.txt
-
-***** Unofficial Bundle for MacOS *****
-
-Bundle created by mattintosh4
-https://github.com/mattintosh4/RawTherapee
-
-Thanks to all developers.
-EOF
-./tools/osx/make-app-bundle
