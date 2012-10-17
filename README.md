@@ -43,7 +43,9 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 
 ### 2012.10.18 ###
 
-X11 版 RawTherapee をアップしました。Quartz 版よりも動作が快適だと思います。XQuartz.app の他、pango、cairo、fontconfig などが必要です。MacPorts からインストールできます。
+X11 版 RawTherapee をアップしました。Quartz 版よりも動作が快適だと思います。XQuartz.app の他、pango、cairo、fontconfig などが必要です。MacPorts からインストールして下さい。
+
+X11 版では UIM 系のインプットメソッドとの相性問題は確認されていないので 64bit のみです。
 
 ### 2012.09.12 ###
 
