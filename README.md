@@ -28,7 +28,7 @@ RTENGINE_CXX_FLAGS="-ffast-math -funroll-loops -fomit-frame-pointer"
 
 同梱の AboutThisBuild.txt には公式版との見分けがつけやすいように「非公式」の表記が追加されています。設定画面左下の「About」から確認が出来ます。
 
-### 64bit 版の利用時の注意事項 ###
+### 64bit 版の利用時の注意事項（※Quartz 版のみ） ###
 
 IM に Google 日本語入力や MacUIM などを使用していると一定時間操作を受け付けないバグがあります（ことえりでの動作は問題ありません）。起動中に IM を切り替えるとアプリケーションがクラッシュする可能性がありますので事前にお使いの IM でテストすることをおすすめします。
 
@@ -38,8 +38,6 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 (rawtherapee:582): GLib-CRITICAL **: g_hash_table_lookup: assertion `hash_table != NULL' failed
 (rawtherapee:582): GLib-CRITICAL **: g_hash_table_insert_internal: assertion `hash_table != NULL' failed
 ```
-
-※X11 版ではこの問題は確認されていません。
 
 ## ダウンロードページ ##
 
