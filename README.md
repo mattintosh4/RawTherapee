@@ -6,13 +6,13 @@
 
 RawTherapee のソースコードやマニュアル、既知の問題については公式ページで確認して下さい。
 
--	http://rawtherapee.com/
--	http://code.google.com/p/rawtherapee/
+- http://rawtherapee.com/
+- http://code.google.com/p/rawtherapee/
 
 「動いた」「動かなかった」など動作報告等いただけると助かります。
 
--	[開発記録](http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1)
--	[Twitter:@mattintosh4](https://twitter.com/mattintosh4)
+- [開発記録](http://mattintosh.blog.so-net.ne.jp/archive/c2303145195-1)
+- [Twitter:@mattintosh4](https://twitter.com/mattintosh4)
 
 ### 非公式版の仕様について ###
 
@@ -27,6 +27,24 @@ RTENGINE_CXX_FLAGS="-ffast-math -funroll-loops -fomit-frame-pointer"
 ```
 
 同梱の AboutThisBuild.txt には公式版との見分けがつけやすいように「非公式」の表記が追加されています。設定画面左下の「About」から確認が出来ます。
+
+
+
+## Quartz 版の休止と X11 版の配信について（2012年10月） ###
+
+諸事情により X11 版をビルドしたところ、Quartz 版よりも動作が快適だったので X11 版のビルドに切り替えました。
+
+
+
+## X11 版 RawTherapee について ##
+
+__動作には X11.app または XQuartz.app が必要です。__Mac OS X 10.8 Mountain Lion にはどちらも含まれていないため、http://xquartz.macosforge.org からダウンロードして下さい。
+
+日本語入力を行う場合は MacUIM や Kinput + Canna の導入が必要です。MacUIM を使った日本語入力は以下のページで解説しています。
+
+http://mattintosh.blog.so-net.ne.jp/2012-04-29_macuim_mozc_x11_japanese-input
+
+
 
 ### 64bit 版の利用時の注意事項（※Quartz 版のみ） ###
 
