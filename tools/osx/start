@@ -1,0 +1,25 @@
+#!/bin/bash
+
+CWD=`dirname "$0"`
+echo $CWD
+cd "${CWD}/../.."
+APPDIR=`pwd`
+cd - > /dev/null
+LNDIR=/tmp/RawTherapee.app
+
+export DYLD_LIBRARY_PATH="${CWD}/lib:$DYLD_LIBRARY_PATH"
+export FONTCONFIG_FILE="${CWD}/etc/fonts/fonts.conf"
+export GDK_PIXBUF_MODULE_FILE="${CWD}/etc/gtk-2.0/gdk-pixbuf.loaders"
+export GTK2_RC_FILES="${CWD}/etc/gtk-2.0/gtkrc"
+export GTK_DATA_DIRS="${CWD}"
+export GTK_DATA_PREFIX="${CWD}"
+export GTK_EXE_PREFIX="${CWD}"
+export GTK_IM_MODULE_FILE="${CWD}/etc/gtk-2.0/gtk.immodules"
+export GTK_PATH="${CWD}"
+export PANGO_RC_FILE="${CWD}/etc/pango/pangorc"
+export XDG_DATA_DIRS="${CWD}/share:$XDG_DATA_DIRS"
+
+rm -f "${LNDIR}"
+ln -s "${APPDIR}" "${LNDIR}"
+
+"${CWD}/rawtherapee"
