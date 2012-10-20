@@ -41,11 +41,15 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 
 ※X11 版ではこの問題は確認されていません。
 
+## ダウンロードページ ##
+
+https://github.com/mattintosh4/RawTherapee/downloads
+
 ## 更新履歴 ##
 
 ### 2012.10.21 ###
 
-X11 版 RawTherapee 4.0.9.147 をアップしました。fontconfig の問題を修正したので XQuartz.app だけで動くと思います。［[詳細](http://mattintosh.blog.so-net.ne.jp/56423785)］
+[X11 版 RawTherapee 4.0.9.147](https://github.com/mattintosh4/RawTherapee/downloads) をアップしました。fontconfig の問題を修正したので XQuartz.app だけで動くと思います。［[詳細](http://mattintosh.blog.so-net.ne.jp/56423785)］
 
 ### 2012.10.18 ###
 
