@@ -30,15 +30,11 @@ RTENGINE_CXX_FLAGS="-ffast-math -funroll-loops -fomit-frame-pointer"
 
 
 
-## Quartz 版の休止と X11 版の配信について（2012年10月） ###
+### Quartz 版の休止と X11 版について（2012年10月） ###
 
 諸事情により X11 版をビルドしたところ、Quartz 版よりも動作が快適だったので X11 版のビルドに切り替えました。
 
-
-
-## X11 版 RawTherapee について ##
-
-__動作には X11.app または XQuartz.app が必要です。__Mac OS X 10.8 Mountain Lion にはどちらも含まれていないため、http://xquartz.macosforge.org からダウンロードして下さい。
+__X11 版 RawTherapee の動作には X11.app または XQuartz.app が必要です。__Mac OS X 10.8 Mountain Lion にはどちらも含まれていないため、http://xquartz.macosforge.org からダウンロードして下さい。
 
 日本語入力を行う場合は MacUIM や Kinput + Canna の導入が必要です。MacUIM を使った日本語入力は以下のページで解説しています。
 
@@ -57,9 +53,13 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 (rawtherapee:582): GLib-CRITICAL **: g_hash_table_insert_internal: assertion `hash_table != NULL' failed
 ```
 
-## ダウンロードページ ##
+
+
+## ダウンロード ##
 
 https://github.com/mattintosh4/RawTherapee/downloads
+
+
 
 ## 更新履歴 ##
 
