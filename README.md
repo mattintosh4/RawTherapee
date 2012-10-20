@@ -39,6 +39,8 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 (rawtherapee:582): GLib-CRITICAL **: g_hash_table_insert_internal: assertion `hash_table != NULL' failed
 ```
 
+※X11 版ではこの問題は確認されていません。
+
 ## 更新履歴 ##
 
 ### 2012.10.21 ###
