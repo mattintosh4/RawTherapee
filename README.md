@@ -41,6 +41,10 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 
 ## 更新履歴 ##
 
+### 2012.10.21 ###
+
+X11 版 RawTherapee 4.0.9.147 をアップしました。fontconfig の問題を修正しました。［[詳細](http://mattintosh.blog.so-net.ne.jp/56423785)］
+
 ### 2012.10.18 ###
 
 X11 版 RawTherapee をアップしました。Quartz 版よりも動作が快適だと思います。XQuartz.app の他、pango、cairo、fontconfig などが必要です。MacPorts からインストールして下さい。
