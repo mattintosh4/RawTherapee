@@ -22,4 +22,4 @@ export XDG_DATA_DIRS="${CWD}/share:$XDG_DATA_DIRS"
 rm -f "${LNDIR}"
 ln -s "${APPDIR}" "${LNDIR}"
 
-"${CWD}/rawtherapee"
+exec "${CWD}/rawtherapee"
