@@ -1,25 +1,20 @@
 #!/bin/bash
 
-CWD=`dirname "$0"`
-echo $CWD
-cd "${CWD}/../.."
-APPDIR=`pwd`
-cd - > /dev/null
-LNDIR=/tmp/RawTherapee.app
+bundle_dir=$(dirname "$0")
+bundle=$(cd "${bundle_dir}/../../" && pwd)
 
-export DYLD_LIBRARY_PATH="${CWD}/lib:$DYLD_LIBRARY_PATH"
-export FONTCONFIG_PATH="${CWD}/etc/fonts"
-export GDK_PIXBUF_MODULE_FILE="${CWD}/etc/gtk-2.0/gdk-pixbuf.loaders"
-export GTK2_RC_FILES="${CWD}/etc/gtk-2.0/gtkrc"
-export GTK_DATA_DIRS="${CWD}"
-export GTK_DATA_PREFIX="${CWD}"
-export GTK_EXE_PREFIX="${CWD}"
-export GTK_IM_MODULE_FILE="${CWD}/etc/gtk-2.0/gtk.immodules"
-export GTK_PATH="${CWD}"
-export PANGO_RC_FILE="${CWD}/etc/pango/pangorc"
-export XDG_DATA_DIRS="${CWD}/share:$XDG_DATA_DIRS"
+export DYLD_LIBRARY_PATH="${bundle_dir}/lib:$DYLD_LIBRARY_PATH"
+export FONTCONFIG_PATH="${bundle_dir}/etc/fonts"
+export GDK_PIXBUF_MODULE_FILE="${bundle_dir}/etc/gtk-2.0/gdk-pixbuf.loaders"
+export GTK2_RC_FILES="${bundle_dir}/etc/gtk-2.0/gtkrc"
+export GTK_DATA_DIRS="${bundle_dir}"
+export GTK_DATA_PREFIX="${bundle_dir}"
+export GTK_EXE_PREFIX="${bundle_dir}"
+export GTK_IM_MODULE_FILE="${bundle_dir}/etc/gtk-2.0/gtk.immodules"
+export GTK_PATH="${bundle_dir}"
+export PANGO_RC_FILE="${bundle_dir}/etc/pango/pangorc"
+export XDG_DATA_DIRS="${bundle_dir}/share:$XDG_DATA_DIRS"
 
-rm -f "${LNDIR}"
-ln -s "${APPDIR}" "${LNDIR}"
+ln -sf "${bundle}" /tmp
 
-exec "${CWD}/rawtherapee"
+exec "${bundle_dir}/rawtherapee"

@@ -7,7 +7,7 @@ finalize_dir="${source_dir}/Release"
 flags="-isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -arch x86_64 -lm -I/Library/Frameworks -I/System/Library/Frameworks -I/opt/local/include/gcc47/c++ -I/opt/local/include/gcc47/c++/backward -I/opt/local/include/gcc47/c++/x86_64-apple-darwin10 -I/opt/local/lib/gcc47/gcc/x86_64-apple-darwin10/4.7.1/include -I/opt/local/lib/gcc47/gcc/x86_64-apple-darwin10/4.7.1/include-fixed"
 
 _patch(){
-	cp -f ~/GitHub/RawTherapee/tools/osx/info.plist /usr/local/src/rawtherapee/tools/osx/info.plist
+	cp -f ~/GitHub/RawTherapee/tools/osx/info.plist /usr/local/src/rawtherapee/tools/osx/Info.plist
 	cp -f ~/GitHub/RawTherapee/tools/osx/start /usr/local/src/rawtherapee/tools/osx/start
 	cp -f ~/GitHub/RawTherapee/tools/osx/make-app-bundle /usr/local/src/rawtherapee/tools/osx/make-app-bundle
 }
