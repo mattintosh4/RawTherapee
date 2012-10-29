@@ -1,7 +1,10 @@
 #!/bin/bash
 
 bundle_dir=$(dirname "$0")
+echo "${bundle_dir}"
+
 bundle=$(cd "${bundle_dir}/../../" && pwd)
+echo "${bundle}"
 
 export DYLD_LIBRARY_PATH="${bundle_dir}/lib:$DYLD_LIBRARY_PATH"
 export FONTCONFIG_PATH="${bundle_dir}/etc/fonts"
