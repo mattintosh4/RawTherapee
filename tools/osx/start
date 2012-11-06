@@ -1,23 +1,60 @@
 #!/bin/bash
 
-bundle_dir=$(dirname "$0")
-echo "${bundle_dir}"
+# RTMX/RawTherapee 4.0.9x 64bit for MacOS with X11
+# version 1.0.1
 
-bundle=$(cd "${bundle_dir}/../../" && pwd)
-echo "${bundle}"
+_check_X11(){
+	if [ ! -x "/opt/X11/bin/startx" ]; then
+		echo "X11 not found. Please install XQuartz -> http://xquartz.macosforge.org"
+		exit
+	else
+		echo "ok"
+	fi
+}
+_bootstrap(){
+	# Make RTMX directory
+	[ -e "${RTMX}" ] && rm -rf "${RTMX}"; mkdir -p "${RTMX_lib}"
 
-export DYLD_LIBRARY_PATH="${bundle_dir}/lib:$DYLD_LIBRARY_PATH"
-export FONTCONFIG_PATH="${bundle_dir}/etc/fonts"
-export GDK_PIXBUF_MODULE_FILE="${bundle_dir}/etc/gtk-2.0/gdk-pixbuf.loaders"
-export GTK2_RC_FILES="${bundle_dir}/etc/gtk-2.0/gtkrc"
-export GTK_DATA_DIRS="${bundle_dir}"
-export GTK_DATA_PREFIX="${bundle_dir}"
-export GTK_EXE_PREFIX="${bundle_dir}"
-export GTK_IM_MODULE_FILE="${bundle_dir}/etc/gtk-2.0/gtk.immodules"
-export GTK_PATH="${bundle_dir}"
-export PANGO_RC_FILE="${bundle_dir}/etc/pango/pangorc"
-export XDG_DATA_DIRS="${bundle_dir}/share:$XDG_DATA_DIRS"
+	# Create symlink to files in MacOS Directory
+	echo -n "Creating symlink to files in MacOS direcotry .... "
+	ln -s $(find "${bundle_dir}" -d 1 | grep -v "${bundle_lib}") "${RTMX}" && echo "done" || echo "miss"
 
-ln -sf "${bundle}" /tmp
+	# Creat symlink to libraries
+	echo -n "Creating symlink to libraries .... "
+	ln -s "${bundle_lib}"/* "${RTMX_lib}" && echo "done" || echo "miss"
 
-exec "${bundle_dir}/rawtherapee"
+	# Copy local CUPS libraries
+	# Hack for Mac OS 10.7 or later
+	echo -n "Copying local CUPS libraries .... "
+	cp /usr/lib/libcups* "${RTMX_lib}" && echo "done" || echo "miss"
+}
+
+bundle_dir="$(dirname $0)"
+bundle_lib="${bundle_dir}/lib"
+RTMX="/tmp/RTMX"
+RTMX_lib="${RTMX}/lib"
+
+echo -en "\nChecking X11 .... "
+_check_X11
+
+echo -e "\nStarting RTMX bootstrap"
+_bootstrap
+
+export DYLD_LIBRARY_PATH="${RTMX_lib}:$DYLD_LIBRARY_PATH"
+export GIO_EXTRA_MODULES="${RTMX_lib}/gio/modules"
+export PX_MODULE_PATH="${RTMX_lib}/libproxy/0.4.10/modules"
+
+export FONTCONFIG_PATH="${RTMX}/etc/fonts"
+export GDK_PIXBUF_MODULE_FILE="${RTMX}/etc/gtk-2.0/gdk-pixbuf.loaders"
+export GTK2_RC_FILES="${RTMX}/etc/gtk-2.0/gtkrc"
+export GTK_DATA_DIRS="${RTMX}"
+export GTK_DATA_PREFIX="${RTMX}"
+export GTK_EXE_PREFIX="${RTMX}"
+export GTK_IM_MODULE_FILE="${RTMX}/etc/gtk-2.0/gtk.immodules"
+export GTK_PATH="${RTMX}"
+export PANGO_RC_FILE="${RTMX}/etc/pango/pangorc"
+export XDG_DATA_DIRS="${RTMX}/share:$XDG_DATA_DIRS"
+
+echo
+echo "${RTMX}/rawtherapee"
+exec "${RTMX}/rawtherapee"
