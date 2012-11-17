@@ -22,7 +22,7 @@ __gsort(){
 __xz(){
 	echo -H "=> Creating distribution .tar.xz..."
 	rm ${DIST_DIR}/Applications
-	tar cf - ${DIST_DIR} | xz > ${RELEASE}/${DMG%.*}.tar.xz
+	tar cf - ${DIST_DIR} | xz > "${RELEASE}/${DMG%.*}.tar.xz"
 	echo "Created: ${RELEASE}/${DMG%.*}.tar.xz"	
 }
 echo(){
