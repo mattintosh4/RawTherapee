@@ -20,21 +20,15 @@ export PANGO_SYSCONFDIR="${ETC}"
 export XDG_DATA_DIRS="${MACOS}/share:$XDG_DATA_DIRS"
 
 {
-	
-	echo "=> Creating temporary directory ${TMP}"
-	[ -d ${TMP} ] && rm -rf ${TMP}
-	mkdir ${TMP}
-	
+  echo "=> Creating temporary directory ${TMP}"
+  [ -d ${TMP} ] && rm -rf ${TMP}
+  mkdir ${TMP}
 } && {
-	
-	echo "=> Creating symlink to libraries and copying CUPS libraries from system directory"
-	ln -s "${LIB}"/* ${TMP}
-	cp /usr/lib/libcups* ${TMP}
-	
+  echo "=> Creating symlink to libraries and copying CUPS libraries from system directory"
+  ln -s "${LIB}"/* ${TMP}
+  cp /usr/lib/libcups* ${TMP}
 } && {
-	
-	echo "=> Launch ${EXE}"
-	[[ $1 = -d ]] && export DYLD_PRINT_LIBRARIES=1
-	exec "${EXE}"
-	
+  echo "=> Launch ${EXE}"
+  [[ $1 = -d ]] && export DYLD_PRINT_LIBRARIES=1
+  exec "${EXE}"
 }
