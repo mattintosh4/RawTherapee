@@ -22,11 +22,13 @@ __gsort(){
 __xz(){
 	echo -H "=> Creating distribution .tar.xz..."
 	rm ${DIST_DIR}/Applications
-	tar cf - ${DIST_DIR} | xz > "${RELEASE}/${DMG%.*}.tar.xz"
-	echo "Created: ${RELEASE}/${DMG%.*}.tar.xz"	
+	tar cf - ${DIST_DIR} | xz > ${RELEASE}/${DMG%.*}.tar.xz
+	echo "Created: ${RELEASE}/${DMG%.*}.tar.xz"
 }
 echo(){
-	-H(){ command echo $'\e'[32m$*$'\e'[m; }
+	ESC=$'\e'[32m
+	ESCEND=$'\e'[m
+	-H(){ command echo -e "${ESC}$*${ESCEND}"; }
 	case $1 in
 		"-H") "$@";;
 		*	) command echo "$@";;
