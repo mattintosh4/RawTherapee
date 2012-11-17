@@ -174,7 +174,7 @@ d=$(cat ${BUILD_CACHE} | wc -l | egrep -o "[0-9]+")
 n=1
 while read
 do
-  echo $'\n'[$((n++))/$d] ${REPLY}
+  echo -e "\n[$((n++))/$d] ${REPLY}"
   { # lipo and install_name_tool -id
     echo $'\t'lipo ${REPLY} -thin x86_64 -output ${REPLY}
     if [[ ${REPLY##*.} = dylib ]]; then
