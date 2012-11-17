@@ -1,60 +1,42 @@
 #!/bin/bash
 
-# RTMX/RawTherapee 4.0.9x 64bit for MacOS with X11
-# version 1.0.1
+MACOS="${0%/*}"
+LIB="${MACOS}/lib"
+ETC="${MACOS}/etc"
+EXE="${MACOS}/rawtherapee"
+TMP=/tmp/RT4
 
-_check_X11(){
-	if [ ! -x "/opt/X11/bin/startx" ]; then
-		echo "X11 not found. Please install XQuartz -> http://xquartz.macosforge.org"
-		exit
-	else
-		echo "ok"
-	fi
+export DYLD_LIBRARY_PATH="${TMP}:$DYLD_LIBRARY_PATH"
+export FONTCONFIG_PATH="${ETC}/fonts"
+export GDK_PIXBUF_MODULE_FILE="${ETC}/gtk-2.0/gdk-pixbuf.loaders"
+export GTK2_RC_FILES="${ETC}/gtk-2.0/gtkrc"
+export GTK_DATA_DIRS="${MACOS}"
+export GTK_DATA_PREFIX="${MACOS}"
+export GTK_EXE_PREFIX="${MACOS}"
+export GTK_IM_MODULE_FILE="${ETC}/gtk-2.0/gtk.immodules"
+export GTK_PATH="${MACOS}"
+export PANGO_LIBDIR="${LIB}"
+export PANGO_SYSCONFDIR="${ETC}"
+export XDG_DATA_DIRS="${MACOS}/share:$XDG_DATA_DIRS"
+
+
+
+{
+	
+	echo "=> Creating temporary directory ${TMP}"
+	[ -d ${TMP} ] && rm -rf ${TMP}
+	mkdir ${TMP}
+	
+} && {
+	
+	echo "=> Creating symlink to libraries and copying CUPS libraries from system directory"
+	ln -s "${LIB}"/* ${TMP}
+	cp /usr/lib/libcups* ${TMP}
+	
+} && {
+	
+	echo "=> Launch ${EXE}"
+	[[ $1 = -d ]] && export DYLD_PRINT_LIBRARIES=1
+	exec "${EXE}"
+	
 }
-_bootstrap(){
-	# Make RTMX directory
-	[ -e "${RTMX}" ] && rm -rf "${RTMX}"; mkdir -p "${RTMX_lib}"
-
-	# Create symlink to files in MacOS Directory
-	echo -n "Creating symlink to files in MacOS direcotry .... "
-	ln -s $(find "${bundle_dir}" -d 1 | grep -v "${bundle_lib}") "${RTMX}" && echo "done" || echo "miss"
-
-	# Creat symlink to libraries
-	echo -n "Creating symlink to libraries .... "
-	ln -s "${bundle_lib}"/* "${RTMX_lib}" && echo "done" || echo "miss"
-
-	# Copy local CUPS libraries
-	# Hack for Mac OS 10.7 or later
-	echo -n "Copying local CUPS libraries .... "
-	cp /usr/lib/libcups* "${RTMX_lib}" && echo "done" || echo "miss"
-}
-
-bundle_dir="$(dirname $0)"
-bundle_lib="${bundle_dir}/lib"
-RTMX="/tmp/RTMX"
-RTMX_lib="${RTMX}/lib"
-
-echo -en "\nChecking X11 .... "
-_check_X11
-
-echo -e "\nStarting RTMX bootstrap"
-_bootstrap
-
-export DYLD_LIBRARY_PATH="${RTMX_lib}:$DYLD_LIBRARY_PATH"
-export GIO_EXTRA_MODULES="${RTMX_lib}/gio/modules"
-export PX_MODULE_PATH="${RTMX_lib}/libproxy/0.4.10/modules"
-
-export FONTCONFIG_PATH="${RTMX}/etc/fonts"
-export GDK_PIXBUF_MODULE_FILE="${RTMX}/etc/gtk-2.0/gdk-pixbuf.loaders"
-export GTK2_RC_FILES="${RTMX}/etc/gtk-2.0/gtkrc"
-export GTK_DATA_DIRS="${RTMX}"
-export GTK_DATA_PREFIX="${RTMX}"
-export GTK_EXE_PREFIX="${RTMX}"
-export GTK_IM_MODULE_FILE="${RTMX}/etc/gtk-2.0/gtk.immodules"
-export GTK_PATH="${RTMX}"
-export PANGO_RC_FILE="${RTMX}/etc/pango/pangorc"
-export XDG_DATA_DIRS="${RTMX}/share:$XDG_DATA_DIRS"
-
-echo
-echo "${RTMX}/rawtherapee"
-exec "${RTMX}/rawtherapee"
