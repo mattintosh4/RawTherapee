@@ -19,8 +19,6 @@ export PANGO_LIBDIR="${LIB}"
 export PANGO_SYSCONFDIR="${ETC}"
 export XDG_DATA_DIRS="${MACOS}/share:$XDG_DATA_DIRS"
 
-
-
 {
 	
 	echo "=> Creating temporary directory ${TMP}"
