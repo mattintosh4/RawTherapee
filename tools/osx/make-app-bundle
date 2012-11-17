@@ -26,7 +26,7 @@ __xz(){
 	echo "Created: ${RELEASE}/${DMG%.*}.tar.xz"	
 }
 echo(){
-	-H(){ command echo -e $'\e[32m'"$*"$'\e[m'; }
+	-H(){ command echo $'\e'[32m$*$'\e'[m; }
 	case $1 in
 		"-H") "$@";;
 		*	) command echo "$@";;
@@ -65,6 +65,8 @@ START_CACHE_TARGET="/tmp/RT4"				# Rewrite path in the start file, when this pat
 # <----------------------------------------------------------------------------|
 
 # -----------------------------------------------------------------------------> START UP
+
+cd /usr/local/src/rawtherapee || exit
 
 rm -rf ${RELEASE}
 cp -R build/Release .
