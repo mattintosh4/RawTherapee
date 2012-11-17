@@ -206,6 +206,8 @@ unset d n
 #     +-- README.txt
 #     |
 #     +-- Applications => /Applications
+#     |
+#     +-- RawTherapee Blog.webloc
 #
 
 DIST_DIR="RawTherapee"
