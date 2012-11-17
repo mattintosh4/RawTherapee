@@ -176,9 +176,9 @@ while read
 do
   echo -e "\n[$((n++))/$d] ${REPLY}"
   { # lipo and install_name_tool -id
-    echo $'\t'lipo ${REPLY} -thin x86_64 -output ${REPLY}
+    echo -e "\tlipo ${REPLY} -thin x86_64 -output ${REPLY}"
     if [[ ${REPLY##*.} = dylib ]]; then
-      echo $'\t'install_name_tool -id ${START_CACHE_TARGET}/${REPLY##*/} ${REPLY}
+      echo -e "\tinstall_name_tool -id ${START_CACHE_TARGET}/${REPLY##*/} ${REPLY}"
     fi
   } | bash -v
   { # install_name_tool -change
