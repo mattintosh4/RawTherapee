@@ -20,19 +20,10 @@ __gsort(){
 	grep -o "${MACPORTS_PREFIX}/lib/.*\.dylib" | sort -u
 }
 __xz(){
-	echo -H "=> Creating distribution .tar.xz..."
+	echo "=> Creating distribution .tar.xz..."
 	rm ${DIST_DIR}/Applications
 	tar cf - ${DIST_DIR} | xz > ${RELEASE}/${DMG%.*}.tar.xz
 	echo "Created: ${RELEASE}/${DMG%.*}.tar.xz"
-}
-echo(){
-	ESC=$'\e'[32m
-	ESCEND=$'\e'[m
-	-H(){ command echo -e "${ESC}$*${ESCEND}"; }
-	case $1 in
-		"-H") "$@";;
-		*	) command echo "$@";;
-	esac
 }
 # <----------------------------------------------------------------------------|
 
@@ -80,16 +71,16 @@ sed -i "" \
 
 
 if [ ! -d ${RELEASE} ]; then
-	echo "Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
+	echo "=> Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
 	exit
 fi
 
 if [ -d ${APP} ]; then
-	echo "Removing old application..."
+	echo "=> Removing old application..."
 	rm -rf ${APP}
 fi
 
-echo "Removing any old disk images..."
+echo "=> Removing any old disk images..."
 rm ${RELEASE}/rawtherapee*.{dmg,dmg.zip,tar.xz}
 
 # <----------------------------------------------------------------------------|
@@ -120,7 +111,7 @@ cp -R	${MACPORTS_PREFIX}/etc/gtk-2.0 \
 } && {
 # -----------------------------------------------------------------------------> ADEPT ETC FILES
 
-echo -H "=> Adepting etc files..."
+echo "=> Adepting etc files..."
 
 perl -pi -e "s|^.*<cachedir>${MACPORTS_PREFIX}/var/cache/fontconfig</cachedir>.*$||" ${ETC}/fonts/fonts.conf
 perl -pi -e "s|${MACPORTS_PREFIX}|\@executable_path|g" ${ETC}/gtk-2.0/gdk-pixbuf.loaders ${ETC}/gtk-2.0/gtk.immodules
@@ -132,7 +123,7 @@ rm 	${ETC}/pango/pangorc \
 } && {
 # -----------------------------------------------------------------------------> ADD STUFFS
 
-echo -H "=> Add stuffs..."
+echo "=> Add stuffs..."
 
 cp tools/osx/Icons.icns ${RESOURCES}
 cp tools/osx/start ${MACOS}
@@ -144,23 +135,23 @@ sed	-e "s|3.0a|${CFBundleShortVersionString}|" \
 } && {
 # -----------------------------------------------------------------------------> CHECK DEPENDENT LIBRARIES
 
-echo -H "=> Finding object files and creating list..."
+echo "=> Finding object files and creating list..."
 
 otool -L $(__find -f) | __gsort > ${BUILD_CACHE}
 
 } && {
 
-echo -H "=> Checking dependent libraries..."
+echo "=> Checking dependent libraries..."
 
 until __diff
 do
-	echo -H "=> Updating dependent libraries list..."
+	echo "=> Updating dependent libraries list..."
 	__diff | patch
 done
 
 } && {
 
-echo -H "=> Copying libraries..."
+echo "=> Copying libraries..."
 
 cp -v $(cat ${BUILD_CACHE}) ${LIB}
 
@@ -168,7 +159,7 @@ cp -v $(cat ${BUILD_CACHE}) ${LIB}
 } && {
 # -----------------------------------------------------------------------------> ADEPT OBJECT FILES TO ENVIRONMENT
 
-echo -H "=> Adepting object files to environment..."
+echo "=> Adepting object files to environment..."
 
 __find -f > ${BUILD_CACHE}
 
@@ -176,7 +167,7 @@ d=$(cat ${BUILD_CACHE} | wc -l | tr -d ' ')
 n=1
 while read
 do
-	echo -H $'\n'[$((n++))/$d] ${REPLY}
+	echo $'\n'[$((n++))/$d] ${REPLY}
 	{
 		echo $'\t'lipo ${REPLY} -thin x86_64 -output ${REPLY}
 		if [[ "${REPLY##*.}" = "dylib" ]]; then
@@ -212,7 +203,7 @@ done < ${BUILD_CACHE}
 
 DIST_DIR="RawTherapee"
 
-echo -H "=> Creating distribution directory..."
+echo "=> Creating distribution directory..."
 
 [ -d ${DIST_DIR} ] && rm -rf ${DIST_DIR}
 
@@ -233,7 +224,7 @@ mkdir ${DIST_DIR} && {
 } && {
 # -----------------------------------------------------------------------------> CREATE DISTRIBUTION
 
-echo -H "=> Creating distribution .dmg..."
+echo "=> Creating distribution .dmg..."
 
 hdiutil create \
 	-format UDBZ \
@@ -244,12 +235,12 @@ hdiutil create \
 } && {
 # -----------------------------------------------------------------------------> CLEAN UP
 
-echo -H "=> Cleaning up..."
+echo "=> Cleaning up..."
 
 rm -rf	${DIST_DIR} \
 		${BUILD_CACHE}
 
-echo -H "=> All done!"
+echo "=> All done!"
 
 [[ ${BEEP} = 1 ]] && echo $'\a'
 
