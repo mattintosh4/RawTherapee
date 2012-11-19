@@ -1,4 +1,4 @@
-# ここは RawTherapee 4.0.9 for MacOS 非公式版の開発ページです #
+RTMX/RawTherapee 4.0.9.x 64bit for MacOS with X11
 
 勉強として MacOS 向けに RawTherapee のビルドテストなどを行っています。
 
@@ -53,15 +53,22 @@ IM に Google 日本語入力や MacUIM などを使用していると一定時�
 
 ## ダウンロード ##
 
-https://github.com/mattintosh4/RawTherapee/downloads
+ファイルは Google Code で配布しています。
 
+http://code.google.com/p/mattintosh4-devel/downloads/list
 
 
 ## 更新履歴 ##
 
+### 2012.11 ###
+
+- X11 版の開発に伴い、プロジェクトおよびファイル名等を __RTMX__ に変更しました。
+- アップローダを Google Code に変更しました。
+- pangorc が不要になったため削除。
+
 ### 2012.10.21 ###
 
-[X11 版 RawTherapee 4.0.9.147](https://github.com/mattintosh4/RawTherapee/downloads) をアップしました。fontconfig の問題を修正したので XQuartz.app だけで動くと思います。［[詳細](http://mattintosh.blog.so-net.ne.jp/56423785)］
+X11 版 RawTherapee 4.0.9.147 をアップしました。fontconfig の問題を修正したので XQuartz.app だけで動くと思います。［[詳細](http://mattintosh.blog.so-net.ne.jp/56423785)］
 
 ### 2012.10.18 ###
 
@@ -69,31 +76,13 @@ X11 版 RawTherapee をアップしました。Quartz 版よりも動作が快�
 
 X11 版では UIM 系のインプットメソッドとの相性問題は確認されていないので 64bit のみです。
 
-### 2012.09.12 ###
+### 2012.9.12 ###
 
 MacPorts で GTK のアップデートがあったのでバンドルを更新しました。
 
-### 2012.09.06 ###
+### 2012.9.6 ###
 
-__[RawTherapee 4.0.9.124](https://github.com/mattintosh4/RawTherapee/downloads)__ をアップしました。UIM 使用時の不具合があるため 32bit 版も置いてあります。
-
-```no-highlight:AboutThisBuild.txt
-Branch: denoise
-Version: 4.0.9.124
-Changeset: 50bf15b11495
-Compiler: gcc-mp-4 4.7.1
-Processor: generic x86
-System: Apple
-Bit depth: 64 bits
-Gtkmm: V2.24.2
-Build type: Release (Development)
-Build flags:  -mtune=generic -fopenmp -O3 -DNDEBUG
-Link flags:   -mtune=generic
-OpenMP support: ON
-MMAP support: ON
-```
-
-[issue 1545 #3](http://code.google.com/p/rawtherapee/issues/detail?id=1546&sort=-modified&colspec=ID%20Opened%20Modified%20Type%20Status%20Priority%20Milestone%20Summary%20Owner%20Stars) で natureh.510 氏がパッチを作って下さいました。Thanks natureh.510 !!
+RawTherapee 4.0.9.124 をアップしました。UIM 使用時の不具合があるため 32bit 版も置いてあります。
 
 ### 2012.8.28 ###
 

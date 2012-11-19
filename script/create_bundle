@@ -1,55 +1,37 @@
-#!/bin/sh
+#!/bin/bash
 
-source_dir="/usr/local/src/rawtherapee"
-build_dir="${source_dir}/build"
-finalize_dir="${source_dir}/Release"
+SOURCE_DIR="/usr/local/src/rawtherapee"
+BUILD_DIR="${SOURCE_DIR}/build"
+GTK_PREFIX="${HOME}/gtk/inst"
+FLAGS="-isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -arch x86_64"
 
-flags="-isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -arch x86_64"
+declare -x PATH="${HOME}/gtk/inst/bin:${PATH}"
+declare -x PKG_CONFIG_PATH="${GTK_PREFIX}/lib/pkgconfig:/opt/local/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
-_patch(){
-	cp -f ~/GitHub/RawTherapee/tools/osx/info.plist /usr/local/src/rawtherapee/tools/osx/Info.plist
-	cp -f ~/GitHub/RawTherapee/tools/osx/start /usr/local/src/rawtherapee/tools/osx/start
-	cp -f ~/GitHub/RawTherapee/tools/osx/make-app-bundle /usr/local/src/rawtherapee/tools/osx/make-app-bundle
-}
 
-_compile(){
-	cmake \
-		-DBUILD_BUNDLE="ON" \
-		-DCMAKE_BUILD_TYPE="Release" \
-		-DCMAKE_CXX_COMPILER="/opt/local/bin/ccache" \
-		-DCMAKE_CXX_COMPILER_ARG1="/opt/local/bin/g++-mp-4.7 ${flags}" \
-		-DCMAKE_C_COMPILER="/opt/local/bin/ccache" \
-		-DCMAKE_C_COMPILER_ARG1="/opt/local/bin/gcc-mp-4.7 ${flags}" \
-		-DCMAKE_EXPORT_COMPILE_COMMANDS="ON" \
-		-DOPTION_OMP="ON" \
-		-DPROC_TARGET_NUMBER="1" \
-		-DRTENGINE_CXX_FLAGS="-ffast-math -funroll-loops -fomit-frame-pointer" "${source_dir}"
-}
 
-_add_comment(){
-	sed -i "" \
-		-e "4s|ccache|gcc-mp-4|" \
-		-e "9s|$| (Development)|" ${finalize_dir}/AboutThisBuild.txt
-	
-	cat <<-__EOS__ >> ${finalize_dir}/AboutThisBuild.txt
-	
-	***** Unofficial Bundle for MacOS *****
-	
-	Bundle created by mattintosh4
-	https://github.com/mattintosh4/RawTherapee
-	
-	Thanks to all developers.
-	__EOS__
+cmake ()
+{
+  command cmake \
+    -DBUILD_BUNDLE="ON" \
+    -DCMAKE_BUILD_TYPE="Release" \
+    -DCMAKE_CXX_COMPILER="/opt/local/bin/ccache" \
+    -DCMAKE_CXX_COMPILER_ARG1="/opt/local/bin/g++-mp-4.7 ${FLAGS}" \
+    -DCMAKE_C_COMPILER="/opt/local/bin/ccache" \
+    -DCMAKE_C_COMPILER_ARG1="/opt/local/bin/gcc-mp-4.7 ${FLAGS}" \
+    -DCMAKE_EXPORT_COMPILE_COMMANDS="ON" \
+    -DOPTION_OMP="ON" \
+    -DPROC_TARGET_NUMBER="1" \
+    -DRTENGINE_CXX_FLAGS="-ffast-math -funroll-loops -fomit-frame-pointer" \
+    ${SOURCE_DIR}
 }
 
 {
-
-cd "${source_dir}"
-
+  cd "${SOURCE_DIR}"
 } && {
-
-rm -rf "${build_dir}" "${finalize_dir}"
-mkdir "${build_dir}"
-( cd "${build_dir}" && _compile && make install -j3 )
-
+  [ -d "${BUILD_DIR}" ] && rm -rf "${BUILD_DIR}"
+  mkdir "${BUILD_DIR}"
+} && {
+  cd "${BUILD_DIR}"
+  ( cmake && make install -j3 )
 }

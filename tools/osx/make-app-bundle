@@ -56,12 +56,15 @@ BUILD_CACHE=cache.$$                        # cache.PID
 
 START_CACHE_TARGET="/tmp/RT4" # Rewrite path in the start file, when this path is changed.
 
+GTK_PREFIX=${HOME}/gtk/inst
+
 # <----------------------------------------------------------------------------|
 # -----------------------------------------------------------------------------> START UP
 
 cd /usr/local/src/rawtherapee || exit
 
 rm -rf ${RELEASE}
+rm cache.*
 cp -R build/Release .
 sed -i "" \
     -e "4s|ccache|gcc-mp-4|" \
@@ -92,27 +95,39 @@ mkdir -p  ${RESOURCES} \
 cp -R ${RELEASE}/* \
       ${MACOS}
 
-cp -R ${MACPORTS_PREFIX}/lib/pango \
+#cp -R ${MACPORTS_PREFIX}/lib/pango \
       ${MACPORTS_PREFIX}/lib/gtk-2.0 \
       ${MACPORTS_PREFIX}/lib/gdk-pixbuf* \
       ${LIB}
 
-cp -R ${MACPORTS_PREFIX}/share/mime \
+cp -R ${GTK_PREFIX}/lib/pango \
+      ${GTK_PREFIX}/lib/gtk-2.0 \
+      ${GTK_PREFIX}/lib/gdk-pixbuf* \
+      ${LIB}
+
+#cp -R ${MACPORTS_PREFIX}/share/mime \
       ${SHARE}
 
-cp -R ${MACPORTS_PREFIX}/etc/gtk-2.0 \
+#cp -R ${MACPORTS_PREFIX}/etc/gtk-2.0 \
       ${MACPORTS_PREFIX}/etc/pango \
       ${MACPORTS_PREFIX}/etc/fonts \
       ${ETC}
+
+cp -R ${GTK_PREFIX}/etc/gtk-2.0 \
+      ${GTK_PREFIX}/etc/pango \
+      ${ETC}
+
 # <----------------------------------------------------------------------------|
 } && {
 # -----------------------------------------------------------------------------> ADEPT ETC FILES
 echo "=> Adepting etc files..."
-perl -pi -e "s|^.*<cachedir>${MACPORTS_PREFIX}/var/cache/fontconfig</cachedir>.*$||" ${ETC}/fonts/fonts.conf
-perl -pi -e "s|${MACPORTS_PREFIX}|\@executable_path|g" ${ETC}/gtk-2.0/gdk-pixbuf.loaders ${ETC}/gtk-2.0/gtk.immodules
+#perl -pi -e "s|^.*<cachedir>${MACPORTS_PREFIX}/var/cache/fontconfig</cachedir>.*$||" ${ETC}/fonts/fonts.conf
+#perl -pi -e "s|${MACPORTS_PREFIX}|\@executable_path|g" ${ETC}/gtk-2.0/gdk-pixbuf.loaders ${ETC}/gtk-2.0/gtk.immodules
+perl -pi -e "s|${MACPORTS_PREFIX}|\@executable_path|g" ${ETC}/gtk-2.0/gtk.immodules
 perl -pi -e "s|${MACPORTS_PREFIX}|../..|g" ${ETC}/pango/pango.modules
-rm  ${ETC}/pango/pangorc \
-    ${LIB}/gdk-pixbuf-2.0/2.10.0/loaders.cache
+#rm  ${ETC}/pango/pangorc \
+#    ${LIB}/gdk-pixbuf-2.0/2.10.0/loaders.cache
+
 # <----------------------------------------------------------------------------|
 } && {
 # -----------------------------------------------------------------------------> ADD APPLICATION STUFFS
@@ -153,17 +168,20 @@ __EOF__
 } && {
 # -----------------------------------------------------------------------------> CHECK DEPENDENT LIBRARIES
 echo "=> Finding object files and creating list..."
-otool -L $(__find -f) | __gsort > ${BUILD_CACHE}
+#otool -L $(__find -f) | __gsort > ${BUILD_CACHE}
 } && {
 echo "=> Checking dependent libraries..."
-until __diff
-do
-  echo "=> Updating dependent libraries list..."
-  __diff | patch
-done
+#until __diff
+#do
+#  echo "=> Updating dependent libraries list..."
+#  __diff | patch
+#done
 } && {
 echo "=> Copying libraries..."
-cp -v $(cat ${BUILD_CACHE}) ${LIB}
+#cp -v $(cat ${BUILD_CACHE}) ${LIB}
+
+cp -v $(otool -L ${MACOS}/${EXECUTABLE} | grep -o "/.*dylib" | grep -v "/usr") ${LIB}
+
 # <----------------------------------------------------------------------------|
 } && {
 # -----------------------------------------------------------------------------> ADEPT OBJECT FILES TO ENVIRONMENT
@@ -242,8 +260,11 @@ __EOF__
 } && {
 # -----------------------------------------------------------------------------> CREATE DISTRIBUTION
 echo "=> Creating distribution .dmg..."
-hdiutil create -format UDBZ -srcdir ${DIST_DIR} ${RELEASE}/${DMG} # DMG
-(( ${CREATE_XZ} == 1 )) && __xz                                   # TAR.XZ
+echo -n 4649 | hdiutil create \
+  -format UDBZ \
+  -encryption -stdinpass \
+  -srcdir ${DIST_DIR} ${RELEASE}/${DMG} # DMG
+(( ${CREATE_XZ} == 1 )) && __xz         # TAR.XZ
 # -----------------------------------------------------------------------------|
 } && {
 # -----------------------------------------------------------------------------> CLEANUP
