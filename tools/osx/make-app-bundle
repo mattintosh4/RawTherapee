@@ -1,139 +1,133 @@
 #!/bin/bash
 
-# -----------------------------------------------------------------------------> FUNCTIONS
-__diff(){
-  diff -u ${BUILD_CACHE} <(otool -L $(cat ${BUILD_CACHE}) | __gsort)
+checkrm(){
+    for f in "$@"
+    do
+        test -e "$f" && rm -rf "$f"
+    done
+    unset f
 }
-__find(){
-  -f(){
-    find ${MACOS} \
-      -name "${EXECUTABLE}" -o \
-      -name "*.dylib" -o \
-      -name "*.so"
-  }
-  -l(){
-    find ${LIB} -name "*.dylib"
-  }
-  "$@"
-}
-__gsort(){
-  grep -o "${MACPORTS_PREFIX}/lib/.*\.dylib" | sort -u
-}
-__xz(){
-  echo "=> Creating distribution .tar.xz..."
-  {
-    [ -f ${DIST_DIR}/Applications ] && rm ${DIST_DIR}/Applications
-    tar cf - ${DIST_DIR} | xz > ${RELEASE}/${DMG%.*}.tar.xz
-  } && {
-    echo "Created: ${RELEASE}/${DMG%.*}.tar.xz"
-  }
-}
-# <----------------------------------------------------------------------------|
-# -----------------------------------------------------------------------------> VARIABLES
-
-declare -i BEEP=1       # 1 = Beep on
-declare -i CREATE_XZ=1  # 1 = Create distribution tar.xz
 
 APP=RawTherapee.app
-CONTENTS=${APP}/Contents
-RESOURCES=${CONTENTS}/Resources
-MACOS=${CONTENTS}/MacOS
-BIN=${MACOS}/bin
-ETC=${MACOS}/etc
-LIB=${MACOS}/lib
-SHARE=${MACOS}/share
+CONTENTS=$APP/Contents
+RESOURCES=$CONTENTS/Resources
+MACOS=$CONTENTS/MacOS
+ETC=$MACOS/etc
+LIB=$MACOS/lib
+SHARE=$MACOS/share
 RELEASE=Release
 EXECUTABLE=rawtherapee
 
-RT_VERSION=($(hg parents --template '{latesttag} {latesttagdistance}'))
-CFBundleShortVersionString=${RT_VERSION[0]:0:3}   # 4.x
-CFBundleVersion=${RT_VERSION[0]}.${RT_VERSION[1]} # 4.x.x.xxx
-DMG=rawtherapee_mac64_$(date +%F)_$(hg -R . branch)_${RT_VERSION[0]}i.${RT_VERSION[1]}-$(hg parents --template '{node|short}').dmg
+checkProp(){
+    local VAR="libgtk-.*\.dylib"
+    MACPORTS_PREFIX=$(otool -L $1 | grep -o "/.*/${VAR}" | sed "s|/lib/${VAR}$||")
+    RT_VERSION=$(grep "^Version:" Release/AboutThisBuild.txt | cut -d' ' -f2)
+    [ -z $RT_VERSION ] && RT_VERSION=4.0.9
+    case "$(lipo -info $1 | sed "s|.*: ||")" in
+        x86_64) BIT_DEPTH=64;;
+        i386  ) BIT_DEPTH=32;;
+    esac
+}
+checkProp ${RELEASE}/${EXECUTABLE}
 
-MACPORTS_PREFIX="$(which port)"             # e.g.) /opt/local/bin/port
-MACPORTS_PREFIX="${MACPORTS_PREFIX%/bin*}"  # e.g.) /opt/local
-BUILD_CACHE=cache.$$                        # cache.PID
+# Set disk image name
+DMG=rawtherapee_mac${BIT_DEPTH}_${RT_VERSION}.dmg
 
-START_CACHE_TARGET="/tmp/RT4" # Rewrite path in the start file, when this path is changed.
-
-GTK_PREFIX=${HOME}/gtk/inst
-
-# <----------------------------------------------------------------------------|
-# -----------------------------------------------------------------------------> START UP
-
-cd /usr/local/src/rawtherapee || exit
-
-rm -rf ${RELEASE}
-rm cache.*
-cp -R build/Release .
-sed -i "" \
-    -e "4s|ccache|gcc-mp-4|" \
-    -e "9s|$| (Development)|" \
-    ${RELEASE}/AboutThisBuild.txt
+# Set distribution directory name (disk image volume name)
+DIST_DIR=RawTherapee${RT_VERSION}
 
 
-if [ ! -d ${RELEASE} ]; then
-  echo "=> Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
-  exit
-fi
 
-if [ -d ${APP} ]; then
-  echo "=> Removing old application..."
-  rm -rf ${APP}
-fi
+[ ! -d ${RELEASE} ] && {
+    echo "Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
+    exit
+}
 
-echo "=> Removing any old disk images..."
-rm ${RELEASE}/rawtherapee*.{dmg,dmg.zip,tar.xz}
+test -e ${APP} && rm -rf $_ && echo "Removed old application."
+test -e ${RELEASE}/rawtherapee*.dmg && rm $_ && echo "Removed any old disk images."
 
-# <----------------------------------------------------------------------------|
-# ----------------------------------------------------------------------------->
-{
-mkdir -p  ${RESOURCES} \
-          ${ETC} \
-          ${LIB}
-} && {
-cp -R ${RELEASE}/* \
-      ${MACOS}
+echo "Making application directory structure..."
+mkdir -p    ${RESOURCES} \
+            ${ETC} \
+            ${LIB} \
+            ${SHARE}
 
-#cp -R ${MACPORTS_PREFIX}/lib/pango \
-      ${MACPORTS_PREFIX}/lib/gtk-2.0 \
-      ${MACPORTS_PREFIX}/lib/gdk-pixbuf* \
-      ${LIB}
+#Copy over non-explicitly linked libraries
+echo "Copying libraries from ${MACPORTS_PREFIX}..."
+cp -R   ${MACPORTS_PREFIX}/lib/pango \
+        ${MACPORTS_PREFIX}/lib/gtk-2.0 \
+        ${MACPORTS_PREFIX}/lib/gdk-pixbuf* \
+        ${LIB}
 
-cp -R ${GTK_PREFIX}/lib/pango \
-      ${GTK_PREFIX}/lib/gtk-2.0 \
-      ${GTK_PREFIX}/lib/gdk-pixbuf* \
-      ${LIB}
+find $LIB -name "*.la" | xargs rm
+find $LIB/gtk-2.0/*/engines/* ! -name "libclearlooks.so" | xargs rm
 
-#cp -R ${MACPORTS_PREFIX}/share/mime \
-      ${SHARE}
+#Copy over mimes (if a mime is copied, and nobody hears, is it really copied?)
+echo "Copying shared files from ${MACPORTS_PREFIX}..."
+cp -R   ${MACPORTS_PREFIX}/share/mime \
+        ${SHARE}
 
-#cp -R ${MACPORTS_PREFIX}/etc/gtk-2.0 \
-      ${MACPORTS_PREFIX}/etc/pango \
-      ${MACPORTS_PREFIX}/etc/fonts \
-      ${ETC}
+#Copy over etc files, and modify as needed
+echo "Copying configuration files from ${MACPORTS_PREFIX} and modifying for standalone app bundle..."
+cp -R   ${MACPORTS_PREFIX}/etc/gtk-2.0 \
+        ${MACPORTS_PREFIX}/etc/pango \
+        ${ETC}
 
-cp -R ${GTK_PREFIX}/etc/gtk-2.0 \
-      ${GTK_PREFIX}/etc/pango \
-      ${ETC}
+modifyPath(){
+    sed "s|${MACPORTS_PREFIX}|@executable_path|" <("$@")
+}
+modifyPath  ${MACPORTS_PREFIX}/bin/gtk-query-immodules-2.0 \
+            ${MACPORTS_PREFIX}/lib/gtk-2.0/*/immodules/*.so > ${ETC}/gtk-2.0/gtk.immodules
+modifyPath  ${MACPORTS_PREFIX}/bin/gdk-pixbuf-query-loaders > ${ETC}/gtk-2.0/gdk-pixbuf.loaders
+sed -e "s|$MACPORTS_PREFIX\(.*\.so\)|\"@executable_path\1\"|" <(${MACPORTS_PREFIX}/bin/pango-querymodules) > ${ETC}/pango/pango.modules
+echo -e "[Pango]\nModuleFiles = /tmp/rawtherapee_pango.modules" > ${ETC}/pango/pangorc
 
-# <----------------------------------------------------------------------------|
-} && {
-# -----------------------------------------------------------------------------> ADEPT ETC FILES
-echo "=> Adepting etc files..."
-#perl -pi -e "s|^.*<cachedir>${MACPORTS_PREFIX}/var/cache/fontconfig</cachedir>.*$||" ${ETC}/fonts/fonts.conf
-#perl -pi -e "s|${MACPORTS_PREFIX}|\@executable_path|g" ${ETC}/gtk-2.0/gdk-pixbuf.loaders ${ETC}/gtk-2.0/gtk.immodules
-perl -pi -e "s|${MACPORTS_PREFIX}|\@executable_path|g" ${ETC}/gtk-2.0/gtk.immodules
-perl -pi -e "s|${MACPORTS_PREFIX}|../..|g" ${ETC}/pango/pango.modules
-#rm  ${ETC}/pango/pangorc \
-#    ${LIB}/gdk-pixbuf-2.0/2.10.0/loaders.cache
+checkrm ${LIB}/gdk-pixbuf-2.0/2.10.0/loaders.cache \
+        ${LIB}/gtk-2.0/2.10.0/printbackends \
+        ${LIB}/gtk-2.0/include \
+        ${LIB}/gtk-2.0/modules
 
-# <----------------------------------------------------------------------------|
-} && {
-# -----------------------------------------------------------------------------> ADD APPLICATION STUFFS
-echo "=> Add stuffs..."
-cp tools/osx/Icons.icns ${RESOURCES}
-cp tools/osx/start ${MACOS}
+#Copy over the release files
+echo "Copying release files..."
+cp -R   ${RELEASE}/* \
+        ${MACOS}
+
+# Add MacOS build version to AboutThisBuild.txt
+echo "MacOS build version: $( sw_vers -productVersion )" >> ${MACOS}/AboutThisBuild.txt
+
+#Copy application-specific stuff like icons and startup script
+echo "Creating required application bundle files..."
+
+START_SCRIPT=$MACOS/start
+cat <<'__EOF__' > $START_SCRIPT
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os, re, subprocess
+
+macos   = os.path.dirname(os.path.abspath(__file__))
+lib     = macos + '/lib'
+etc     = macos + '/etc'
+exe     = macos + '/rawtherapee'
+
+os.environ['DYLD_LIBRARY_PATH']         = lib
+os.environ['GDK_PIXBUF_MODULE_FILE']    = etc + '/gtk-2.0/gdk-pixbuf.loaders'
+os.environ['GTK_DATA_DIRS']             = macos
+os.environ['GTK_DATA_PREFIX']           = macos
+os.environ['GTK_EXE_PREFIX']            = macos
+os.environ['GTK_IM_MODULE_FILE']        = etc + '/gtk-2.0/gtk.immodules'
+os.environ['GTK_PATH']                  = macos
+os.environ['PANGO_RC_FILE']             = etc + '/pango/pangorc'
+os.environ['XDG_DATA_DIRS']             = macos + '/share'
+
+open('/tmp/rawtherapee_pango.modules', 'w').write(re.sub('@executable_path', macos, open(etc + '/pango/pango.modules').read()))
+
+subprocess.Popen(exe)
+
+__EOF__
+chmod +x $START_SCRIPT
+
+
 cat <<__EOF__ > ${CONTENTS}/Info.plist
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -154,125 +148,123 @@ cat <<__EOF__ > ${CONTENTS}/Info.plist
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>${CFBundleShortVersionString}</string>
+	<string>${RT_VERSION:0:3}</string>
 	<key>CFBundleSignature</key>
 	<string>APPL</string>
 	<key>CFBundleVersion</key>
-	<string>${CFBundleVersion}</string>
-	<key>NSAppleScriptEnabled</key>
-	<string>NO</string>
+	<string>${RT_VERSION}</string>
 </dict>
 </plist>
 __EOF__
-# <----------------------------------------------------------------------------|
-} && {
-# -----------------------------------------------------------------------------> CHECK DEPENDENT LIBRARIES
-echo "=> Finding object files and creating list..."
-#otool -L $(__find -f) | __gsort > ${BUILD_CACHE}
-} && {
-echo "=> Checking dependent libraries..."
-#until __diff
-#do
-#  echo "=> Updating dependent libraries list..."
-#  __diff | patch
-#done
-} && {
-echo "=> Copying libraries..."
-#cp -v $(cat ${BUILD_CACHE}) ${LIB}
 
-cp -v $(otool -L ${MACOS}/${EXECUTABLE} | grep -o "/.*dylib" | grep -v "/usr") ${LIB}
+# Make the latest Info.plist automatically.
+cp tools/osx/Icons.icns ${RESOURCES}
 
-# <----------------------------------------------------------------------------|
-} && {
-# -----------------------------------------------------------------------------> ADEPT OBJECT FILES TO ENVIRONMENT
-echo "=> Adepting object files to environment..."
-__find -f > ${BUILD_CACHE}
-
-d=$(cat ${BUILD_CACHE} | wc -l | egrep -o "[0-9]+")
-n=1
-while read
-do
-  echo -e "\n[$((n++))/$d] ${REPLY}"
-  { # lipo and install_name_tool -id
-    echo -e "\tlipo ${REPLY} -thin x86_64 -output ${REPLY}"
-    if [[ ${REPLY##*.} = dylib ]]; then
-      echo -e "\tinstall_name_tool -id ${START_CACHE_TARGET}/${REPLY##*/} ${REPLY}"
-    fi
-  } | bash -v
-  { # install_name_tool -change
-    otool -L ${REPLY} \
-      | __gsort \
-      | perl -pe "s|^(.*/)(.*)$|\tinstall_name_tool -change \1\2 ${START_CACHE_TARGET}/\2 ${REPLY}|g"
-  } | bash -v
-done < ${BUILD_CACHE}
-unset d n
-# <----------------------------------------------------------------------------|
-} && {
-# -----------------------------------------------------------------------------> CREATE DISTRIBUTION DIRECTORY
-#
-# DISTRIBUTION MAP
-# ----------------
-#
-# /SOURCE_ROOT
-# |
-# +-- /RawTherapee
-#     |
-#     +-- Rawtherapee.app
-#     |
-#     +-- AboutThisBuild.txt
-#     |
-#     +-- README.txt
-#     |
-#     +-- Applications => /Applications
-#     |
-#     +-- RawTherapee Blog.webloc
-#
-
-DIST_DIR="RawTherapee"
-echo "=> Creating distribution directory..."
-[ -d ${DIST_DIR} ] && rm -rf ${DIST_DIR}
-mkdir ${DIST_DIR} && {
-  mv ${APP} ${DIST_DIR}                         # Rawtherapee.app
-  cp ${RELEASE}/AboutThisBuild.txt ${DIST_DIR}  # AboutThisBuild.txt
-  ln -s /Applications ${DIST_DIR}               # Symlink to applications dir
-  
-  # README.txt
-  cat <<'__EOF__' > ${DIST_DIR}/README.txt
-This distribution bundle is required X11.app or XQuartz.app. Please install if your system does not have them.
-(note: Mac OS 10.8 does not have them as standard.)
-
-http://xquartz.macosforge.org
-__EOF__
-  
-  # RawTherapee Blog.webloc
-  cat <<'__EOF__' > ${DIST_DIR}/"RawTherapee Blog.webloc"
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>URL</key>
-	<string>http://www.rawtherapee.com/</string>
-</dict>
-</plist>
-__EOF__
-  }
-# <----------------------------------------------------------------------------|
-} && {
-# -----------------------------------------------------------------------------> CREATE DISTRIBUTION
-echo "=> Creating distribution .dmg..."
-echo -n 4649 | hdiutil create \
-  -format UDBZ \
-  -encryption -stdinpass \
-  -srcdir ${DIST_DIR} ${RELEASE}/${DMG} # DMG
-(( ${CREATE_XZ} == 1 )) && __xz         # TAR.XZ
-# -----------------------------------------------------------------------------|
-} && {
-# -----------------------------------------------------------------------------> CLEANUP
-echo "=> Cleaning up..."
-rm -rf  ${DIST_DIR} \
-        ${BUILD_CACHE}
-
-echo "=> All done!"
-(( ${BEEP} == 1 )) && echo -e "\a"
-# <----------------------------------------------------------------------------|
+#Copy and relink the explicitly defined libraries
+echo "Recursively copying libraries referenced by executable..."
+checkLink(){
+    otool -L $1 | grep -Ev -e "$(otool -D $1)" -e "^.(/usr/lib|/System|@executable_path)/" \
+                | grep -o "/.*dylib" \
+                | while read
+                do
+                    [ ! -f ${LIB}/${REPLY##*/} ] && {
+                        cp ${REPLY} ${LIB}
+                        checkLink ${REPLY}
+                    }
+                done
 }
+checkLink ${MACOS}/${EXECUTABLE}
+
+# Exclude 32-bit binary
+if (( BIT_DEPTH == 64 )); then
+    echo "Excluding 32-bit binary..."
+    find ${LIB} -name "*.dylib" -o -name "*.so" | while read
+        do
+            if [ -n "$( otool -f $REPLY )" ]; then
+                echo "lipo -thin x86_64 -output $REPLY $REPLY"
+            fi
+        done | bash -v
+fi
+
+def_otool(){
+    for f in "$@"
+    do
+        if [[ ${f##*.} == "dylib" ]]; then
+            echo install_name_tool -id @executable_path/lib/${f##*/} $f
+        fi
+        otool -L $f | grep -v "`otool -D $f`" | egrep -v "(/usr/lib|/System|@executable_path)/" | egrep -o "/.*dylib" | while read
+        do
+            echo install_name_tool -change $REPLY @executable_path/lib/${REPLY##*/} $f
+        done
+    done | bash -v
+}
+def_otool `find $MACOS -type f | egrep "(rawtherapee|.*dylib|.*so)$"`
+
+
+echo "Creating and setup distribution directory..."
+checkrm ${DIST_DIR}
+mkdir ${DIST_DIR} && {
+    
+    # ----> FOR X11 BUILD
+    [ -n "$( find ${LIB} -name "libgtk-x11*" )" ] && {
+        DMG=${DMG%.*}_x11.dmg
+        cp -RL ${MACPORTS_PREFIX}/etc/fonts ${ETC} && {
+            checkrm ${ETC}/fonts/conf.avail
+            sed -i "" \
+                -e "s|<dir>${MACPORTS_PREFIX}/share/fonts</dir>||" \
+                -e "s|<cachedir>${MACPORTS_PREFIX}/var/cache/fontconfig</cachedir>||" \
+                -e "s|\(<include ignore_missing=\"yes\">\)${MACPORTS_PREFIX}\(/etc/fonts/conf.d</include>\)|\1/tmp/${MACOS}\2|" \
+                ${ETC}/fonts/fonts.conf
+        }
+        
+        {
+            echo 'test -d /tmp/RT4 && rm -rf $_'
+            echo 'mkdir $_'
+            echo 'cp /usr/lib/libcups* $_'
+            echo 'export DYLD_LIBRARY_PATH=$_:DYLD_LIBRARY_PATH'
+            echo 'export FONTCONFIG_PATH=${ETC}/fonts'
+        } > ${MACOS}/x11.conf
+        
+        cat <<-'__EOF__' > ${DIST_DIR}/XQuartz.webloc
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+	<plist version="1.0">
+	<dict>
+	<key>URL</key>
+	<string>http://xquartz.macosforge.org/landing/</string>
+	</dict>
+	</plist>
+	__EOF__
+        
+        cat <<-'__EOF__' > ${DIST_DIR}/README.txt
+	This distribution bundle is required X11.app or XQuartz.app. Please install if your system does not have them.
+	(note: Mac OS 10.8 does not have them as standard.)
+	
+	http://xquartz.macosforge.org/landing/
+	__EOF__
+    }
+    # <---- FOR X11 BUILD
+    
+    cp ${MACOS}/AboutThisBuild.txt ${DIST_DIR}
+    mv ${APP} ${DIST_DIR}
+    ln -s /Applications ${DIST_DIR}
+    cat <<-'__EOF__' > ${DIST_DIR}/"RawTherapee Blog".webloc
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+	<plist version="1.0">
+	<dict>
+	<key>URL</key>
+	<string>http://rawtherapee.com/</string>
+	</dict>
+	</plist>
+	__EOF__
+    
+    echo "Creating distribution .dmg..."
+    hdiutil create -format UDBZ -srcdir ${DIST_DIR} ${RELEASE}/${DMG}
+    
+#    echo "Creating distribution .tar.xz..."
+#    ( cd $DIST_DIR/$CONTENTS && mv MacOS $DIST_DIR && tar cf - $_ | xz -v > "$OLDPWD"/$DIST_DIR_none-bundle.tar.xz )
+    
+} && rm -rf ${DIST_DIR}
+
+echo "All done!"
