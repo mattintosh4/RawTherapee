@@ -11,7 +11,7 @@ if [ ! -d rtgui ]; then
 	exit
 fi
 
-MACOS_VERSION=$(sw_vers -productVersion | cut -d'.' -f-2)
+MACOS_VERSION=$(sw_vers -productVersion | cut -c-4)
 MACPORTS_PREFIX=$(which port | sed "s|/bin/port$||")
 
 if [ -d "$GTK_PREFIX" -a -x "$GTK_PREFIX"/bin/pkg-config ]; then
