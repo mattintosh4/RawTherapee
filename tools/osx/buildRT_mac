@@ -1,0 +1,101 @@
+#!/bin/bash
+
+PROC_FLAGS="-arch x86_64 -m64 -march=core2 -mtune=core2"
+PROC_LABEL="core2"
+MAKE_ARGS="-j2"
+
+
+
+if [ ! -d rtgui ]; then
+	echo "Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
+	exit
+fi
+
+MACOS_VERSION=$(sw_vers -productVersion | cut -d'.' -f-2)
+MACPORTS_PREFIX=$(which port | sed "s|/bin/port$||")
+
+if [ -d "$GTK_PREFIX" -a -x "$GTK_PREFIX"/bin/pkg-config ]; then
+	export PATH="$GTK_PREFIX/bin:$PATH"
+	export PKG_CONFIG_PATH="$GTK_PREFIX/lib/pkgconfig:$MACPORTS_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
+else
+	GTK_PREFIX=$MACPORTS_PREFIX
+fi
+
+def_compiler(){
+if [ ! "$CC" -a ! "$CXX" ]; then
+	echo "Finding GCC of highest version from MacPorts..."
+	CC=$(find $MACPORTS_PREFIX/bin/gcc-mp-4.* | tail -1)
+	if [ -x "$CC" -a "${CC##*.}" -ge 5 ]
+	then
+		CXX="${CC/cc/++}"
+		export CC CXX
+		cat <<-__EOS__
+		
+		----------------------------------------------------------------
+		MAC OS VERSION  | $MACOS_VERSION
+		----------------------------------------------------------------
+		MACPORTS PREFIX | $MACPORTS_PREFIX
+		----------------------------------------------------------------
+		JHBUILD PREFIX  | $GTK_PREFIX
+		----------------------------------------------------------------
+		C COMPILER      | $CC
+		----------------------------------------------------------------
+		C++ COMPILER    | $CXX
+		----------------------------------------------------------------
+		
+		__EOS__
+	else
+		echo "GCC >= 4.5 is not found. Please install from MacPorts."
+		exit
+	fi
+fi
+}
+
+def_cmake(){
+cmake \
+	-DBUILD_BUNDLE=ON \
+	-DCMAKE_BUILD_TYPE=${BUILD_TYPE:=Release} \
+	-DCMAKE_OSX_ARCHITECTURES=x86_64 \
+	-DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOS_VERSION \
+	-DEXPAT_INCLUDE_DIR=$GTK_PREFIX/include \
+	-DEXPAT_LIBRARY=$GTK_PREFIX/lib/libexpat.dylib \
+	-DJPEG_INCLUDE_DIR=$GTK_PREFIX/include \
+	-DJPEG_LIBRARY=$GTK_PREFIX/lib/libjpeg.dylib \
+	-DOPTION_OMP=ON \
+	-DPNG_LIBRARY=$GTK_PREFIX/lib/libpng.dylib \
+	-DPNG_PNG_INCLUDE_DIR=$GTK_PREFIX/include \
+	-DPROC_FLAGS="$PROC_FLAGS" \
+	-DPROC_LABEL="$PROC_LABEL" \
+	-DPROC_TARGET_NUMBER=0 \
+	-DRTENGINE_CXX_FLAGS="-ffast-math -fomit-frame-pointer -funroll-loops" \
+	-DTIFF_INCLUDE_DIR=$GTK_PREFIX/include \
+	-DTIFF_LIBRARY=$GTK_PREFIX/lib/libtiff.dylib \
+	..
+}
+
+def_make(){
+if which gmake; then
+    gmake $MAKE_ARGS install
+else
+    make $MAKE_ARGS install
+fi
+}
+
+
+
+{
+
+def_compiler
+test -d ${BUILD_DIR:=build_`date +%Y-%m-%d_%H%M`} && rm -rf $_
+mkdir $_ && cd $_ && def_cmake && def_make && cd ..
+
+} && {
+
+test -d $BUILD_TYPE && rm -rf $_
+cp -R $BUILD_DIR/$_ .
+
+} && {
+
+exec tools/osx/make-app-bundle
+
+}
