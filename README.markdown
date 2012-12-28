@@ -16,14 +16,14 @@ $ bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/b
 
 ### オプション
 
-#### GTK_PREFIX
-
-GTK ライブラリの場所を指定できます。これは主に JHBuild ユーザー向けです。
-
-```bash
+- GTK_PREFIX
+	
+	GTK ライブラリの場所を指定できます。これは主に JHBuild ユーザー向けです。
+	
+	```bash
 $ GTK_PREFIX=$HOME/gtk/inst bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/buildRT_mac)
 ```
 
-#### USE_CLANG
-
-デフォルトでは `/opt/local/bin/gcc-mp-4.*` を使用しますが、`USE_CLANG=1` を指定することで clang/clang++ を使用するようになります。事前に clang にパスを通して下さい。
+- USE_CLANG
+	
+	デフォルトでは `/opt/local/bin/gcc-mp-4.*` を使用しますが、`USE_CLANG=1` を指定することで clang/clang++ を使用するようになります。事前に clang にパスを通して下さい。
