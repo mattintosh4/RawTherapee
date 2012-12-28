@@ -1,3 +1,3 @@
-現在 quartz ブランチにて作業中です。詳しくは Wiki へどうぞ。
+作業場所を Gist に移動しました。
 
-https://github.com/mattintosh4/RawTherapee/wiki
+https://gist.github.com/4389088
