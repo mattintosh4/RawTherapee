@@ -1,18 +1,25 @@
 #!/bin/bash
+#
+# You will be able to specify a prefix for the GTK+.
+# e.g.) GTK_PREFIX=/path/to/gtk+ /path/to/this/file
 
-PROC_FLAGS="-arch x86_64 -m64 -march=core2 -mtune=core2"
-PROC_LABEL="core2"
-MAKE_ARGS="-j2"
+PROC_FLAGS="-arch x86_64 -m64 -mtune=native"
 
-
+# AUTO SET MAKE JOBS BY CPU CORE COUNT
+if [ -x /usr/sbin/sysctl ]; then
+	MAKE_JOBS="-j${CPU:=`sysctl hw.ncpu | cut -d' ' -f2`}"
+else
+	CPU=2
+	MAKE_JOBS="-j${CPU}"
+fi
 
 if [ ! -d rtgui ]; then
-	echo "Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
+	echo "/!\ Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
 	exit
 fi
 
-MACOS_VERSION=$(sw_vers -productVersion | cut -c-4)
-MACPORTS_PREFIX=$(which port | sed "s|/bin/port$||")
+MACOS_VERSION=`sw_vers -productVersion | cut -d'.' -f-2`
+MACPORTS_PREFIX=`which port | sed "s|/bin/port$||"`
 
 if [ -d "$GTK_PREFIX" -a -x "$GTK_PREFIX"/bin/pkg-config ]; then
 	export PATH="$GTK_PREFIX/bin:$PATH"
@@ -36,11 +43,13 @@ if [ ! "$CC" -a ! "$CXX" ]; then
 		----------------------------------------------------------------
 		MACPORTS PREFIX | $MACPORTS_PREFIX
 		----------------------------------------------------------------
-		JHBUILD PREFIX  | $GTK_PREFIX
+		GTK+ PREFIX     | $GTK_PREFIX
 		----------------------------------------------------------------
 		C COMPILER      | $CC
 		----------------------------------------------------------------
 		C++ COMPILER    | $CXX
+		----------------------------------------------------------------
+		MAKE JOBS       | $CPU
 		----------------------------------------------------------------
 		
 		__EOS__
@@ -75,9 +84,9 @@ cmake \
 
 def_make(){
 if which gmake; then
-    gmake $MAKE_ARGS install
+    gmake $MAKE_JOBS install
 else
-    make $MAKE_ARGS install
+    make $MAKE_JOBS install
 fi
 }
 
@@ -96,6 +105,6 @@ cp -R $BUILD_DIR/$_ .
 
 } && {
 
-exec tools/osx/make-app-bundle
+exec bash <(curl https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/make-app-bundle)
 
 }
