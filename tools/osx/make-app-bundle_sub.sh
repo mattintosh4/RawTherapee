@@ -36,8 +36,11 @@ DMG=rawtherapee_mac${BIT_DEPTH}_`date +%F`_`hg -R . branch`_`hg parents --templa
 
 #Find where MacPorts is installed.  We take a known binary (cmake), which is in <MacPorts>/bin, and 
 # go up a level to get the main install folder.
-MACPORTS_PREFIX=`which port`
-MACPORTS_PREFIX=${MACPORTS_PREFIX%/bin/port}
+MACPORTS_PREFIX=`otool -L $RELEASE/$EXECUTABLE | awk '/libgtk-.*dylib/ { print $1 }'`
+MACPORTS_PREFIX=${MACPORTS_PREFIX%/lib/*}
+
+#MACPORTS_PREFIX=`which port`
+#MACPORTS_PREFIX=${MACPORTS_PREFIX%/bin/port}
 
 if [ ! -d ${RELEASE} ]; then
 	echo "Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
@@ -72,11 +75,14 @@ cp -R ${MACPORTS_PREFIX}/share/mime/* ${SHARE}/mime
 echo "Copying configuration files from ${MACPORTS_PREFIX} and modifying for standalone app bundle..."
 cp -R $MACPORTS_PREFIX/etc/gtk-2.0 ${ETC}
 cp -R $MACPORTS_PREFIX/etc/pango ${ETC}
-sed -i "" "s|$MACPORTS_PREFIX|@executable_path|" ${ETC}/gtk-2.0/gdk-pixbuf.loaders ${ETC}/gtk-2.0/gtk.immodules
-sed -i "" "s|$MACPORTS_PREFIX|/tmp/$MACOS|" ${ETC}/pango/pango.modules
+
+$MACPORTS_PREFIX/bin/gtk-query-immodules-2.0 \
+$MACPORTS_PREFIX/lib/gtk-2.0/*/immodules/*.so | sed "s|$MACPORTS_PREFIX|@executable_path|" > $ETC/gtk-2.0/gtk.immodules
+$MACPORTS_PREFIX/bin/gdk-pixbuf-query-loaders | sed "s|$MACPORTS_PREFIX|@executable_path|" > $ETC/gtk-2.0/gdk-pixbuf.loaders
+$MACPORTS_PREFIX/bin/pango-querymodules | sed "s|$MACPORTS_PREFIX|/tmp/$MACOS|" > $ETC/pango/pango.modules
 cat > $ETC/pango/pangorc <<__EOF__
 [Pango]
-ModuleFiles = /tmp/$ETC/pango.modules
+ModuleFiles = /tmp/$ETC/pango/pango.modules
 __EOF__
 rm ${LIB}/gdk-pixbuf-2.0/2.10.0/loaders.cache
 
