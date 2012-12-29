@@ -17,4 +17,4 @@ export XDG_DATA_DIRS="${CWD}/share:$XDG_DATA_DIRS"
 
 ln -sf "${0%/Contents/*}" /tmp
 
-"${CWD}/rawtherapee"
+exec "${CWD}/rawtherapee"
