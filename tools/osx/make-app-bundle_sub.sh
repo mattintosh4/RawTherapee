@@ -34,8 +34,6 @@ RT_VERSION=`awk '/^Version: / { print $2 }' ./Release/AboutThisBuild.txt`
 BIT_DEPTH=`awk '/^Bit depth: / { print $3 }' ./Release/AboutThisBuild.txt`
 DMG=rawtherapee_mac${BIT_DEPTH}_`date +%F`_`hg -R . branch`_`hg parents --template '{latesttag}i.{latesttagdistance}-{node|short}'`.dmg
 
-#Find where MacPorts is installed.  We take a known binary (cmake), which is in <MacPorts>/bin, and 
-# go up a level to get the main install folder.
 MACPORTS_PREFIX=`otool -L $RELEASE/$EXECUTABLE | awk '/libgtk-.*dylib/ { print $1 }'`
 MACPORTS_PREFIX=${MACPORTS_PREFIX%/lib/*}
 
