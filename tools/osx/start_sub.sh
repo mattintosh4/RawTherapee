@@ -1,7 +1,6 @@
 #!/bin/bash
 
 CWD="${0%/*}"
-echo $CWD
 
 export DYLD_LIBRARY_PATH="${CWD}/lib:$DYLD_LIBRARY_PATH"
 export GTK_DATA_PREFIX="${CWD}"
