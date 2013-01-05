@@ -24,7 +24,7 @@ $ bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/b
 $ GTK_PREFIX=$HOME/gtk/inst bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/buildRT_mac)
 ```
 
-- __CC__/__CXX__
+- __CC__ & __CXX__
 	
 	デフォルトでは `/opt/local/bin/gcc-mp-4.*` を使用しますが、CC や CXX を指定することができます。
 
