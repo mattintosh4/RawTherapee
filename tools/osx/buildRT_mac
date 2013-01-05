@@ -8,17 +8,13 @@ if [ ! -d rtgui ]; then
 	exit
 fi
 
-# AUTO SET MAKE JOBS BY CPU CORE COUNT
-if [ -x /usr/sbin/sysctl ]; then
-	MAKE_JOBS="-j${CPU:=`sysctl hw.ncpu | cut -d' ' -f2`}"
-else
-	CPU=2
-	MAKE_JOBS="-j${CPU}"
-fi
+# AUTO SET MAKE JOBS BY CPU CORES (Default is cpu cores +2)
+MAKE_JOBS="-j${CPU:=`sysctl hw.ncpu | awk '{ print $2 + 2 }'`}"
 
 PROC_FLAGS="-arch x86_64 -m64 -mtune=native"
 
 MACOS_VERSION=`sw_vers -productVersion | cut -d'.' -f-2`
+
 MACPORTS_PREFIX=`which port | sed "s|/bin/port$||"`
 if [ -d "$GTK_PREFIX" -a -x "$GTK_PREFIX"/bin/pkg-config ]; then
 	export PATH="$GTK_PREFIX/bin:$PATH"
@@ -27,13 +23,11 @@ else
 	GTK_PREFIX=$MACPORTS_PREFIX
 fi
 
-def_compiler(){
 if [ ! "$CC" -a ! "$CXX" ]; then
 	echo "Finding GCC of highest version from MacPorts..."
-	CC=$(find $MACPORTS_PREFIX/bin/gcc-mp-4.* | tail -1)
-	if [ -x "$CC" -a "${CC##*.}" -ge 5 ]
-	then
-		CXX="${CC/cc/++}"
+	CC=`find $MACPORTS_PREFIX/bin/gcc-mp-4.* | tail -1`
+	if [ -x $CC -a ${CC##*.} -ge 5 ]; then
+		CXX=${CC/gcc/g++}
 		export CC CXX
 		cat <<-__EOS__
 		
@@ -57,45 +51,32 @@ if [ ! "$CC" -a ! "$CXX" ]; then
 		exit
 	fi
 fi
-}
 
-def_cmake(){
-cmake \
-	-DBUILD_BUNDLE=ON \
-	-DCMAKE_BUILD_TYPE=${BUILD_TYPE:=Release} \
-	-DCMAKE_OSX_ARCHITECTURES=x86_64 \
-	-DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOS_VERSION \
-	-DEXPAT_INCLUDE_DIR=$GTK_PREFIX/include \
-	-DEXPAT_LIBRARY=$GTK_PREFIX/lib/libexpat.dylib \
-	-DJPEG_INCLUDE_DIR=$GTK_PREFIX/include \
-	-DJPEG_LIBRARY=$GTK_PREFIX/lib/libjpeg.dylib \
-	-DOPTION_OMP=ON \
-	-DPNG_LIBRARY=$GTK_PREFIX/lib/libpng.dylib \
-	-DPNG_PNG_INCLUDE_DIR=$GTK_PREFIX/include \
-	-DPROC_FLAGS="$PROC_FLAGS" \
-	-DPROC_LABEL="$PROC_LABEL" \
-	-DPROC_TARGET_NUMBER=0 \
-	-DRTENGINE_CXX_FLAGS="-ffast-math -fomit-frame-pointer -funroll-loops" \
-	-DTIFF_INCLUDE_DIR=$GTK_PREFIX/include \
-	-DTIFF_LIBRARY=$GTK_PREFIX/lib/libtiff.dylib \
-	..
-}
-
-def_make(){
-if which gmake; then
-    gmake $MAKE_JOBS install
-else
-    make $MAKE_JOBS install
-fi
-}
-
-
-
-{
-
-def_compiler
 test -d ${BUILD_DIR:=build_`date +%Y-%m-%d_%H%M`} && rm -rf $_
-mkdir $_ && cd $_ && def_cmake && def_make && cd ..
+
+mkdir $_ \
+	&& cd $_ \
+	&& cmake \
+		-DBUILD_BUNDLE=ON \
+		-DCMAKE_BUILD_TYPE=${BUILD_TYPE:=Release} \
+		-DCMAKE_OSX_ARCHITECTURES=x86_64 \
+		-DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOS_VERSION \
+		-DEXPAT_INCLUDE_DIR=$GTK_PREFIX/include \
+		-DEXPAT_LIBRARY=$GTK_PREFIX/lib/libexpat.dylib \
+		-DJPEG_INCLUDE_DIR=$GTK_PREFIX/include \
+		-DJPEG_LIBRARY=$GTK_PREFIX/lib/libjpeg.dylib \
+		-DOPTION_OMP=ON \
+		-DPNG_LIBRARY=$GTK_PREFIX/lib/libpng.dylib \
+		-DPNG_PNG_INCLUDE_DIR=$GTK_PREFIX/include \
+		-DPROC_FLAGS="$PROC_FLAGS" \
+		-DPROC_LABEL="$PROC_LABEL" \
+		-DPROC_TARGET_NUMBER=0 \
+		-DRTENGINE_CXX_FLAGS="-ffast-math -fomit-frame-pointer -funroll-loops" \
+		-DTIFF_INCLUDE_DIR=$GTK_PREFIX/include \
+		-DTIFF_LIBRARY=$GTK_PREFIX/lib/libtiff.dylib \
+		.. \
+	&& make $MAKE_JOBS install \
+	&& cd $OLDPWD
 
 } && {
 
