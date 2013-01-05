@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+# Maintainer        : mattintosh4
+# Information       : https://github.com/mattintosh4/RawTherapee
+# Stable source     : https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/make-app-bundle_sub.sh
+# Unstable source   : https://gist.github.com/4389088#file-make-app-bundle-sh
+
 # Function checkLink:
 # args: $1 - file
 #
@@ -30,15 +36,16 @@ LIB=${MACOS}/lib
 SHARE=${MACOS}/share
 RELEASE=Release
 EXECUTABLE=rawtherapee
-RT_VERSION=`awk '/^Version: / { print $2 }' ./Release/AboutThisBuild.txt`
-BIT_DEPTH=`awk '/^Bit depth: / { print $3 }' ./Release/AboutThisBuild.txt`
+RT_VERSION=`awk '/^Version: / { print $2 }' $RELEASE/AboutThisBuild.txt`
+BIT_DEPTH=`awk '/^Bit depth: / { print $3 }' $RELEASE/AboutThisBuild.txt`
 DMG=rawtherapee_mac${BIT_DEPTH}_`date +%F`_`hg -R . branch`_`hg parents --template '{latesttag}i.{latesttagdistance}-{node|short}'`.dmg
 
+# GTK/MACPORTS PREFIX
 MACPORTS_PREFIX=`otool -L $RELEASE/$EXECUTABLE | awk '/libgtk-.*dylib/ { print $1 }'`
 MACPORTS_PREFIX=${MACPORTS_PREFIX%/lib/*}
 
-#MACPORTS_PREFIX=`which port`
-#MACPORTS_PREFIX=${MACPORTS_PREFIX%/bin/port}
+# ORIGINAL MACPORTS PREFIX
+#MACPORTS_PREFIX=`which port`; #MACPORTS_PREFIX=${MACPORTS_PREFIX%/bin/port}
 
 if [ ! -d ${RELEASE} ]; then
 	echo "Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
@@ -91,7 +98,13 @@ cp -R ${RELEASE}/* ${MACOS}
 #Copy application-specific stuff like icons and startup script
 echo "Creating required application bundle files..."
 cp tools/osx/Icons.icns ${RESOURCES}
-curl -o $MACOS/start "https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/start_sub.sh" && chmod +x $MACOS/start
+# Download the latest launch script from GitHub
+if curl -o $MACOS/start https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/start_sub.sh; then
+	chmod +x $MACOS/start
+else
+	echo 'Downloading the launch script failed. Please retry the beginning.'
+	exit
+fi
 cat > $CONTENTS/Info.plist <<__EOF__
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

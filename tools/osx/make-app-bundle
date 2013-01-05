@@ -105,7 +105,7 @@ cp -R	$RELEASE/* \
 		$MACOS
 
 # ADD MAC OS BUILD VERSION TO AboutThisBuild.txt
-echo "MacOS build version: $( sw_vers -productVersion )" >> $MACOS/AboutThisBuild.txt
+echo "MacOS build version: `sw_vers -productVersion`" >> $MACOS/AboutThisBuild.txt
 
 echo "=> Creating required application bundle files"
 cp tools/osx/Icons.icns $RESOURCES
