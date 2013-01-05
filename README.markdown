@@ -24,11 +24,17 @@ $ bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/b
 $ GTK_PREFIX=$HOME/gtk/inst bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/buildRT_mac)
 ```
 
-- __USE_CLANG__
+- __CC__/__CXX__
 	
-	デフォルトでは `/opt/local/bin/gcc-mp-4.*` を使用しますが、`USE_CLANG=1` を指定することで clang/clang++ を使用するようになります。事前に clang にパスを通して下さい。
+	デフォルトでは `/opt/local/bin/gcc-mp-4.*` を使用しますが、CC や CXX を指定することができます。
 
-	auto_ptr のエラー回避のために以下のファイルの修正が必要です。
+	```bash
+CC=/usr/local/bin/clang \
+CXX=/usr/local/bin/clang++ \
+bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/buildRT_mac)
+```
+
+	Xcode に同梱のコンパイラなど一部のコンパイラでは auto_ptr のエラーを回避するために以下のファイルの修正が必要です。
 
 	- rtgui/darkframe.h
 	- rtgui/flatfield.h
