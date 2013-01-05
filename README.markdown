@@ -10,8 +10,8 @@ https://gist.github.com/4389088
 bash のプロセス置換と `curl` コマンドでこのリポジトリから直接実行できます。ソースディレクトリのルートに移動してから実行して下さい。
 
 ```bash
-$ cd /path/to/source_root
-$ bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/buildRT_mac)
+cd /path/to/source_root
+bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/buildRT_mac)
 ```
 
 ### オプション ###
@@ -21,7 +21,8 @@ $ bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/b
 GTK ライブラリの場所を指定できます。これは主に JHBuild ユーザー向けです。
 	
 ```bash
-$ GTK_PREFIX=$HOME/gtk/inst bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/buildRT_mac)
+GTK_PREFIX=$HOME/gtk/inst \
+bash <(curl https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/buildRT_mac)
 ```
 
 #### CC/CXX ####
