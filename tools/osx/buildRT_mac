@@ -52,6 +52,8 @@ if [ ! "$CC" -a ! "$CXX" ]; then
 	fi
 fi
 
+{
+
 test -d ${BUILD_DIR:=build_`date +%Y-%m-%d_%H%M`} && rm -rf $_
 
 mkdir $_ \
@@ -82,9 +84,6 @@ mkdir $_ \
 
 test -d $BUILD_TYPE && rm -rf $_
 cp -R $BUILD_DIR/$_ .
-
-} && {
-
 exec bash <(curl https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/make-app-bundle)
 
 }
