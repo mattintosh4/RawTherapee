@@ -8,7 +8,7 @@ https://gist.github.com/4389088
 
 bash のプロセス置換と `curl` コマンドでこのリポジトリから直接実行できます。ソースディレクトリのルートに移動してから実行して下さい。
 
-```
+```bash
 cd /path/to/source_root
 bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 ```
@@ -19,7 +19,7 @@ bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 
 GTK ライブラリの場所を指定できます。これは主に JHBuild ユーザー向けです。
 
-```
+```bash
 GTK_PREFIX=$HOME/gtk/inst \
 bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 ```
@@ -28,7 +28,7 @@ bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 	
 デフォルトでは `/opt/local/bin/gcc-mp-4.*` を使用しますが、CC や CXX を指定することができます。
 
-```
+```bash
 CC=/usr/local/bin/clang \
 CXX=/usr/local/bin/clang++ \
 bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
