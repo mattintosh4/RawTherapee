@@ -84,6 +84,9 @@ mkdir $_ \
 
 test -d $BUILD_TYPE && rm -rf $_
 cp -R $BUILD_DIR/$_ .
-exec bash <(curl https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/make-app-bundle)
+
+} && {
+
+bash <(curl https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/make-app-bundle)
 
 }
