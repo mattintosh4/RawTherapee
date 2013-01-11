@@ -6,13 +6,6 @@
 # /!\ ATTENTION
 # The code for x11 build does not tested yet. (2012-12-28)
 
-APP=RawTherapee.app
-CONTENTS=$APP/Contents
-RESOURCES=$CONTENTS/Resources
-MACOS=$CONTENTS/MacOS
-ETC=$MACOS/etc
-LIB=$MACOS/lib
-SHARE=$MACOS/share
 RELEASE=Release
 EXECUTABLE=rawtherapee
 
@@ -22,39 +15,49 @@ EXECUTABLE=rawtherapee
 }
 
 checkProp(){
-	# GTK/MACPORTS PREFIX
-	MACPORTS_PREFIX=`sed "s|/lib/libgtk-.*dylib||" <(otool -L $1 | awk '/libgtk-.*dylib/ { print $1 }')`
+	### PATH OF GTK LIBRARY ###
+	local f=`otool -L $1 | awk '/libgtk-.*dylib/ { print $1 }'`
 	
-	# CORRECT MACPORTS PREFIX
-	# MACPORTS_PREFIX=`which port | sed "s|/bin/port||"`
+	### GTK/MACPORTS PREFIX ###
+	MACPORTS_PREFIX=${f%/lib/*}
 	
-	# BIT DEPTH
+	### CORRECT MACPORTS PREFIX ###
+	#MACPORTS_PREFIX=`which port | sed "s|/bin/port||"`
+	
+	### BIT DEPTH ###
 	case `lipo -info $1 | awk '{ print $NF }'` in
 		x86_64) BIT_DEPTH=64;;
 		i386  ) BIT_DEPTH=32;;
 	esac
 	
-	# X11 BUILD FLAG
-	if [ `otool -L $1 | grep "libgtk-x11.*dylib"` ]; then
+	### X11 BUILD FLAG ###
+	if [[ $f =~ libgtk-x11 ]]; then
 		X11_BUILD=1
 	fi
 }
 checkProp $RELEASE/$EXECUTABLE
 
-# RAWTHERAPEE VERSION
+APP=RawTherapee.app
+(( X11_BUILD == 1 )) && APP=RawTherapeeX.app
+CONTENTS=$APP/Contents
+RESOURCES=$CONTENTS/Resources
+MACOS=$CONTENTS/MacOS
+ETC=$MACOS/etc
+LIB=$MACOS/lib
+SHARE=$MACOS/share
+
+
+
+### RAWTHERAPEE VERSION ###
 RT_VERSION=`awk '/^Version: / { print $2 }' $RELEASE/AboutThisBuild.txt`
 RT_VERSION=${RT_VERSION:=4.0.9}
 
-# DISTRIBUTION DIRECTORY NAME(DMG VOLUME NAME)
-DIST_DIR=RawTherapee${RT_VERSION}
+### DMG NAME ###
+DMG=rawtherapee_mac${BIT_DEPTH}_${RT_VERSION}.dmg
+(( X11_BUILD == 1 )) && DMG=${DMG%.*}_x11.dmg
 
-# DMG NAME
-DMG=rawtherapee_mac${BIT_DEPTH}_${RT_VERSION}
-if (( X11_BUILD != 1 )); then
-	DMG=${DMG}.dmg
-else
-	DMG=${DMG}_x11.dmg
-fi
+### DISTRIBUTION DIRECTORY NAME (DMG VOLUME NAME) ###
+DIST_DIR=RawTherapee${RT_VERSION}
 
 test -e $APP && rm -rf $_ && echo "=> Removed old application"
 test -e $RELEASE/rawtherapee*.dmg && rm $_ && echo "=> Removed any old disk images"
@@ -85,15 +88,12 @@ $MACPORTS_PREFIX/bin/gtk-query-immodules-2.0 \
 $MACPORTS_PREFIX/lib/gtk-2.0/*/immodules/*.so | sed "s|$MACPORTS_PREFIX|@executable_path|" > $ETC/gtk-2.0/gtk.immodules
 $MACPORTS_PREFIX/bin/gdk-pixbuf-query-loaders | sed "s|$MACPORTS_PREFIX|@executable_path|" > $ETC/gtk-2.0/gdk-pixbuf.loaders
 $MACPORTS_PREFIX/bin/pango-querymodules | sed "s|$MACPORTS_PREFIX|/tmp/$MACOS|" > $ETC/pango/pango.modules
-echo -e "[Pango]\nModuleFiles = /tmp/$ETC/pango/pango.modules" > $ETC/pango/pangorc
-if (( X11_BUILD == 1 )); then
-	echo -e "[PangoX]\nAliasFiles = /tmp/$ETC/pango/pangox.aliases" >> ${ETC}/pango/pangorc
-fi
+printf '[Pango]\nModuleFiles = %s\n' /tmp/$ETC/pango/pango.modules > $ETC/pango/pangorc
 
-# REMOVE NOT USED FILES
+# REMOVE UNUSED FILES
 echo "=> Removing not used files"
-rm -rf	$LIB/gdk-pixbuf-2.0/2.10.0/loaders.cache \
-		$LIB/gtk-2.0/2.10.0/printbackends \
+rm -rf	$LIB/gdk-pixbuf-2.0/*/loaders.cache \
+		$LIB/gtk-2.0/*/printbackends \
 		$LIB/gtk-2.0/include \
 		$LIB/gtk-2.0/modules
 find $LIB -name "*.la" | xargs rm
@@ -103,37 +103,13 @@ echo "=> Copying release files"
 cp -R	$RELEASE/* \
 		$MACOS
 
-# ADD MAC OS BUILD VERSION TO AboutThisBuild.txt
+### ADD MAC OS BUILD VERSION TO AboutThisBuild.txt
 echo "MacOS build version: `sw_vers -productVersion`" >> $MACOS/AboutThisBuild.txt
 
+
 echo "=> Creating required application bundle files"
+
 cp tools/osx/Icons.icns $RESOURCES
-cat > $MACOS/start <<'__EOF__'
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-import os, re, subprocess
-
-macos   = os.path.dirname(os.path.abspath(__file__))
-lib     = macos + '/lib'
-etc     = macos + '/etc'
-exe     = macos + '/rawtherapee'
-app     = '/'.join(macos.split('/')[0:-2])
-
-os.environ['DYLD_LIBRARY_PATH']         = lib
-os.environ['GDK_PIXBUF_MODULE_FILE']    = etc + '/gtk-2.0/gdk-pixbuf.loaders'
-os.environ['GTK_DATA_DIRS']             = macos
-os.environ['GTK_DATA_PREFIX']           = macos
-os.environ['GTK_EXE_PREFIX']            = macos
-os.environ['GTK_IM_MODULE_FILE']        = etc + '/gtk-2.0/gtk.immodules'
-os.environ['GTK_PATH']                  = macos
-os.environ['PANGO_RC_FILE']             = etc + '/pango/pangorc'
-os.environ['XDG_DATA_DIRS']             = macos + '/share'
-
-subprocess.call(['ln', '-sf', app, '/tmp'])
-subprocess.Popen([exe])
-__EOF__
-chmod +x $MACOS/start
 
 cat > $CONTENTS/Info.plist <<__EOF__
 <?xml version="1.0" encoding="UTF-8"?>
@@ -164,6 +140,51 @@ cat > $CONTENTS/Info.plist <<__EOF__
 </plist>
 __EOF__
 
+
+
+### CREATE LAUNCH SCRIPT ###
+cat > $MACOS/start <<'__EOF__'
+#!/bin/bash
+
+APP="${0%/Contents/*}"
+MACOS="${0%/*}"
+LIB="$MACOS"/lib
+ETC="$MACOS"/etc
+
+export DYLD_LIBRARY_PATH="$LIB:$DYLD_LIBRARY_PATH"
+export GDK_PIXBUF_MODULE_FILE="$ETC"/gtk-2.0/gdk-pixbuf.loaders
+export GTK_DATA_DIRS="$MACOS"
+export GTK_DATA_PREFIX="$MACOS"
+export GTK_EXE_PREFIX="$MACOS"
+export GTK_IM_MODULE_FILE="$ETC"/gtk-2.0/gtk.immodules
+export GTK_PATH="$MACOS"
+export PANGO_RC_FILE="$ETC"/pango/pangorc
+export XDG_DATA_DIRS="$MACOS"/share
+
+__EOF__
+
+(( X11_BUILD == 1 )) && cat >> $MACOS/start <<'__EOF__'
+EXTRA_DIR="/tmp/RT4"
+test -d $EXTRA_DIR && rm -rf $EXTRA_DIR
+mkdir $EXTRA_DIR
+cp /usr/lib/libcups* $EXTRA_DIR
+
+export DYLD_LIBRARY_PATH="$EXTRA_DIR:$DYLD_LIBRARY_PATH"
+export FONTCONFIG_PATH="$ETC"/fonts
+
+__EOF__
+
+cat >> $MACOS/start <<'__EOF__'
+ln -sf "$APP" /tmp
+exec "$MACOS"/rawtherapee
+__EOF__
+
+chmod +x $MACOS/start
+
+
+
+
+
 #Copy and relink the explicitly defined libraries
 echo "=> Recursively copying libraries referenced by executable"
 checkLink(){
@@ -173,7 +194,7 @@ checkLink(){
 			cp $REPLY $LIB
 			checkLink $REPLY
 		fi
-	done < <( otool -L $1 | awk 'NR >= 2 && ! /(\/usr\/lib|\/System|@executable_path)\// { print $1 }' )
+	done < <(otool -L $1 | awk 'NR >= 2 && ! /(\/usr\/lib|\/System|@executable_path)\// { print $1 }')
 }
 checkLink $MACOS/$EXECUTABLE
 
@@ -184,24 +205,24 @@ def_optimize(){
 		for f in "$@"
 		do
 			if [ `lipo -info $f | grep "i386"` ]; then
-				echo lipo $f -thin x86_64 -output $f
+				printf 'lipo %s -thin x86_64 -output %s' $f $f
 			fi
 		done
 	)
 
-	echo "=> Converting to relative paths"
+	echo "=> Converting to relative path"
 	for f in "$@"
 	do
 		echo $f:
 		bash -v <(
 			# CONVERT DYNAMIC LIBARIES ID
 			if [ "${f##*.}" = "dylib" ]; then
-				echo $'\t'install_name_tool -id @executable_path/lib/${f##*/} $f
+				printf "\tinstall_name_tool -id %s %s\n" @executable_path/lib/${f##*/} $f
 			fi
 			# CONVERT DEPENDENTS LIBRARIES PATHS
 			while read
 			do
-				echo $'\t'install_name_tool -change $REPLY @executable_path/lib/${REPLY##*/} $f
+				printf "\tinstall_name_tool -change %s %s %s\n" $REPLY @executable_path/lib/${REPLY##*/} $f
 			done < <(otool -L $f | grep -v "`otool -D $f`" | awk '! /(\/usr\/lib|\/System|@executable_path)\// { print $1 }')
 			echo
 		)
@@ -210,69 +231,63 @@ def_optimize(){
 def_optimize `find $MACOS -type f -name "rawtherapee" -o -name "*.dylib" -o -name "*.so"`
 
 
-# SET UP DISTRIBUTION DIRECTORY
+### SET UP DISTRIBUTION DIRECTORY
 echo "=> Creating and setup distribution directory"
 test -d $DIST_DIR && rm -rf $_
-mkdir $_ && {
+mkdir $_
 
-	# ----> FOR X11 BUILD
-	if (( X11_BUILD == 1 )); then
-		cp -RL $MACPORTS_PREFIX/etc/fonts $ETC
-		checkrm $ETC/fonts/conf.avail
-		sed -i "" \
-			-e "s|<dir>${MACPORTS_PREFIX}/share/fonts</dir>||" \
-			-e "s|<cachedir>${MACPORTS_PREFIX}/var/cache/fontconfig</cachedir>||" \
-			-e "s|\(<include ignore_missing=\"yes\">\)${MACPORTS_PREFIX}\(/etc/fonts/conf.d</include>\)|\1/tmp/${MACOS}\2|" \
-			$ETC/fonts/fonts.conf
-		
-		cat > $MACOS/x11.conf <<-'__EOF__'
-		test -d /tmp/RT4 && rm -rf $_
-		mkdir $_
-		cp /usr/lib/libcups* $_
-		export DYLD_LIBRARY_PATH=$_:DYLD_LIBRARY_PATH
-		export FONTCONFIG_PATH=${ETC}/fonts
-		__EOF__
-		
-		cat > $DIST_DIR/XQuartz.webloc <<-'__EOF__'
-		<?xml version="1.0" encoding="UTF-8"?>
-		<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-		<plist version="1.0">
-		<dict>
-		<key>URL</key>
-		<string>http://xquartz.macosforge.org/landing/</string>
-		</dict>
-		</plist>
-		__EOF__
-		
-		cat > $DIST_DIR/README.txt <<-'__EOF__'
-		This distribution bundle is required X11.app or XQuartz.app. Please install if your system does not have them.
-		(note: Mac OS 10.8 does not have them as standard.)
-		
-		http://xquartz.macosforge.org/landing/
-		__EOF__
-	fi
-	# <---- FOR X11 BUILD
-	
-	cp $MACOS/AboutThisBuild.txt $DIST_DIR
-	mv $APP $DIST_DIR
-	ln -s /Applications $DIST_DIR
-	cat > $DIST_DIR/"RawTherapee Blog".webloc <<-'__EOF__'
-	<?xml version="1.0" encoding="UTF-8"?>
-	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-	<plist version="1.0">
-	<dict>
-	<key>URL</key>
-	<string>http://rawtherapee.com/</string>
-	</dict>
-	</plist>
-	__EOF__
-	
-	echo "=> Creating distribution dmg"
-	hdiutil create -format UDBZ -srcdir $DIST_DIR $RELEASE/$DMG
-	
-#	echo "Creating distribution .tar.xz..."
-#	( cd $DIST_DIR/$CONTENTS && mv MacOS $DIST_DIR && tar cf - $_ | xz -v > "$OLDPWD"/$DIST_DIR_none-bundle.tar.xz )
+### FOR X11 BUILD --->
+if (( X11_BUILD == 1 )); then
+printf '[PangoX]\nAliasFiles = %s\n' /tmp/$ETC/pango/pangox.aliases >> $ETC/pango/pangorc
+cp -RL $MACPORTS_PREFIX/etc/fonts $ETC
+sed -i "" \
+	-e "s|<dir>$MACPORTS_PREFIX/share/fonts</dir>||" \
+	-e "s|<cachedir>$MACPORTS_PREFIX/var/cache/fontconfig</cachedir>||" \
+	-e "s|\(<include ignore_missing=\"yes\">\)$MACPORTS_PREFIX\(/etc/fonts/conf.d</include>\)|\1/tmp/$MACOS\2|" \
+	$ETC/fonts/fonts.conf
+test -d $ETC/fonts/conf.avail && rm -rf $_
 
-} && rm -rf $DIST_DIR
+cat > $DIST_DIR/XQuartz.webloc <<'__EOF__'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>URL</key>
+<string>http://xquartz.macosforge.org/landing/</string>
+</dict>
+</plist>
+__EOF__
+
+cat > $DIST_DIR/README.txt <<'__EOF__'
+This distribution bundle is required X11.app or XQuartz.app. Please install if your system does not have them.
+(note: Mac OS 10.8 does not have them as standard.)
+
+http://xquartz.macosforge.org/landing/
+__EOF__
+fi
+### <--- FOR X11 BUILD
+
+cp $MACOS/AboutThisBuild.txt $DIST_DIR
+mv $APP $DIST_DIR
+ln -s /Applications $DIST_DIR
+cat > $DIST_DIR/"RawTherapee Blog".webloc <<-'__EOF__'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>URL</key>
+<string>http://rawtherapee.com/</string>
+</dict>
+</plist>
+__EOF__
+
+echo "=> Creating distribution dmg"
+hdiutil create -format UDBZ -srcdir $DIST_DIR $RELEASE/$DMG
+
+
+
+
+
+rm -rf $DIST_DIR
 
 echo "All done!"
