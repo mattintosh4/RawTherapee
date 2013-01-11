@@ -142,7 +142,7 @@ __EOF__
 
 
 
-### CREATE LAUNCH SCRIPT ###
+### LAUNCH SCRIPT ###
 cat > $MACOS/start <<'__EOF__'
 #!/bin/bash
 
@@ -204,7 +204,7 @@ def_optimize(){
 	bash -v <(
 		for f in "$@"
 		do
-			if [ `lipo -info $f | grep "i386"` ]; then
+			if [[ `lipo -info $f` =~ i386 ]]; then
 				printf 'lipo %s -thin x86_64 -output %s\n' $f $f
 			fi
 		done
