@@ -205,7 +205,7 @@ def_optimize(){
 		for f in "$@"
 		do
 			if [ `lipo -info $f | grep "i386"` ]; then
-				printf 'lipo %s -thin x86_64 -output %s' $f $f
+				printf 'lipo %s -thin x86_64 -output %s\n' $f $f
 			fi
 		done
 	)
