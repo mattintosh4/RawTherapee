@@ -2,9 +2,6 @@
 #
 # indent type: tab
 # indent size: 4
-#
-# /!\ ATTENTION
-# The code for x11 build does not tested yet. (2012-12-28)
 
 RELEASE=Release
 EXECUTABLE=rawtherapee
