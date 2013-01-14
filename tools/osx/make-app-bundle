@@ -187,13 +187,22 @@ chmod +x $MACOS/start
 #Copy and relink the explicitly defined libraries
 echo "=> Recursively copying libraries referenced by executable"
 checkLink(){
-	while read
+	while read f
 	do
-		if [ ! -f $LIB/${REPLY##*/} ]; then
-			cp $REPLY $LIB
-			checkLink $REPLY
+		if [ ! -f $LIB/${f##*/} ]; then
+			cp $f $LIB
+			checkLink $f
 		fi
-	done < <(otool -L $1 | awk 'NR >= 2 && ! /(\/usr\/lib|\/System|@executable_path)\// { print $1 }')
+	done < <(
+		otool -L $1 | awk '
+			BEGIN {
+				reg = "(/usr/lib|/System|@executable_path)/"
+			}
+			NR >= 2 && $1 !~ reg {
+				print $1
+			}
+		'
+	)
 }
 checkLink $MACOS/$EXECUTABLE
 
@@ -232,9 +241,11 @@ def_optimize(){
 					sub("'$MACPORTS_PREFIX'", "@executable_path", y)
 					printf("\tinstall_name_tool -change %s %s %s\n", $1, y, "'$x'")
 				}
+				END {
+					print ""
+				}
 			'
 		)
-		echo ""
 	done
 }
 def_optimize `find $MACOS -type f -name "rawtherapee" -o -name "*.dylib" -o -name "*.so"`
