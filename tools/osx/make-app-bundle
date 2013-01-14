@@ -146,7 +146,6 @@ __EOF__
 cat > $MACOS/start <<'__EOF__'
 #!/bin/bash
 
-APP="${0%/Contents/*}"
 MACOS="${0%/*}"
 LIB="$MACOS"/lib
 ETC="$MACOS"/etc
@@ -175,7 +174,7 @@ export FONTCONFIG_PATH="$ETC"/fonts
 __EOF__
 
 cat >> $MACOS/start <<'__EOF__'
-ln -sf "$APP" /tmp
+ln -sf "${0%/Contents/*}" /tmp
 exec "$MACOS"/rawtherapee
 __EOF__
 
@@ -200,25 +199,27 @@ checkLink $MACOS/$EXECUTABLE
 
 # EXCLUDE 32-BIT BINARIES AND CONVERT TO RELATIVE PATHS
 def_optimize(){
-	echo "=> Excluding 32-bit binary"
-	bash -v <(
-		lipo -info "$@" | awk '
-			BEGIN {
-				FS = ": "
-			}
-			/i386/ {
-				sub(" .*$", "", $2)
-				printf("lipo -thin x86_64 -output %s %s\n", $2, $2)
-			}
-		'
-	)
+	if (( BIT_DEPTH == 64 )); then
+		echo "=> Excluding 32-bit binary"
+		bash -v <(
+			lipo -info "$@" | awk '
+				BEGIN {
+					FS = ": "
+				}
+				$3 ~ /i386/ {
+					sub(" .*$", "", $2)
+					printf("lipo -thin x86_64 -output %s %s\n", $2, $2)
+				}
+			'
+		)
+	fi
 	
 	echo "=> Converting to relative path"
 	for x in "$@"
 	do
 		echo "$x:"
 		bash -v <(
-			if [[ "${x##*.}" = dylib ]]; then
+			if [[ "${x##*.}" == dylib ]]; then
 				printf '\tinstall_name_tool -id %s %s\n' @executable_path/lib/${x##*/} $x
 			fi
 			
