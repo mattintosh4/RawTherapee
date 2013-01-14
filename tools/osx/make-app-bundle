@@ -7,7 +7,7 @@ RELEASE=Release
 EXECUTABLE=rawtherapee
 
 [ ! -d $RELEASE ] && {
-	echo "/!\ Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
+	echo '/!\ Please run this from the root of the project; i.e. "./tools/osx/make-app-bundle".'
 	exit
 }
 
