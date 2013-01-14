@@ -202,30 +202,38 @@ checkLink $MACOS/$EXECUTABLE
 def_optimize(){
 	echo "=> Excluding 32-bit binary"
 	bash -v <(
-		for f in "$@"
-		do
-			if [[ `lipo -info $f` =~ i386 ]]; then
-				printf 'lipo -thin x86_64 -output %s %s\n' $f $f
-			fi
-		done
+		lipo -info "$@" | awk '
+			BEGIN {
+				FS = ": "
+			}
+			/i386/ {
+				sub(" .*$", "", $2)
+				printf("lipo -thin x86_64 -output %s %s\n", $2, $2)
+			}
+		'
 	)
-
+	
 	echo "=> Converting to relative path"
-	for f in "$@"
+	for x in "$@"
 	do
-		echo $f:
+		echo "$x:"
 		bash -v <(
-			# CONVERT DYNAMIC LIBARIES ID
-			if [ "${f##*.}" = "dylib" ]; then
-				printf "\tinstall_name_tool -id %s %s\n" @executable_path/lib/${f##*/} $f
+			if [[ "${x##*.}" = dylib ]]; then
+				printf '\tinstall_name_tool -id %s %s\n' @executable_path/lib/${x##*/} $x
 			fi
-			# CONVERT DEPENDENTS LIBRARIES PATHS
-			while read
-			do
-				printf "\tinstall_name_tool -change %s %s %s\n" $REPLY @executable_path/lib/${REPLY##*/} $f
-			done < <(otool -L $f | grep -v "`otool -D $f`" | awk '! /(\/usr\/lib|\/System|@executable_path)\// { print $1 }')
-			echo
+			
+			otool -L $x | grep -v "`otool -D $x`" | awk '
+				BEGIN {
+					reg = "(/usr/lib|/System|@executable_path)/"
+				}
+				$1 !~ reg {
+					y = $1
+					sub("'$MACPORTS_PREFIX'", "@executable_path", y)
+					printf("\tinstall_name_tool -change %s %s %s\n", $1, y, "'$x'")
+				}
+			'
 		)
+		echo ""
 	done
 }
 def_optimize `find $MACOS -type f -name "rawtherapee" -o -name "*.dylib" -o -name "*.so"`
@@ -283,10 +291,6 @@ __EOF__
 
 echo "=> Creating distribution dmg"
 hdiutil create -format UDBZ -srcdir $DIST_DIR $RELEASE/$DMG
-
-
-
-
 
 rm -rf $DIST_DIR
 
