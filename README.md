@@ -1,4 +1,6 @@
-## RawTherapee 自動ビルドスクリプトの使い方 ##
+## How to use RawTherapee build script ##
+
+### Build and make bundle ###
 
 bash のプロセス置換と `curl` コマンドでこのリポジトリから直接実行できます。ソースディレクトリのルートに移動してから実行して下さい。
 
@@ -6,6 +8,8 @@ bash のプロセス置換と `curl` コマンドでこのリポジトリから�
 cd /path/to/source_root
 bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 ```
+
+### Make bundle ###
 
 バンドル化のみを行う場合は `make-app-bundle` を実行して下さい。
 
