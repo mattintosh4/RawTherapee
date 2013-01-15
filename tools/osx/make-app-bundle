@@ -46,7 +46,7 @@ RT_VERSION=${RT_VERSION:=4.0.9}
 
 ### DMG NAME ###
 DMG=rawtherapee_mac${BIT_DEPTH}_${RT_VERSION}.dmg
-(( X11_BUILD == 1 )) && DMG=${DMG%.*}_x11.dmg
+(( X11_BUILD == 1 )) && DMG=${DMG%.dmg}_x11.dmg
 
 ### DISTRIBUTION DIRECTORY(DMG VOLUME) NAME  ###
 DIST_DIR=RawTherapee${RT_VERSION}
