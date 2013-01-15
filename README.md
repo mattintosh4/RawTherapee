@@ -26,6 +26,8 @@ bash <(curl https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/make
 
 GTK ライブラリの場所を指定できます。これは主に JHBuild ユーザー向けです。
 
+You can set GTK libraries path. This variable is for JHBuild users.
+
 ```bash
 GTK_PREFIX=$HOME/gtk/inst \
 bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
@@ -34,6 +36,8 @@ bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 ### $CC/$CXX ###
 
 デフォルトでは `/opt/local/bin/gcc-mp-4.*` を使用しますが、CC や CXX を指定することができます。
+
+You can override compiler by these variables.
 
 ```bash
 CC=/usr/local/bin/clang \
