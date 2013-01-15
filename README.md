@@ -4,7 +4,7 @@ https://gist.github.com/4389088
 
 ***
 
-## RawTherapee 自動ビルドスクリプトの使い方
+## RawTherapee 自動ビルドスクリプトの使い方 ##
 
 bash のプロセス置換と `curl` コマンドでこのリポジトリから直接実行できます。ソースディレクトリのルートに移動してから実行して下さい。
 
@@ -12,6 +12,10 @@ bash のプロセス置換と `curl` コマンドでこのリポジトリから�
 cd /path/to/source_root
 bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 ```
+
+バンドル化のみを行う場合は `make-app-bundle` を実行して下さい。
+
+https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/make-app-bundle
 
 ### オプション ###
 
@@ -25,7 +29,7 @@ bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 ```
 
 #### CC/CXX ####
-	
+
 デフォルトでは `/opt/local/bin/gcc-mp-4.*` を使用しますが、CC や CXX を指定することができます。
 
 ```bash
