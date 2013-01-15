@@ -3,7 +3,6 @@
 # Maintainer        : mattintosh4
 # Information       : https://github.com/mattintosh4/RawTherapee
 # Stable source     : https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/make-app-bundle_sub.sh
-# Unstable source   : https://gist.github.com/4389088#file-make-app-bundle-sh
 
 # Function checkLink:
 # args: $1 - file
@@ -79,16 +78,14 @@ cp -R ${MACPORTS_PREFIX}/share/mime/* ${SHARE}/mime
 #Copy over etc files, and modify as needed
 echo "Copying configuration files from ${MACPORTS_PREFIX} and modifying for standalone app bundle..."
 cp -R $MACPORTS_PREFIX/etc/gtk-2.0 ${ETC}
-cp -R $MACPORTS_PREFIX/etc/pango ${ETC}
+cp -R $MACPORTS_PREFIX/etc/pango ${ETC} || mkdir ${ETC}/pango
 
 $MACPORTS_PREFIX/bin/gtk-query-immodules-2.0 \
 $MACPORTS_PREFIX/lib/gtk-2.0/*/immodules/*.so | sed "s|$MACPORTS_PREFIX|@executable_path|" > $ETC/gtk-2.0/gtk.immodules
 $MACPORTS_PREFIX/bin/gdk-pixbuf-query-loaders | sed "s|$MACPORTS_PREFIX|@executable_path|" > $ETC/gtk-2.0/gdk-pixbuf.loaders
 $MACPORTS_PREFIX/bin/pango-querymodules | sed "s|$MACPORTS_PREFIX|/tmp/$MACOS|" > $ETC/pango/pango.modules
-cat > $ETC/pango/pangorc <<__EOF__
-[Pango]
-ModuleFiles = /tmp/$ETC/pango/pango.modules
-__EOF__
+printf '[Pango]\nModuleFiles = %s' /tmp/$ETC/pango/pango.modules > $ETC/pango/pangorc
+
 rm ${LIB}/gdk-pixbuf-2.0/2.10.0/loaders.cache
 
 #Copy over the release files
