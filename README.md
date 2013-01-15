@@ -9,13 +9,15 @@ cd /path/to/source_root
 bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 ```
 
-## Make bundle ##
+## Only make bundle ##
 
 バンドル化のみを行う場合は `make-app-bundle` を実行して下さい。
 
+Run the `make-app-bundle` script.
+
 https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/make-app-bundle
 
-```sh
+```bash
 cd /path/to/source_root
 bash <(curl https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/make-app-bundle)
 ```
