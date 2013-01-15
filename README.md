@@ -1,9 +1,3 @@
-2012-12-28: 作業場所を Gist に移動しました。
-
-https://gist.github.com/4389088
-
-***
-
 ## RawTherapee 自動ビルドスクリプトの使い方 ##
 
 bash のプロセス置換と `curl` コマンドでこのリポジトリから直接実行できます。ソースディレクトリのルートに移動してから実行して下さい。
@@ -16,6 +10,11 @@ bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 バンドル化のみを行う場合は `make-app-bundle` を実行して下さい。
 
 https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/make-app-bundle
+
+```sh
+cd /path/to/source_root
+bash <(curl https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/make-app-bundle)
+```
 
 ### オプション ###
 
