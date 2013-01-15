@@ -1,6 +1,6 @@
-## How to use RawTherapee build script ##
+# How to use RawTherapee build script #
 
-### Build and make bundle ###
+## Build and make bundle ##
 
 bash のプロセス置換と `curl` コマンドでこのリポジトリから直接実行できます。ソースディレクトリのルートに移動してから実行して下さい。
 
@@ -9,7 +9,7 @@ cd /path/to/source_root
 bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 ```
 
-### Make bundle ###
+## Make bundle ##
 
 バンドル化のみを行う場合は `make-app-bundle` を実行して下さい。
 
@@ -20,9 +20,9 @@ cd /path/to/source_root
 bash <(curl https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/make-app-bundle)
 ```
 
-### オプション ###
+## Options ##
 
-#### GTK_PREFIX ####
+### $GTK_PREFIX ###
 
 GTK ライブラリの場所を指定できます。これは主に JHBuild ユーザー向けです。
 
@@ -31,7 +31,7 @@ GTK_PREFIX=$HOME/gtk/inst \
 bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
 ```
 
-#### CC/CXX ####
+### $CC/$CXX ###
 
 デフォルトでは `/opt/local/bin/gcc-mp-4.*` を使用しますが、CC や CXX を指定することができます。
 
