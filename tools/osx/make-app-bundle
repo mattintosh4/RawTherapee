@@ -6,10 +6,10 @@
 RELEASE=Release
 EXECUTABLE=rawtherapee
 
-[ ! -d $RELEASE ] && {
+if [ ! -d $RELEASE ]; then
 	echo '/!\ Please run this from the root of the project; i.e. "./tools/osx/make-app-bundle".'
 	exit
-}
+fi
 
 checkProp(){
 	### PATH OF GTK LIBRARY ###
@@ -28,7 +28,7 @@ checkProp(){
 	esac
 	
 	### X11 BUILD FLAG ###
-	if [[ $f =~ libgtk-x11 ]]; then
+	if echo ${f##*/} | grep -q "libgtk-x11.*dylib"; then
 		X11_BUILD=1
 	fi
 }
@@ -43,8 +43,6 @@ ETC=$MACOS/etc
 LIB=$MACOS/lib
 SHARE=$MACOS/share
 
-
-
 ### RAWTHERAPEE VERSION ###
 RT_VERSION=`awk '/^Version: / { print $2 }' $RELEASE/AboutThisBuild.txt`
 RT_VERSION=${RT_VERSION:=4.0.9}
@@ -53,7 +51,7 @@ RT_VERSION=${RT_VERSION:=4.0.9}
 DMG=rawtherapee_mac${BIT_DEPTH}_${RT_VERSION}.dmg
 (( X11_BUILD == 1 )) && DMG=${DMG%.*}_x11.dmg
 
-### DISTRIBUTION DIRECTORY NAME (DMG VOLUME NAME) ###
+### DISTRIBUTION DIRECTORY(DMG VOLUME) NAME  ###
 DIST_DIR=RawTherapee${RT_VERSION}
 
 test -e $APP && rm -rf $_ && echo "=> Removed old application"
@@ -70,13 +68,10 @@ cp -R	$MACPORTS_PREFIX/lib/pango \
 		$MACPORTS_PREFIX/lib/gtk-2.0 \
 		$MACPORTS_PREFIX/lib/gdk-pixbuf* \
 		$LIB
-
-#Copy over mimes (if a mime is copied, and nobody hears, is it really copied?)
 echo "=> Copying shared files from $MACPORTS_PREFIX"
-cp -R	$MACPORTS_PREFIX/share/mime \
-		$SHARE
+cp -R   $MACPORTS_PREFIX/share/mime \
+        $SHARE
 
-#Copy over etc files, and modify as needed
 echo "=> Copying configuration files from ${MACPORTS_PREFIX} and modifying for standalone app bundle"
 cp -R $MACPORTS_PREFIX/etc/gtk-2.0 $ETC
 cp -R $MACPORTS_PREFIX/etc/pango $ETC || mkdir $ETC/pango
@@ -89,23 +84,26 @@ printf '[Pango]\nModuleFiles = %s\n' /tmp/$ETC/pango/pango.modules > $ETC/pango/
 
 # REMOVE UNUSED FILES
 echo "=> Removing not used files"
-rm -rf	$LIB/gdk-pixbuf-2.0/*/loaders.cache \
-		$LIB/gtk-2.0/*/printbackends \
-		$LIB/gtk-2.0/include \
-		$LIB/gtk-2.0/modules
+rm -rf  $LIB/gdk-pixbuf-2.0/*/loaders.cache \
+        $LIB/gtk-2.0/*/printbackends \
+        $LIB/gtk-2.0/include \
+        $LIB/gtk-2.0/modules \
+        $LIB/pango/*/modules.cache
 find $LIB -name "*.la" | xargs rm
 find $LIB/gtk-2.0/*/engines/* ! -name "libclearlooks.so" | xargs rm
 
+
+
+
+
 echo "=> Copying release files"
-cp -R	$RELEASE/* \
-		$MACOS
+cp -R   $RELEASE/* \
+        $MACOS
 
 ### ADD MAC OS BUILD VERSION TO AboutThisBuild.txt
-echo "MacOS build version: `sw_vers -productVersion`" >> $MACOS/AboutThisBuild.txt
-
+printf 'MacOS build version: %s\n' `sw_vers -productVersion` >> $MACOS/AboutThisBuild.txt
 
 echo "=> Creating required application bundle files"
-
 cp tools/osx/Icons.icns $RESOURCES
 
 cat > $CONTENTS/Info.plist <<__EOF__
@@ -139,7 +137,8 @@ __EOF__
 
 
 
-### LAUNCH SCRIPT ###
+
+### CREATE LAUNCH SCRIPT ###
 cat > $MACOS/start <<'__EOF__'
 #!/bin/bash
 
@@ -248,6 +247,9 @@ def_optimize(){
 def_optimize `find $MACOS -type f -name "rawtherapee" -o -name "*.dylib" -o -name "*.so"`
 
 
+
+
+
 ### SET UP DISTRIBUTION DIRECTORY
 echo "=> Creating and setup distribution directory"
 test -d $DIST_DIR && rm -rf $_
@@ -258,11 +260,11 @@ if (( X11_BUILD == 1 )); then
 printf '[PangoX]\nAliasFiles = %s\n' /tmp/$ETC/pango/pangox.aliases >> $ETC/pango/pangorc
 cp -RL $MACPORTS_PREFIX/etc/fonts $ETC
 sed -i "" \
-	-e "s|<dir>$MACPORTS_PREFIX/share/fonts</dir>||" \
-	-e "s|<cachedir>$MACPORTS_PREFIX/var/cache/fontconfig</cachedir>||" \
-	-e "s|\(<include ignore_missing=\"yes\">\)$MACPORTS_PREFIX\(/etc/fonts/conf.d</include>\)|\1/tmp/$MACOS\2|" \
-	$ETC/fonts/fonts.conf
-test -d $ETC/fonts/conf.avail && rm -rf $_
+    -e "s|<dir>$MACPORTS_PREFIX/share/fonts</dir>||" \
+    -e "s|<cachedir>$MACPORTS_PREFIX/var/cache/fontconfig</cachedir>||" \
+    -e "s|$MACPORTS_PREFIX/etc/fonts/conf.d|/tmp/$ETC/fonts/conf.d|" \
+    $ETC/fonts/fonts.conf
+rm -rf $ETC/fonts/conf.avail
 
 cat > $DIST_DIR/XQuartz.webloc <<'__EOF__'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -287,7 +289,7 @@ fi
 cp $MACOS/AboutThisBuild.txt $DIST_DIR
 mv $APP $DIST_DIR
 ln -s /Applications $DIST_DIR
-cat > $DIST_DIR/"RawTherapee Blog".webloc <<-'__EOF__'
+cat > $DIST_DIR/"RawTherapee Blog".webloc <<'__EOF__'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
