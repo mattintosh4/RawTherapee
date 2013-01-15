@@ -44,7 +44,7 @@ MACPORTS_PREFIX=`otool -L $RELEASE/$EXECUTABLE | awk '/libgtk-.*dylib/ { print $
 MACPORTS_PREFIX=${MACPORTS_PREFIX%/lib/*}
 
 # ORIGINAL MACPORTS PREFIX
-#MACPORTS_PREFIX=`which port`; #MACPORTS_PREFIX=${MACPORTS_PREFIX%/bin/port}
+#MACPORTS_PREFIX=`which port | sed "s|/bin/port||"`
 
 if [ ! -d ${RELEASE} ]; then
 	echo "Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
