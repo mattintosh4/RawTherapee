@@ -1,36 +1,33 @@
 #!/bin/bash
-#
-# indent type: tab
-# indent size: 4
 
 RELEASE=Release
 EXECUTABLE=rawtherapee
 
 if [ ! -d $RELEASE ]; then
-	echo '/!\ Please run this from the root of the project; i.e. "./tools/osx/make-app-bundle".'
-	exit
+    echo '/!\ Please run this from the root of the project; i.e. "./tools/osx/make-app-bundle".'
+    exit
 fi
 
 checkProp(){
-	### PATH OF GTK LIBRARY ###
-	local f=`otool -L $1 | awk '/libgtk-.*dylib/ { print $1 }'`
-	
-	### GTK/MACPORTS PREFIX ###
-	MACPORTS_PREFIX=${f%/lib/*}
-	
-	### CORRECT MACPORTS PREFIX ###
-	#MACPORTS_PREFIX=`which port | sed "s|/bin/port||"`
-	
-	### BIT DEPTH ###
-	case `lipo -info $1 | awk '{ print $NF }'` in
-		x86_64) BIT_DEPTH=64;;
-		i386  ) BIT_DEPTH=32;;
-	esac
-	
-	### X11 BUILD FLAG ###
-	if echo ${f##*/} | grep -q "libgtk-x11.*dylib"; then
-		X11_BUILD=1
-	fi
+    ### PATH OF GTK LIBRARY ###
+    local f=`otool -L $1 | awk '/libgtk-.*dylib/ { print $1 }'`
+    
+    ### GTK/MACPORTS PREFIX ###
+    MACPORTS_PREFIX=${f%/lib/*}
+    
+    ### CORRECT MACPORTS PREFIX ###
+    #MACPORTS_PREFIX=`which port | sed "s|/bin/port||"`
+    
+    ### BIT DEPTH ###
+    case `lipo -info $1 | awk '{ print $NF }'` in
+        x86_64) BIT_DEPTH=64;;
+        i386  ) BIT_DEPTH=32;;
+    esac
+    
+    ### X11 BUILD FLAG ###
+    if echo ${f##*/} | grep -q "libgtk-x11.*dylib"; then
+        X11_BUILD=1
+    fi
 }
 checkProp $RELEASE/$EXECUTABLE
 
@@ -58,16 +55,17 @@ test -e $APP && rm -rf $_ && echo "=> Removed old application"
 test -e $RELEASE/rawtherapee*.dmg && rm $_ && echo "=> Removed any old disk images"
 
 echo "=> Creating application directory structure"
-mkdir -p	$RESOURCES \
-			$ETC \
-			$LIB \
-			$SHARE
+mkdir -p    $RESOURCES \
+            $ETC \
+            $LIB \
+            $SHARE
 
 echo "=> Copying libraries from $MACPORTS_PREFIX"
-cp -R	$MACPORTS_PREFIX/lib/pango \
-		$MACPORTS_PREFIX/lib/gtk-2.0 \
-		$MACPORTS_PREFIX/lib/gdk-pixbuf* \
-		$LIB
+cp -R   $MACPORTS_PREFIX/lib/pango \
+        $MACPORTS_PREFIX/lib/gtk-2.0 \
+        $MACPORTS_PREFIX/lib/gdk-pixbuf* \
+        $LIB
+
 echo "=> Copying shared files from $MACPORTS_PREFIX"
 cp -R   $MACPORTS_PREFIX/share/mime \
         $SHARE
@@ -183,66 +181,66 @@ chmod +x $MACOS/start
 #Copy and relink the explicitly defined libraries
 echo "=> Recursively copying libraries referenced by executable"
 checkLink(){
-	while read f
-	do
-		if [ ! -f $LIB/${f##*/} ]; then
-			cp $f $LIB
-			checkLink $f
-		fi
-	done < <(
-		otool -L $1 | awk '
-			BEGIN {
-				reg = "(/usr/lib|/System|@executable_path)/"
-			}
-			NR >= 2 && $1 !~ reg {
-				print $1
-			}
-		'
-	)
+    while read f
+    do
+        if [ ! -f $LIB/${f##*/} ]; then
+            cp $f $LIB
+            checkLink $f
+        fi
+    done < <(
+        otool -L $1 | awk '
+            BEGIN {
+                reg = "(/usr/lib|/System|@executable_path)/"
+            }
+            NR >= 2 && $1 !~ reg {
+                print $1
+            }
+        '
+    )
 }
 checkLink $MACOS/$EXECUTABLE
 
 # EXCLUDE 32-BIT BINARIES AND CONVERT TO RELATIVE PATHS
 def_optimize(){
-	if (( BIT_DEPTH == 64 )); then
-		echo "=> Excluding 32-bit binary"
-		bash -v <(
-			lipo -info "$@" | awk '
-				BEGIN {
-					FS = ": "
-				}
-				$3 ~ /i386/ {
-					sub(" .*$", "", $2)
-					printf("lipo -thin x86_64 -output %s %s\n", $2, $2)
-				}
-			'
-		)
-	fi
-	
-	echo "=> Converting to relative path"
-	for x in "$@"
-	do
-		echo "$x:"
-		bash -v <(
-			if [[ "${x##*.}" == dylib ]]; then
-				printf '\tinstall_name_tool -id %s %s\n' @executable_path/lib/${x##*/} $x
-			fi
-			
-			otool -L $x | grep -v "`otool -D $x`" | awk '
-				BEGIN {
-					reg = "(/usr/lib|/System|@executable_path)/"
-				}
-				$1 !~ reg {
-					y = $1
-					sub("'$MACPORTS_PREFIX'", "@executable_path", y)
-					printf("\tinstall_name_tool -change %s %s %s\n", $1, y, "'$x'")
-				}
-				END {
-					print ""
-				}
-			'
-		)
-	done
+    if (( BIT_DEPTH == 64 )); then
+        echo "=> Excluding 32-bit binary"
+        bash -v <(
+            lipo -info "$@" | awk '
+                BEGIN {
+                    FS = ": "
+                }
+                $3 ~ /i386/ {
+                    sub(" .*$", "", $2)
+                    printf("lipo -thin x86_64 -output %s %s\n", $2, $2)
+                }
+            '
+        )
+    fi
+    
+    echo "=> Converting to relative path"
+    for x in "$@"
+    do
+        echo "$x:"
+        bash -v <(
+            if [[ "${x##*.}" == dylib ]]; then
+                printf '\tinstall_name_tool -id %s %s\n' @executable_path/lib/${x##*/} $x
+            fi
+            
+            otool -L $x | grep -v "`otool -D $x`" | awk '
+                BEGIN {
+                    reg = "(/usr/lib|/System|@executable_path)/"
+                }
+                $1 !~ reg {
+                    y = $1
+                    sub("'$MACPORTS_PREFIX'", "@executable_path", y)
+                    printf("\tinstall_name_tool -change %s %s %s\n", $1, y, "'$x'")
+                }
+                END {
+                    print ""
+                }
+            '
+        )
+    done
 }
 def_optimize `find $MACOS -type f -name "rawtherapee" -o -name "*.dylib" -o -name "*.so"`
 
