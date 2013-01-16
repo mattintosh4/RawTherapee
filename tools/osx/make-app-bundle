@@ -228,7 +228,7 @@ def_optimize(){
                 }
                 $1 !~ reg {
                     y = $1
-                    sub(/^.*\//, "@executable_path/lib/", y)
+                    sub("^.*/", "@executable_path/lib/", y)
                     printf("\tinstall_name_tool -change %s %s %s\n", $1, y, "'$x'")
                 }
                 END {
