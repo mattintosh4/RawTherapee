@@ -1,6 +1,6 @@
 diff -r b681d69af34d tools/osx/make-app-bundle
 --- a/tools/osx/make-app-bundle	Tue Jan 08 02:58:45 2013 +0000
-+++ b/tools/osx/make-app-bundle	Wed Jan 16 10:36:10 2013 +0900
++++ b/tools/osx/make-app-bundle	Wed Jan 16 10:39:15 2013 +0900
 @@ -29,14 +29,17 @@
  LIB=${MACOS}/lib
  SHARE=${MACOS}/share
@@ -82,8 +82,8 @@ diff -r b681d69af34d tools/osx/make-app-bundle
  echo "Recursively copying libraries referenced by executable..."
 diff -r b681d69af34d tools/osx/start
 --- a/tools/osx/start	Tue Jan 08 02:58:45 2013 +0000
-+++ b/tools/osx/start	Wed Jan 16 10:36:10 2013 +0900
-@@ -1,19 +1,18 @@
++++ b/tools/osx/start	Wed Jan 16 10:39:15 2013 +0900
+@@ -1,7 +1,6 @@
  #!/bin/bash
  
 -CWD=`dirname "$0"`
@@ -92,10 +92,9 @@ diff -r b681d69af34d tools/osx/start
  
  export DYLD_LIBRARY_PATH="${CWD}/lib:$DYLD_LIBRARY_PATH"
  export GTK_DATA_PREFIX="${CWD}"
- export GTK_DATA_DIRS="${CWD}"
- export GTK_EXE_PREFIX="${CWD}"
+@@ -10,10 +9,11 @@
  export GTK_PATH="${CWD}"
--
+ 
  export GTK2_RC_FILES="${CWD}/etc/gtk-2.0/gtkrc"
 -export GTK_IM_MODULE_FILE="${CWD}/gtk-2.0/gtk.immodules"
 +export GTK_IM_MODULE_FILE="${CWD}/etc/gtk-2.0/gtk.immodules"
