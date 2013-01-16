@@ -203,11 +203,11 @@ def_optimize(){
         bash -v <(
             lipo -info "$@" | awk '
                 BEGIN {
-                    FS = ": "
+                    FS = ": ";
                 }
                 $3 ~ /i386/ {
-                    sub(" .*$", "", $2)
-                    printf("lipo -thin x86_64 -output %s %s\n", $2, $2)
+                    sub(" .*$", "", $2);
+                    printf "lipo -thin x86_64 -output %s %s\n", $2, $2;
                 }
             '
         )
@@ -224,15 +224,15 @@ def_optimize(){
             
             otool -L $x | grep -v "`otool -D $x`" | awk '
                 BEGIN {
-                    reg = "(/usr/lib|/System|@executable_path)/"
+                    reg = "(/usr/lib|/System|@executable_path)/";
                 }
                 $1 !~ reg {
-                    y = $1
-                    sub("^.*/", "@executable_path/lib/", y)
-                    printf("\tinstall_name_tool -change %s %s %s\n", $1, y, "'$x'")
+                    y = $1;
+                    sub(".*/", "@executable_path/lib/", y);
+                    printf "\tinstall_name_tool -change %s %s %s\n", $1, y, "'$x'";
                 }
                 END {
-                    print ""
+                    print "";
                 }
             '
         )
