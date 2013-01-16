@@ -1,7 +1,7 @@
 diff -r b681d69af34d tools/osx/make-app-bundle
 --- a/tools/osx/make-app-bundle	Tue Jan 08 02:58:45 2013 +0000
-+++ b/tools/osx/make-app-bundle	Wed Jan 16 10:39:15 2013 +0900
-@@ -29,14 +29,17 @@
++++ b/tools/osx/make-app-bundle	Wed Jan 16 12:40:38 2013 +0900
+@@ -29,14 +29,16 @@
  LIB=${MACOS}/lib
  SHARE=${MACOS}/share
  RELEASE=Release
@@ -17,15 +17,14 @@ diff -r b681d69af34d tools/osx/make-app-bundle
 -MACPORTS_PREFIX=`dirname $MACPORTS_PREFIX`
 -MACPORTS_PREFIX=`dirname $MACPORTS_PREFIX`
 +# GTK/MACPORTS PREFIX
-+MACPORTS_PREFIX=`otool -L $RELEASE/$EXECUTABLE | awk '/libgtk-.*dylib/ { print $1 }'`
-+MACPORTS_PREFIX=${MACPORTS_PREFIX%/lib/*}
++MACPORTS_PREFIX=`otool -L $RELEASE/$EXECUTABLE | awk -v suf="/lib/libgtk-.*dylib" '$1 ~ suf { sub(suf, "", $1); print $1 }'`
 +
 +# ORIGINAL MACPORTS PREFIX
 +#MACPORTS_PREFIX=`which port | sed "s|/bin/port$||"`
  
  if [ ! -d ${RELEASE} ]; then
  	echo "Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
-@@ -70,10 +73,12 @@
+@@ -70,10 +72,12 @@
  #Copy over etc files, and modify as needed
  echo "Copying configuration files from ${MACPORTS_PREFIX} and modifying for standalone app bundle..."
  cp -R $MACPORTS_PREFIX/etc/gtk-2.0 ${ETC}
@@ -42,7 +41,7 @@ diff -r b681d69af34d tools/osx/make-app-bundle
  rm ${LIB}/gdk-pixbuf-2.0/2.10.0/loaders.cache
  
  #Copy over the release files
-@@ -82,9 +87,36 @@
+@@ -82,9 +86,36 @@
  
  #Copy application-specific stuff like icons and startup script
  echo "Creating required application bundle files..."
@@ -82,7 +81,7 @@ diff -r b681d69af34d tools/osx/make-app-bundle
  echo "Recursively copying libraries referenced by executable..."
 diff -r b681d69af34d tools/osx/start
 --- a/tools/osx/start	Tue Jan 08 02:58:45 2013 +0000
-+++ b/tools/osx/start	Wed Jan 16 10:39:15 2013 +0900
++++ b/tools/osx/start	Wed Jan 16 12:40:38 2013 +0900
 @@ -1,7 +1,6 @@
  #!/bin/bash
  
