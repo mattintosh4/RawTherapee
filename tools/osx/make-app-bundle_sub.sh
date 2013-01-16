@@ -1,9 +1,4 @@
 #!/bin/bash
-#
-# Maintainer        : mattintosh4
-# Information       : https://github.com/mattintosh4/RawTherapee
-# Stable source     : https://github.com/mattintosh4/RawTherapee/blob/master/tools/osx/make-app-bundle_sub.sh
-
 # Function checkLink:
 # args: $1 - file
 #
@@ -44,7 +39,7 @@ MACPORTS_PREFIX=`otool -L $RELEASE/$EXECUTABLE | awk '/libgtk-.*dylib/ { print $
 MACPORTS_PREFIX=${MACPORTS_PREFIX%/lib/*}
 
 # ORIGINAL MACPORTS PREFIX
-#MACPORTS_PREFIX=`which port | sed "s|/bin/port||"`
+#MACPORTS_PREFIX=`which port | sed "s|/bin/port$||"`
 
 if [ ! -d ${RELEASE} ]; then
 	echo "Please run this from the root of the project; i.e. './tools/osx/make-app-bundle'."
@@ -85,7 +80,6 @@ $MACPORTS_PREFIX/lib/gtk-2.0/*/immodules/*.so | sed "s|$MACPORTS_PREFIX|@executa
 $MACPORTS_PREFIX/bin/gdk-pixbuf-query-loaders | sed "s|$MACPORTS_PREFIX|@executable_path|" > $ETC/gtk-2.0/gdk-pixbuf.loaders
 $MACPORTS_PREFIX/bin/pango-querymodules | sed "s|$MACPORTS_PREFIX|/tmp/$MACOS|" > $ETC/pango/pango.modules
 printf '[Pango]\nModuleFiles = %s' /tmp/$ETC/pango/pango.modules > $ETC/pango/pangorc
-
 rm ${LIB}/gdk-pixbuf-2.0/2.10.0/loaders.cache
 
 #Copy over the release files
@@ -95,13 +89,7 @@ cp -R ${RELEASE}/* ${MACOS}
 #Copy application-specific stuff like icons and startup script
 echo "Creating required application bundle files..."
 cp tools/osx/Icons.icns ${RESOURCES}
-# Download the latest launch script from GitHub
-if curl -o $MACOS/start https://raw.github.com/mattintosh4/RawTherapee/master/tools/osx/start_sub.sh; then
-	chmod +x $MACOS/start
-else
-	echo 'Downloading the launch script failed. Please retry the beginning.'
-	exit
-fi
+cp tools/osx/start ${MACOS}
 cat > $CONTENTS/Info.plist <<__EOF__
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
