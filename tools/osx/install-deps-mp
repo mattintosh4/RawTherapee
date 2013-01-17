@@ -8,7 +8,7 @@ fi
 if [ "$1" = "-" ]; then
 
 cmd(){
-    printf '\e[1;32m*** Installing %s *** [%d/%d] \e[m\n' "$*" $((i++)) $PN
+    printf '\e[1;34m*** Installing %s *** [%d/%d] \e[m\n' "$*" $((i++)) $PN
     sudo port install "$@"
 }
 PN=12
