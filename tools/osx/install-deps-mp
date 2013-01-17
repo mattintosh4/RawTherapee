@@ -21,7 +21,7 @@ cmd cairo +quartz \
 && cmd lcms2 \
 && cmd libiptcdata \
 && cmd gcc45 \
-&& cmd coreutils \
+&& cmd binutils \
 && cmd fftw-3-single +gcc45 \
 && cmd cmake \
 && cmd mercurial \
@@ -56,7 +56,7 @@ Dependencies
 Tools
 -----
     gcc45
-    coreutils
+    binutils
     cmake
     mercurial
 
