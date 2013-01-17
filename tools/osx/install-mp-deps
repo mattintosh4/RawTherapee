@@ -1,0 +1,81 @@
+#!/bin/bash
+
+if ! [ `which port` ]; then
+    printf '\e[31mMacPorts is not installed.\e[m\n'
+    exit
+fi
+
+if [ "$1" = "-" ]; then
+
+cmd(){
+    printf '\e[1;32m*** Installing %s *** [%d/%d] \e[m\n' "$*" $((i++)) $PN
+    sudo port install "$@"
+}
+PN=11
+i=1
+cmd cairo +quartz \
+&& cmd pango-devel +no_x11+quartz \
+&& cmd gtk2 +no_x11+quartz \
+&& cmd gtkmm \
+&& cmd gtk-engines2 \
+&& cmd lcms2 \
+&& cmd libiptcdata \
+&& cmd gcc45 \
+&& cmd fftw-3-single +gcc45 \
+&& cmd cmake \
+&& cmd mercurial \
+&& printf '\e[1;32m*** Success ***\e[m\n' \
+|| printf '\e[1;31m*** Failed ***\e[m\n' && exit 1
+
+else
+
+cat <<'__EOS__'
+
+Dependencies and tools installation support script for building RawTherapee
+===========================================================================
+
+/!\ If you have already installed, these ports may be overwritten.
+
+Dependencies
+------------
+    cairo [+quartz]
+        glib2
+    pango-devel [+no_x11/+quartz]
+    gtk2 [+no_x11/+quartz]
+        gdk-pixbuf2
+    gtkmm
+        glibmm
+        cairomm
+        pangomm
+    gtk-engines2
+    lcms2
+    libiptcdata
+    fftw-3-single [+gcc45]
+
+Tools
+-----
+    coreutils
+    cmake
+    mercurial
+    gcc45
+
+__EOS__
+
+expect -c "
+set timeout -1
+stty -echo
+send_user \"Enter passphrase for key: \"
+expect_user -re \"(.*)\n\"
+send_user \n
+set PASSWD \$expect_out(1,string)
+stty echo
+spawn $0 -
+expect {
+    Password: {
+        send \$PASSWD\n
+        interact
+    }
+}
+"
+
+fi
