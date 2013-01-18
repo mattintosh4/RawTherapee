@@ -20,8 +20,8 @@ cmd cairo +quartz \
 && cmd gtk-engines2 \
 && cmd lcms2 \
 && cmd libiptcdata \
-&& cmd binutils \
 && cmd fftw-3-single \
+&& cmd binutils \
 && cmd gcc47 \
 && cmd cmake \
 && cmd mercurial \
@@ -51,12 +51,12 @@ Dependencies
     gtk-engines2
     lcms2
     libiptcdata
-    fftw-3-single [+gcc45]
+    fftw-3-single
 
 Tools
 -----
-    gcc45
     binutils
+    gcc47
     cmake
     mercurial
 
