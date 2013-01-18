@@ -22,7 +22,8 @@ cmd cairo +quartz \
 && cmd libiptcdata \
 && cmd gcc45 \
 && cmd binutils \
-&& cmd fftw-3-single +gcc45 \
+&& cmd fftw-3-single \
+&& cmd gcc47 \
 && cmd cmake \
 && cmd mercurial \
 && printf '\e[1;32m*** Success ***\e[m\n' \
