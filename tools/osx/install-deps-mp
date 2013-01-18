@@ -20,7 +20,6 @@ cmd cairo +quartz \
 && cmd gtk-engines2 \
 && cmd lcms2 \
 && cmd libiptcdata \
-&& cmd gcc45 \
 && cmd binutils \
 && cmd fftw-3-single \
 && cmd gcc47 \
