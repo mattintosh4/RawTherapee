@@ -9,13 +9,11 @@ if [ "$1" = "-" ]; then
 
 cmd(){
     printf '\e[1;34m*** Installing %s *** [%d/%d] \e[m\n' "$*" $((i++)) $PN
-    sudo port install "$@"
+    sudo port -f install "$@"
 }
 PN=12
 i=1
-cmd cairo +quartz \
-&& cmd pango-devel +no_x11+quartz \
-&& cmd gtk2 +no_x11+quartz \
+cmd gtk2 +no_x11+quartz-x11 \
 && cmd gtkmm \
 && cmd gtk-engines2 \
 && cmd lcms2 \
@@ -74,6 +72,8 @@ spawn $0 -
 expect {
     Password: {
         send \$PASSWD\n
+        interact
+        exp_continue
     }
 }
 "
