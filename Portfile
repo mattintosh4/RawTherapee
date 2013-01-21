@@ -23,7 +23,7 @@ distfiles                   0e71728f0dff92da97d690dec374999cc081d931.zip
 checksums                   md5 ccf6e9ff1a4371c83ee80eb2b54f17fc
 
 #variant devel {
-#   depends_fetch          port:mercurial
+#   depends_fetch           port:mercurial
 #}
 #pre-fetch {
 #   if {[variant_isset devel]} {
