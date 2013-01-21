@@ -4,7 +4,7 @@
 PortSystem                  1.0
 name                        rawtherapee
 version                     4.0.9
-revision                    187
+revision                    188
 platforms                   darwin
 categories                  graphics
 maintainers                 nomaintainer
@@ -18,18 +18,6 @@ universal_variant           no
 
 homepage                    http://rawtherapee.com
 use_zip                     yes
-master_sites                http://rawtherapee.googlecode.com/archive
-distfiles                   0e71728f0dff92da97d690dec374999cc081d931.zip
-checksums                   md5 ccf6e9ff1a4371c83ee80eb2b54f17fc
-
-#variant devel {
-#   depends_fetch           port:mercurial
-#}
-#pre-fetch {
-#   if {[variant_isset devel]} {
-#       hg.url              https://code.google.com/p/rawtherapee/
-#   }
-#}
 
 depends_build               port:pkgconfig \
                             port:gcc47 \
@@ -43,11 +31,25 @@ depends_lib                 port:gtk2 \
                             port:libiptcdata \
                             port:fftw-3-single
 
+variant devel {
+    depends_fetch           port:mercurial
+}
+
+if {![variant_isset devel]} {
+    master_sites            http://rawtherapee.googlecode.com/archive
+    distfiles               924d2a8c79e00b60e5af275dcfb44587fe2d9c42.zip
+    checksums               md5 66aecbde5b82890df935e3dc3591a075
+} else {
+    fetch.type              hg
+    hg.url                  https://code.google.com/p/rawtherapee/
+    hg.tag                  tip
+}
+
 build.dir                   ${worksrcpath}/build
 configure.dir               ${build.dir}
 
 pre-configure {
-    move ${workpath}/rawtherapee-0e71728f0dff ${workpath}/${distname}
+    move ${workpath}/rawtherapee-924d2a8c79e0 ${workpath}/${distname}
     xinstall -d -m 0755 ${build.dir}
 }
 
@@ -61,9 +63,8 @@ set origin ${destroot}${prefix}/libexec/${distname}
 configure.args              -D BUNDLE_BASE_INSTALL_DIR=${origin} \
                             -D CMAKE_BUILD_TYPE=Release \
                             -D CMAKE_OSX_ARCHITECTURES=x86_64 \
-                            -D PROC_TARGET_NUMBER=1
-
-#configure.args-append      -D CMAKE_VERBOSE_MAKEFILE=ON
+                            -D PROC_TARGET_NUMBER=1 \
+                            -D CMAKE_VERBOSE_MAKEFILE=ON
 
 configure.post_args         ${worksrcpath}
 
