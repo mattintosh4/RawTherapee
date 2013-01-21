@@ -33,14 +33,15 @@ checksums                   md5 ccf6e9ff1a4371c83ee80eb2b54f17fc
 
 depends_build               port:pkgconfig \
                             port:gcc47 \
-                            port:cmake
+                            port:cmake \
+                            port:mercurial
 
-depends_lib                 path:lib/pkgconfig/gtk+-quartz-2.0.pc:gtk2 \
-                            path:lib/pkgconfig/gtkmm-2.4.pc:gtkmm \
-                            port:lib/pkgconfig/gtk-engines-2.pc:gtk-engines2 \
-                            path:lib/pkgconfig/lcms2.pc:lcms2 \
-                            path:lib/pkgconfig/libiptcdata.pc:libiptcdata \
-                            path:lib/pkgconfig/fftw3f.pc:fftw-3-single
+depends_lib                 port:gtk2 \
+                            port:gtkmm \
+                            port:gtk-engines2 \
+                            port:lcms2 \
+                            port:libiptcdata \
+                            port:fftw-3-single
 
 build.dir                   ${worksrcpath}/build
 configure.dir               ${build.dir}
@@ -62,7 +63,7 @@ configure.args              -D BUNDLE_BASE_INSTALL_DIR=${origin} \
                             -D CMAKE_OSX_ARCHITECTURES=x86_64 \
                             -D PROC_TARGET_NUMBER=1
 
-#configure.args-append -D CMAKE_VERBOSE_MAKEFILE=ON
+#configure.args-append      -D CMAKE_VERBOSE_MAKEFILE=ON
 
 configure.post_args         ${worksrcpath}
 
