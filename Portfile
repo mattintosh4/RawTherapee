@@ -27,7 +27,7 @@ checksums                   md5 ccf6e9ff1a4371c83ee80eb2b54f17fc
 #}
 #pre-fetch {
 #   if {[variant_isset devel]} {
-##        hg.url            https://code.google.com/p/rawtherapee/
+#       hg.url              https://code.google.com/p/rawtherapee/
 #   }
 #}
 
