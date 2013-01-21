@@ -1,84 +1,85 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 # $Id$
 
-PortSystem			1.0
-name				rawtherapee
-version				4.0.9
-revision			187
-platforms			darwin
-categories			graphics
-maintainers			nomaintainer
-license				GPL-3
-description			The powerful 64-bit open source raw converter
-long_description	RawTherapee is a cross platform image processing software equipped with \
-					the essential tools for high quality and efficient RAW photo development.
+PortSystem          1.0
+name                rawtherapee
+version             4.0.9
+revision            187
+platforms           darwin
+categories          graphics
+maintainers         nomaintainer
+license             GPL-3
+description         The powerful 64-bit open source raw converter
+long_description    RawTherapee is a cross platform image processing software equipped with \
+                    the essential tools for high quality and efficient RAW photo development.
 
-use_parallel_build	yes
-universal_variant	no
+use_parallel_build  yes
+universal_variant   no
 
-homepage			http://rawtherapee.com
-use_zip				yes
-master_sites		http://rawtherapee.googlecode.com/archive
-distfiles			0e71728f0dff92da97d690dec374999cc081d931.zip
-checksums			md5 ccf6e9ff1a4371c83ee80eb2b54f17fc
+homepage            http://rawtherapee.com
+use_zip             yes
+master_sites        http://rawtherapee.googlecode.com/archive
+distfiles           0e71728f0dff92da97d690dec374999cc081d931.zip
+checksums           md5 ccf6e9ff1a4371c83ee80eb2b54f17fc
 
 #variant devel {
-#	depends_fetch	port:mercurial
+#    depends_fetch    port:mercurial
 #}
 #pre-fetch {
-#	if {[variant_isset devel]} {
-##		hg.url		https://code.google.com/p/rawtherapee/
-#	}
+#    if {[variant_isset devel]} {
+##        hg.url        https://code.google.com/p/rawtherapee/
+#    }
 #}
 
-depends_build		port:pkgconfig \
-					port:gcc47 \
-					port:cmake
+depends_build       port:pkgconfig \
+                    port:gcc47 \
+                    port:cmake
 
-depends_lib			path:lib/pkgconfig/gtk+-quartz-2.0.pc:gtk2 \
-					path:lib/pkgconfig/gtkmm-2.4.pc:gtkmm \
-					port:lib/pkgconfig/gtk-engines-2.pc:gtk-engines2 \
-					path:lib/pkgconfig/lcms2.pc:lcms2 \
-					path:lib/pkgconfig/libiptcdata.pc:libiptcdata \
-					path:lib/pkgconfig/fftw3f.pc:fftw-3-single
+depends_lib         path:lib/pkgconfig/gtk+-quartz-2.0.pc:gtk2 \
+                    path:lib/pkgconfig/gtkmm-2.4.pc:gtkmm \
+                    port:lib/pkgconfig/gtk-engines-2.pc:gtk-engines2 \
+                    path:lib/pkgconfig/lcms2.pc:lcms2 \
+                    path:lib/pkgconfig/libiptcdata.pc:libiptcdata \
+                    path:lib/pkgconfig/fftw3f.pc:fftw-3-single
 
-build.dir			${worksrcpath}/build
-configure.dir		${build.dir}
+build.dir           ${worksrcpath}/build
+configure.dir       ${build.dir}
 
 pre-configure {
-	move ${workpath}/rawtherapee-0e71728f0dff ${workpath}/${distname}
-	xinstall -d -m 0755 ${build.dir}
+    move ${workpath}/rawtherapee-0e71728f0dff ${workpath}/${distname}
+    xinstall -d -m 0755 ${build.dir}
 }
 
-configure.cmd				cmake
-configure.compiler			macports-gcc-4.7
-configure.pre_args-delete	--prefix=${prefix}
-configure.optflags-delete	-O2
+configure.cmd               cmake
+configure.compiler          macports-gcc-4.7
+configure.pre_args-delete   --prefix=${prefix}
+configure.optflags-delete   -O2
 
-set origin	${destroot}${prefix}/libexec/${distname}
-set doc_dir	${destroot}${prefix}/share/doc/${name}
+set origin          ${destroot}${prefix}/libexec/${distname}
 
-configure.args		-D BUNDLE_BASE_INSTALL_DIR=${origin} \
-					-D CMAKE_BUILD_TYPE=Release \
-					-D CMAKE_OSX_ARCHITECTURES=x86_64 \
-					-D PROC_TARGET_NUMBER=1
+configure.args      -D BUNDLE_BASE_INSTALL_DIR=${origin} \
+                    -D CMAKE_BUILD_TYPE=Release \
+                    -D CMAKE_OSX_ARCHITECTURES=x86_64 \
+                    -D PROC_TARGET_NUMBER=1
 
 #configure.args-append -D CMAKE_VERBOSE_MAKEFILE=ON
 
-configure.post_args	${worksrcpath}
+configure.post_args ${worksrcpath}
 
-build.target		install
+build.target        install
 
 destroot {
-	# create launch script
-	set launcher ${destroot}${prefix}/bin/${name}
-	system "printf 'DYLD_LIBRARY_PATH=%s %s \"$@\"\n' ${prefix}/lib/gcc47 ${prefix}/libexec/${distname}/${name} > ${launcher}"
-	system "chmod +x ${launcher}"
-	
-	# install doc files
-	xinstall -m 0644 ${worksrcpath}/doc/RawTherapeeManual_en.pdf ${doc_dir}
-	
-	# install man files
-	xinstall -m 0644 ${worksrcpath}/doc/manpage/${name}.1 ${destroot}${prefix}/share/man/man1
-	file delete -force ${origin}/share/man
+    # create launch script
+    set launcher    ${destroot}${prefix}/bin/${name}
+    system "printf 'DYLD_LIBRARY_PATH=%s %s \"$@\"\n' ${prefix}/lib/gcc47 ${prefix}/libexec/${distname}/${name} > ${launcher}"
+    system "chmod +x ${launcher}"
+    
+    # install doc files
+    set doc_dir     ${destroot}${prefix}/share/doc/${name}
+    xinstall -d ${doc_dir}
+    xinstall -m 0644 ${worksrcpath}/doc/RawTherapeeManual_en.pdf ${doc_dir}
+    
+    # install man files
+    xinstall -m 0644 ${worksrcpath}/doc/manpage/${name}.1 ${destroot}${prefix}/share/man/man1
+    file delete -force ${origin}/share/man
 }
