@@ -39,6 +39,9 @@ if {![variant_isset devel]} {
     master_sites            http://rawtherapee.googlecode.com/archive
     distfiles               924d2a8c79e00b60e5af275dcfb44587fe2d9c42.zip
     checksums               md5 87bca5ae08b8aa3b5252e034b9237a28
+    post-extract {
+        move ${workpath}/rawtherapee-924d2a8c79e0 ${workpath}/${distname}
+    }
 } else {
     fetch.type              hg
     hg.url                  https://code.google.com/p/rawtherapee/
@@ -49,7 +52,6 @@ build.dir                   ${worksrcpath}/build
 configure.dir               ${build.dir}
 
 pre-configure {
-    move ${workpath}/rawtherapee-924d2a8c79e0 ${workpath}/${distname}
     xinstall -d -m 0755 ${build.dir}
 }
 
