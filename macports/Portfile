@@ -48,6 +48,8 @@ if {![variant_isset devel]} {
     hg.tag                  tip
 }
 
+patchfiles patch-CMakeLists.txt.diff
+
 build.dir                   ${worksrcpath}/build
 configure.dir               ${build.dir}
 
@@ -64,8 +66,8 @@ set origin ${destroot}${prefix}/libexec/${distname}
 
 configure.args              -D BUNDLE_BASE_INSTALL_DIR=${origin} \
                             -D CMAKE_BUILD_TYPE=Release \
-                            -D CMAKE_OSX_ARCHITECTURES=x86_64 \
                             -D PROC_TARGET_NUMBER=1 \
+                            -D CMAKE_OSX_ARCHITECTURES=x86_64 \
                             -D CMAKE_VERBOSE_MAKEFILE=ON
 
 configure.post_args         ${worksrcpath}
@@ -86,4 +88,13 @@ destroot {
     # install man files
     xinstall -m 0644 ${worksrcpath}/doc/manpage/${name}.1 ${destroot}${prefix}/share/man/man1
     file delete -force ${origin}/share/man
+}
+
+platform darwin 10 {
+    configure.args-append   -D CMAKE_OSX_DEPLOYMENT_TARGET=10.6 \
+                            -D CMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.6.sdk
+}
+platform darwin 11 {
+    configure.args-append   -D CMAKE_OSX_DEPLOYMENT_TARGET=10.7 \
+                            -D CMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.7.sdk
 }
