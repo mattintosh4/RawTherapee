@@ -7,7 +7,7 @@ version                     4.0.9
 revision                    188
 platforms                   darwin
 categories                  graphics
-maintainers                 nomaintainer
+maintainers                 Makoto Yoshida
 license                     GPL-3
 description                 The powerful 64-bit open source raw converter
 long_description            RawTherapee is a cross platform image processing software equipped with \
