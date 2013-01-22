@@ -38,7 +38,7 @@ variant devel {
 if {![variant_isset devel]} {
     master_sites            http://rawtherapee.googlecode.com/archive
     distfiles               924d2a8c79e00b60e5af275dcfb44587fe2d9c42.zip
-    checksums               md5 66aecbde5b82890df935e3dc3591a075
+    checksums               md5 87bca5ae08b8aa3b5252e034b9237a28
 } else {
     fetch.type              hg
     hg.url                  https://code.google.com/p/rawtherapee/
