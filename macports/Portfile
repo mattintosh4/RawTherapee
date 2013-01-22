@@ -38,7 +38,6 @@ variant devel {
 if {![variant_isset devel]} {
     master_sites            http://rawtherapee.googlecode.com/archive
     distfiles               924d2a8c79e00b60e5af275dcfb44587fe2d9c42.zip
-    checksums               md5 87bca5ae08b8aa3b5252e034b9237a28
     post-extract {
         move ${workpath}/rawtherapee-924d2a8c79e0 ${workpath}/${distname}
     }
@@ -48,7 +47,12 @@ if {![variant_isset devel]} {
     hg.tag                  tip
 }
 
-patchfiles patch-CMakeLists.txt.diff
+patch_sites                 https://raw.github.com/mattintosh4/RawTherapee/master/macports/files
+patchfiles                  patch-CMakeLists.txt.diff
+checksums                   924d2a8c79e00b60e5af275dcfb44587fe2d9c42.zip \
+                            md5 87bca5ae08b8aa3b5252e034b9237a28 \
+                            patch-CMakeLists.txt.diff \
+                            md5 d1a6dc5e5e55bab2f53609bd413b0a50
 
 build.dir                   ${worksrcpath}/build
 configure.dir               ${build.dir}
