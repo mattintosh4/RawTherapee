@@ -1,13 +1,20 @@
 #!/bin/sh
 
-port="sudo port -f"
+port="sudo port"
 
-${port} selfupdate
+# UPDATE MACPORTS
+# sudo port selfupdate
+
 ${port} install \
-    cairo +quartz-x11 \
-    pango +quartz-x11 \
-    gtk2 +quartz-x11 \
-    gtkmm \
+    cairo +quartz \
+    pango +quartz \
+    gtk2 +quartz \
+	libsigcxx2
+
+# gtkmm binary build failed. add source build option.
+${port} -s install gtkmm
+
+${port} install \
     gtk-engines2 \
     lcms2 \
     libiptcdata \
