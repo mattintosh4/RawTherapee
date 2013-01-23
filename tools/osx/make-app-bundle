@@ -86,10 +86,6 @@ rm -rf  $LIB/gdk-pixbuf-2.0/*/loaders.cache \
 find $LIB -name "*.la" | xargs rm
 find $LIB/gtk-2.0/*/engines/* ! -name "libclearlooks.so" | xargs rm
 
-
-
-
-
 echo "=> Copying release files"
 cp -R   $RELEASE/* \
         $MACOS
