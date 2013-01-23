@@ -1,6 +1,6 @@
 #!/bin/sh
 
-port="sudo port"
+port="sudo port -f"
 
 ${port} selfupdate
 ${port} install \

@@ -1,3 +1,31 @@
+# Private Portfile for MacPorts users #
+
+1) Create local private port repository.
+
+```bash
+$ mkdir -P $HOME/macports/graphics/rawtherapee
+```
+
+2) Add path to "/opt/local/etc/macports/sources.conf".
+
+```
+
+file:///Users/yourname/macports
+```
+
+3) Download private Portfile.
+
+https://raw.github.com/mattintosh4/RawTherapee/master/macports/Portfile
+
+4) Setup repository.
+
+```
+$ portindex
+```
+
+
+
+
 # How to use RawTherapee build script #
 
 ## Build and make bundle ##
