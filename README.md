@@ -1,12 +1,18 @@
-# Private Portfile for MacPorts users #
+# How to use Private Portfile for MacPorts users #
 
-1) Create local private port repository.
+MacPorts ユーザー向けのプライベートポートファイルです。新しいバージョンの RawTherapee を MacPorts を使ってインストールすることができます。
+
+#### 1) Create local private port repository
+
+ローカルにプライベートリポジトリを作成して下さい。書き込み権限がある場所であればどこでもかまいません。
 
 ```bash
 $ mkdir -P $HOME/macports/graphics/rawtherapee
 ```
 
-2) Add path to `/opt/local/etc/macports/sources.conf`.
+#### 2) Add path to `/opt/local/etc/macports/sources.conf`
+
+MacPorts の設定ファイルにローカルリポジトリのパスを `file://` という形式で追加します。上書きには管理者権限が必要です。
 
 ```
 #  MacPorts system wide sources configuration file
@@ -18,17 +24,23 @@ $ mkdir -P $HOME/macports/graphics/rawtherapee
 file:///Users/yourname/macports
 ```
 
-3) Download private Portfile. Save to `$HOME/macports/graphics/rawtherapee`.
+#### 3) Download private Portfile. Save to `$HOME/macports/graphics/rawtherapee`.
+
+ポートファイルをダウンロードしてローカルリポジトリに保存して下さい。
 
 https://raw.github.com/mattintosh4/RawTherapee/master/macports/Portfile
 
-4) Setup repository.
+#### 4) Setup repository.
+
+ローカルリポジトリのセットアップを行います。この時点で `port info rawtherapee` でポート情報の確認ができます。
 
 ```sh
 $ portindex
 ```
 
-5) Install RawTherapee.
+#### 5) Install RawTherapee.
+
+RawTherapee をインストールします。
 
 ```sh
 $ sudo port install rawtherapee
@@ -36,15 +48,23 @@ $ sudo port install rawtherapee
 
 note: If you want to build the latest source, add "+devel" variants.
 
+もし ZIP ファイルではなく、Mercurial で最新のソースを取得する場合は `+devel` バリアントを追加して下さい。今までのリビジョンを含め、ソース全体を取得するため時間がかかる可能性があります。
+
 ```sh
 $ sudo port install rawtherapee +devel
 ```
 
-6) Launch application from terminal
+#### 6) Launch application from terminal
+
+起動は他のポートと同様にターミナルから起動できます。
 
 ```sh
 $ rawtherapee
 ```
+
+現時点では `/Applications/MacPorts/RawTherapee.app` を作成するコードを追加していません。要望があればそのうち追加します。
+
+***
 
 # How to use RawTherapee build script #
 
