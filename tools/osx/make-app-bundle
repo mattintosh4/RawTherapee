@@ -99,38 +99,17 @@ printf 'MacOS build version: %s\n' `sw_vers -productVersion` >> $MACOS/AboutThis
 
 echo "=> Creating required application bundle files"
 cp tools/osx/Icons.icns $RESOURCES
-
-cat > $CONTENTS/Info.plist <<__EOF__
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleExecutable</key>
-	<string>start</string>
-	<key>CFBundleIconFile</key>
-	<string>Icons.icns</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.rawtherapee.rawtherapee</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>RawTherapee</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>${RT_VERSION:0:3}</string>
-	<key>CFBundleSignature</key>
-	<string>APPL</string>
-	<key>CFBundleVersion</key>
-	<string>${RT_VERSION}</string>
-</dict>
-</plist>
-__EOF__
-
-
-
+WRITEPLIST="defaults write $PWD/$CONTENTS/Info"
+$WRITEPLIST CFBundleDevelopmentRegion       English
+$WRITEPLIST CFBundleExecutable              start
+$WRITEPLIST CFBundleIconFile                Icons.icns
+$WRITEPLIST CFBundleIdentifier              com.rawtherapee.rawtherapee
+$WRITEPLIST CFBundleInfoDictionaryVersion   6.0
+$WRITEPLIST CFBundleName                    RawTherapee
+$WRITEPLIST CFBundlePackageType             APPL
+$WRITEPLIST CFBundleShortVersionString      ${RT_VERSION:0:3}
+$WRITEPLIST CFBundleSignature               APPL
+$WRITEPLIST CFBundleVersion                 $RT_VERSION
 
 ### CREATE LAUNCH SCRIPT ###
 cat > $MACOS/start <<'__EOF__'
@@ -169,8 +148,6 @@ exec "$MACOS"/rawtherapee
 __EOF__
 
 chmod +x $MACOS/start
-
-
 
 
 
@@ -240,11 +217,13 @@ def_optimize(){
 }
 def_optimize `find $MACOS -type f -name "rawtherapee" -o -name "*.dylib" -o -name "*.so"`
 
-
-
-
-
 ### SET UP DISTRIBUTION DIRECTORY
+webloc(){
+    local f="$PWD/$DIST_DIR/$1"
+    defaults write "$f" URL "$2"
+    mv "$f".plist "$f".webloc
+}
+
 echo "=> Creating and setup distribution directory"
 test -d $DIST_DIR && rm -rf $_
 mkdir $_
@@ -260,16 +239,7 @@ sed -i "" \
     $ETC/fonts/fonts.conf
 rm -rf $ETC/fonts/conf.avail
 
-cat > $DIST_DIR/XQuartz.webloc <<'__EOF__'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-<key>URL</key>
-<string>http://xquartz.macosforge.org/landing/</string>
-</dict>
-</plist>
-__EOF__
+webloc "XQuartz" "http://xquartz.macosforge.org/landing/"
 
 cat > $DIST_DIR/README.txt <<'__EOF__'
 This distribution bundle is required X11.app or XQuartz.app. Please install if your system does not have them.
@@ -280,19 +250,11 @@ __EOF__
 fi
 ### <--- FOR X11 BUILD
 
-cp $MACOS/AboutThisBuild.txt $DIST_DIR
 mv $APP $DIST_DIR
+cp $DIST_DIR/$MACOS/AboutThisBuild.txt $DIST_DIR
+cp doc/RawTherapeeManual_en.pdf $DIST_DIR
 ln -s /Applications $DIST_DIR
-cat > $DIST_DIR/"RawTherapee Blog".webloc <<'__EOF__'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-<key>URL</key>
-<string>http://rawtherapee.com/</string>
-</dict>
-</plist>
-__EOF__
+webloc "RawTherapee Blog" "http://rawtherapee.com/"
 
 echo "=> Creating distribution dmg"
 hdiutil create -format UDBZ -srcdir $DIST_DIR $RELEASE/$DMG

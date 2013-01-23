@@ -1,81 +1,18 @@
-#!/bin/bash
+#!/bin/sh
 
-if ! [ `which port` ]; then
-    printf '\e[31mMacPorts is not installed.\e[m\n'
-    exit
-fi
+port="sudo port"
 
-if [ "$1" = "-" ]; then
-
-cmd(){
-    printf '\e[1;34m*** Installing %s *** [%d/%d] \e[m\n' "$*" $((i++)) $PN
-    sudo port -f install "$@"
-}
-PN=12
-i=1
-cmd gtk2 +no_x11+quartz-x11 \
-&& cmd gtkmm \
-&& cmd gtk-engines2 \
-&& cmd lcms2 \
-&& cmd libiptcdata \
-&& cmd fftw-3-single \
-&& cmd binutils \
-&& cmd gcc47 \
-&& cmd cmake \
-&& cmd mercurial \
-&& printf '\e[1;32m*** Success ***\e[m\n' \
-|| printf '\e[1;31m*** Failed ***\e[m\n' && exit 1
-
-else
-
-cat <<'__EOS__'
-
-Dependencies and tools installation support script for building RawTherapee
-===========================================================================
-
-/!\ If you have already installed, these ports may be overwritten.
-
-Dependencies
-------------
-    cairo [+quartz]
-        glib2
-    pango-devel [+no_x11/+quartz]
-    gtk2 [+no_x11/+quartz]
-        gdk-pixbuf2
-    gtkmm
-        glibmm
-        cairomm
-        pangomm
-    gtk-engines2
-    lcms2
-    libiptcdata
-    fftw-3-single
-
-Tools
------
-    binutils
-    gcc47
-    cmake
+${port} selfupdate
+${port} install \
+    cairo +quartz-x11 \
+    pango +quartz-x11 \
+    gdk-pixbuf2 -x11 \
+    gtk2 +quartz-x11 \
+    gtkmm \
+    gtk-engines2 \
+    lcms2 \
+    libiptcdata \
+    fftw-3-single \
+    gcc47 \
+    cmake \
     mercurial
-
-__EOS__
-
-expect -c "
-set timeout -1
-stty -echo
-send_user \"Enter passphrase for key: \"
-expect_user -re \"(.*)\n\"
-send_user \n
-set PASSWD \$expect_out(1,string)
-stty echo
-spawn $0 -
-expect {
-    Password: {
-        send \$PASSWD\n
-        interact
-        exp_continue
-    }
-}
-"
-
-fi
