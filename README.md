@@ -19,12 +19,27 @@ https://raw.github.com/mattintosh4/RawTherapee/master/macports/Portfile
 
 4) Setup repository.
 
-```
+```sh
 $ portindex
 ```
 
+5) Install RawTherapee.
 
+```sh
+$ sudo port install rawtherapee
+```
 
+note: If you want to build the latest source, add "+devel" variants.
+
+```sh
+$ sudo port install rawtherapee +devel
+```
+
+6) Launch application from terminal
+
+```sh
+$ rawtherapee
+```
 
 # How to use RawTherapee build script #
 

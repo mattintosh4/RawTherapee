@@ -6,7 +6,6 @@ ${port} selfupdate
 ${port} install \
     cairo +quartz-x11 \
     pango +quartz-x11 \
-    gdk-pixbuf2 -x11 \
     gtk2 +quartz-x11 \
     gtkmm \
     gtk-engines2 \
