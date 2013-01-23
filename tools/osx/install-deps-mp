@@ -6,8 +6,9 @@ port="sudo port"
 # sudo port selfupdate
 
 ${port} install \
-    cairo +quartz \
-    pango +quartz \
+    cairo +quartz -x11 \
+    pango +quartz -x11 \
+	gdk-pixbuf2 -x11 \
     gtk2 +quartz \
 	libsigcxx2
 
