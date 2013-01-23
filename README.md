@@ -6,10 +6,15 @@
 $ mkdir -P $HOME/macports/graphics/rawtherapee
 ```
 
-2) Add path to "/opt/local/etc/macports/sources.conf".
+2) Add path to `/opt/local/etc/macports/sources.conf`.
 
 ```
+#  MacPorts system wide sources configuration file
+#  $Id: sources.conf 79599 2011-06-19 21:18:18Z jmr@macports.org $
 
+#  To setup a local ports repository, insert a "file://" entry following
+#  the example below that points to your local ports directory:
+#  Example: file:///Users/landonf/misc/MacPorts/ports
 file:///Users/yourname/macports
 ```
 
