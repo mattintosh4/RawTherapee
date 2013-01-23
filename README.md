@@ -18,7 +18,7 @@ $ mkdir -P $HOME/macports/graphics/rawtherapee
 file:///Users/yourname/macports
 ```
 
-3) Download private Portfile.
+3) Download private Portfile. Save to `$HOME/macports/graphics/rawtherapee`.
 
 https://raw.github.com/mattintosh4/RawTherapee/master/macports/Portfile
 
