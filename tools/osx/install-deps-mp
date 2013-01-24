@@ -8,9 +8,9 @@ port="sudo port"
 ${port} install \
     cairo +quartz -x11 \
     pango +quartz -x11 \
-	gdk-pixbuf2 -x11 \
+    gdk-pixbuf2 -x11 \
     gtk2 +quartz \
-	libsigcxx2
+    libsigcxx2
 
 # gtkmm binary build failed. add source build option.
 ${port} -s install gtkmm
