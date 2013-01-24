@@ -66,6 +66,41 @@ $ rawtherapee
 
 ***
 
+## Set up GTK-OSX with Quartz ##
+
+バリアントの規則が厳しいので難しいかもしれません。まず先に cairo のインストールから始めて下さい。
+
+```sh
+$ sudo port install \
+    cairo +quartz -x11 \
+    pango +quartz -x11 \
+    gdk-pixbuf2 -x11 \
+    gtk2 +quartz \
+    libsigcxx2
+```
+
+gtk2 を `-x11` バリアントでインストールすると gtkmm がバイナリインストールできません。`-s` オプションでソースインストールを強制して下さい。
+
+```
+# gtkmm binary distribution install failed. force source build.
+sudo port -s install gtkmm
+```
+
+その他に必要なものです。これは Portfile によって依存関係が設定されているので自動でインストールできます。
+
+```
+sudo port install \
+    gtk-engines2 \
+    lcms2 \
+    libiptcdata \
+    fftw-3-single \
+    gcc47 \
+    cmake \
+    mercurial
+```
+
+***
+
 # How to use RawTherapee build script #
 
 ## Build and make bundle ##
