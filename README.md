@@ -68,7 +68,7 @@ $ rawtherapee
 
 ## Set up GTK-OSX with Quartz ##
 
-バリアントの規則が厳しいので難しいかもしれません。まず先に cairo のインストールから始めて下さい。
+バリアントの規則が厳しいので難しいかもしれません。また、ポートのアップデートによって手順通りに進められない可能性もあります。
 
 ```sh
 $ sudo port install \
@@ -81,14 +81,14 @@ $ sudo port install \
 
 gtk2 を `-x11` バリアントでインストールすると gtkmm がバイナリインストールできません。`-s` オプションでソースインストールを強制して下さい。
 
-```
+```sh
 # gtkmm binary distribution install failed. force source build.
 sudo port -s install gtkmm
 ```
 
 その他に必要なものです。これは Portfile によって依存関係が設定されているので自動でインストールできます。
 
-```
+```sh
 sudo port install \
     gtk-engines2 \
     lcms2 \
