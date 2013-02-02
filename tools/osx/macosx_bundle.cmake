@@ -32,11 +32,11 @@ function (checkLink)
     )
     string (REPLACE "\n" ";" dependencies ${dependencies})
     foreach (x IN LISTS dependencies)
-        get_filename_component (y ${x} NAME)
-        if (NOT EXISTS "${LIBDIR}/${y}")
+        get_filename_component (xname "${x}" NAME)
+        if (NOT EXISTS "${LIBDIR}/${xname}")
             file (INSTALL "${x}" DESTINATION "${LIBDIR}" USE_SOURCE_PERMISSIONS)
             if (IS_SYMLINK "${x}")
-                get_filename_component (x ${x} REALPATH)
+                get_filename_component (x "${x}" REALPATH)
                 file (INSTALL "${x}" DESTINATION "${LIBDIR}" USE_SOURCE_PERMISSIONS)
             endif ()
             checkLink ("${x}")
@@ -47,7 +47,6 @@ message (STATUS "Copying dependency libraries")
 checkLink ("${BUNDLE_MACOS_DIR}/rawtherapee")
 
 
-############### Library modules ###############
 message (STATUS "Copying library modules")
 file (
     INSTALL     "${GTK_PREFIX}/lib/gtk-2.0"
