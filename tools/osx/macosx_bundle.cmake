@@ -11,7 +11,7 @@ set (ETCDIR "${BUNDLE_MACOS_DIR}/etc")
 string (TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWERCASE)
 
 
-file (GLOB oldfile . "*.app" "*.dmg")
+file (GLOB oldfile . "${PROJECT_NAME}.app" "${PROJECT_NAME_LOWERCASE}*.dmg")
 if (NOT oldfile STREQUAL "")
     message (STATUS "Removing old bundle and disk image")
     file (REMOVE_RECURSE ${oldfile})
