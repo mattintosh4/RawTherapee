@@ -14,7 +14,7 @@ endif ()
 
 
 message (STATUS "Creating bundle container")
-file (MAKE_DIRECTORY ${BUNDLE_RESOURCES_DIR})
+file (MAKE_DIRECTORY "${BUNDLE_RESOURCES_DIR}")
 
 
 message (STATUS "Copying main files")
