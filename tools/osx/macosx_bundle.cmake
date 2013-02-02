@@ -26,8 +26,7 @@ function (checkLink)
     execute_process(
         COMMAND otool -L "${ARGV0}"
         COMMAND awk "NR >= 2 && $1 !~ /^(\\/usr\\/lib|\\/System|@executable_path)\\// { print $1 }"
-        OUTPUT_VARIABLE
-            dependencies
+        OUTPUT_VARIABLE dependencies
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     string (REPLACE "\n" ";" dependencies ${dependencies})
@@ -85,8 +84,7 @@ find_program (MERCURIAL hg)
 if (NOT MERCURIAL STREQUAL MERCURIAL-NOTFOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.hg")
     execute_process (
         COMMAND ${MERCURIAL} -R "${PROJECT_SOURCE_DIR}" parents --template "{latesttag}.{latesttagdistance}"
-        OUTPUT_VARIABLE
-            PROJECT_VERSION
+        OUTPUT_VARIABLE PROJECT_VERSION
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 endif ()
@@ -104,6 +102,4 @@ configure_file ("${CMAKE_ROOT}/Modules/MacOSXBundleInfo.plist.in" "${BUNDLE_CONT
 
 
 message (STATUS "Creating distribution disk image")
-execute_process (
-    COMMAND hdiutil create -srcdir "${PROJECT_NAME}.app" "${PROJECT_NAME_LOWERCASE}_mac${PROC_BIT_DEPTH}_${PROJECT_VERSION}.dmg"
-)
+execute_process (COMMAND hdiutil create -srcdir "${PROJECT_NAME}.app" "${PROJECT_NAME_LOWERCASE}_mac${PROC_BIT_DEPTH}_${PROJECT_VERSION}.dmg")
