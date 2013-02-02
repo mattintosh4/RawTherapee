@@ -44,7 +44,7 @@ cp -R ${CMAKE_BUILD_TYPE}/* ${MACOS}
 echo "=> Installing modules"
 cp -R ${GTK_PREFIX}/lib/{gdk-pixbuf-2.0,gtk-2.0,pango} ${LIB}
 cp -R ${GTK_PREFIX}/etc/{gtk-2.0,pango} ${ETC}
-cp -R ${GTK_PREFIX}/share/mime ${MACOS}/share
+cp -R {${GTK_PREFIX},${MACOS}}/share/mime
 
 echo "=> Replacing modules config file"
 sed -i "" -e "s|${GTK_PREFIX}|/tmp/${MACOS}|" ${ETC}/{pango/pango.modules,gtk-2.0/{gdk-pixbuf.loaders,gtk.immodules}}
