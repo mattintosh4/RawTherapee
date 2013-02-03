@@ -53,6 +53,9 @@ file (
                 "${GTK_PREFIX}/lib/pango"
     DESTINATION "${LIBDIR}"
     USE_SOURCE_PERMISSIONS
+    PATTERN "*.a" EXCLUDE
+    PATTERN "*.la" EXCLUDE
+    PATTERN "*.cache" EXCLUDE
 )
 file (
     INSTALL     "${GTK_PREFIX}/etc/gtk-2.0"
