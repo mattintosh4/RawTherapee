@@ -74,6 +74,12 @@ message (STATUS "Copying mime data files")
 file (INSTALL "${GTK_PREFIX}/share/mime" DESTINATION "${BUNDLE_MACOS_DIR}/share" USE_SOURCE_PERMISSIONS)
 
 
+if (GTK_LIBRARIES MATCHES "gtk-x11")
+    message (WARNING "GTK+ Backend: X11")
+    file (INSTALL "${GTK_PREFIX}/etc/fonts" DESTINATION "${ETCDIR}" USE_SOURCE_PERMISSIONS)
+endif ()
+
+
 message (STATUS "Copying other resources")
 file (INSTALL "${PROJECT_SOURCE_DIR}/tools/osx/start" DESTINATION "${BUNDLE_MACOS_DIR}" USE_SOURCE_PERMISSIONS)
 file (INSTALL "${PROJECT_SOURCE_DIR}/tools/osx/Icons.icns" DESTINATION "${BUNDLE_RESOURCES_DIR}" USE_SOURCE_PERMISSIONS)
