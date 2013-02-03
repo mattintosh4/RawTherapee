@@ -77,9 +77,12 @@ message (STATUS "Copying mime data files")
 file (INSTALL "${GTK_PREFIX}/share/mime" DESTINATION "${BUNDLE_MACOS_DIR}/share" USE_SOURCE_PERMISSIONS)
 
 
+# X11 Backend only
 if (GTK_LIBRARIES MATCHES "gtk-x11")
-    message (WARNING "GTK+ Backend: X11")
-    file (INSTALL "${GTK_PREFIX}/etc/fonts" DESTINATION "${ETCDIR}" USE_SOURCE_PERMISSIONS)
+    message (STATUS "Copying fontconfig files")
+    execute_process(
+        COMMAND cp -RL "${GTK_PREFIX}/etc/fonts" "${ETCDIR}"
+    )
 endif ()
 
 
