@@ -1,5 +1,5 @@
 # **************************************************************
-# CMake command script for Creating Mac OS X bundle
+# Create Mac OS X application bundle - macosx_bundle.cmake
 #
 # Require variables
 # -----------------
