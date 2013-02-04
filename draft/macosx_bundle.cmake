@@ -70,6 +70,39 @@ execute_process (
             "${ETCDIR}/gtk-2.0/gtk.immodules"
             "${ETCDIR}/pango/pango.modules"
 )
+file (MAKE_DIRECTORY "${ETCDIR}/pango" "${ETCDIR}/gtk-2.0")
+file (INSTALL "${GTK_PREFIX}/etc/gtk-2.0/im-multipress.conf" DESTINATION "${ETCDIR}/gtk-2.0" USE_SOURCE_PERMISSIONS)
+
+function (registModules)
+    
+    # Arguments
+    # ---------
+    # ARGV0[0]: Path to registration utility
+    # ARGV0[1]: Path to module files 
+    # ARGV1   : Output path
+    
+    execute_process (
+        COMMAND sh -c "${ARGV0}"
+        COMMAND sed "s|${CMAKE_BINARY_DIR}|/tmp|"
+        OUTPUT_FILE "${ARGV1}"
+        RESULT_VARIABLE x
+    )
+    if (x EQUAL 0)
+        message (STATUS "Installing: ${CMAKE_BINARY_DIR}/${ARGV1}")
+    endif (x EQUAL 0)
+endfunction (registModules)
+
+# gdk-pixbuf.loaders
+registModules ("${GTK_PREFIX}/bin/gdk-pixbuf-query-loaders ${LIBDIR}/gdk-pixbuf-2.0/*/loaders/*.so"
+               "${ETCDIR}/gtk-2.0/gdk-pixbuf.loaders")
+# gtk.immodules
+registModules ("${GTK_PREFIX}/bin/gtk-query-immodules-2.0 ${LIBDIR}/gtk-2.0/*/immodules/*.so"
+               "${ETCDIR}/gtk-2.0/gtk.immodules")
+# pango.modules
+registModules ("${GTK_PREFIX}/bin/pango-querymodules ${LIBDIR}/pango/*/modules/*.so"
+               "${ETCDIR}/pango/pango.modules")
+# pangorc
+message (STATUS "Installing: ${CMAKE_BINARY_DIR}/${ETCDIR}/pango/pangorc")
 file (WRITE "${ETCDIR}/pango/pangorc" "[Pango]\nModuleFiles = /tmp/${ETCDIR}/pango/pango.modules")
 
 
