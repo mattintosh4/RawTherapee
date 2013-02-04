@@ -105,16 +105,16 @@ function (registModules)
     endif (x EQUAL 0)
 endfunction (registModules)
 
-# gdk-pixbuf.loaders
+### gdk-pixbuf.loaders
 registModules ("${GTK_PREFIX}/bin/gdk-pixbuf-query-loaders ${LIBDIR}/gdk-pixbuf-2.0/*/loaders/*.so"
                "${ETCDIR}/gtk-2.0/gdk-pixbuf.loaders")
-# gtk.immodules
+### gtk.immodules
 registModules ("${GTK_PREFIX}/bin/gtk-query-immodules-2.0 ${LIBDIR}/gtk-2.0/*/immodules/*.so"
                "${ETCDIR}/gtk-2.0/gtk.immodules")
-# pango.modules
+### pango.modules
 registModules ("${GTK_PREFIX}/bin/pango-querymodules ${LIBDIR}/pango/*/modules/*.so"
                "${ETCDIR}/pango/pango.modules")
-# pangorc
+### pangorc
 message (STATUS "Installing: ${CMAKE_BINARY_DIR}/${ETCDIR}/pango/pangorc")
 file (WRITE "${ETCDIR}/pango/pangorc" "[Pango]\nModuleFiles = /tmp/${ETCDIR}/pango/pango.modules")
 
@@ -132,7 +132,7 @@ file (INSTALL "${GTK_PREFIX}/share/mime" DESTINATION "${BUNDLE_MACOS_DIR}/share"
 if (GTK_LIBRARIES MATCHES "gtk-x11")
     message (STATUS "Copying fontconfig files")
     execute_process(
-        # All symbolic links are followed
+        ### All symbolic links are followed
         COMMAND cp -RL "${GTK_PREFIX}/etc/fonts" "${ETCDIR}"
         RESULT_VARIABLE x
     )
@@ -154,7 +154,7 @@ file (INSTALL "${PROJECT_SOURCE_DIR}/tools/osx/Icons.icns" DESTINATION "${BUNDLE
 
 message (STATUS "Creating Info.plist")
 
-# If project source directory has .hg directory, this process will override the version number.
+### If project source directory has .hg directory, this process will override the version number.
 find_program (MERCURIAL hg)
 if (NOT MERCURIAL STREQUAL MERCURIAL-NOTFOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.hg")
     execute_process (
@@ -164,7 +164,7 @@ if (NOT MERCURIAL STREQUAL MERCURIAL-NOTFOUND AND EXISTS "${PROJECT_SOURCE_DIR}/
     )
 endif ()
 
-# Variables required for Info.plist
+### Variables required for Info.plist
 set (MACOSX_BUNDLE_COPYRIGHT            "Copyright © 2004-2013 Gábor Horváth")
 set (MACOSX_BUNDLE_INFO_STRING          "${PROJECT_VERSION}, ${MACOSX_BUNDLE_COPYRIGHT}")
 set (MACOSX_BUNDLE_BUNDLE_NAME          "${PROJECT_NAME}")
