@@ -162,4 +162,15 @@ if (PROC_BIT_DEPTH EQUAL 64)
     endforeach (x IN LISTS object)
 endif (PROC_BIT_DEPTH EQUAL 64)
 message (STATUS "Creating distribution disk image")
-execute_process (COMMAND hdiutil create -srcdir "${PROJECT_NAME}.app" "${PROJECT_NAME_LOWERCASE}_mac${PROC_BIT_DEPTH}_${PROJECT_VERSION}.dmg")
+set (HDIUTIL_COMMAND hdiutil create)
+
+### bzip2-compressed (default: zlib-compressed)
+list (APPEND HDIUTIL_COMMAND -format UDBZ)
+
+### Source directory
+list (APPEND HDIUTIL_COMMAND -srcdir "${PROJECT_NAME}.app")
+
+### Disk image name
+list (APPEND HDIUTIL_COMMAND "${PROJECT_NAME_LOWERCASE}_mac${PROC_BIT_DEPTH}_${PROJECT_VERSION}.dmg")
+
+execute_process (COMMAND ${HDIUTIL_COMMAND})
