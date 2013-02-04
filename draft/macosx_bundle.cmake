@@ -1,6 +1,8 @@
 # **************************************************************
 # Create Mac OS X application bundle - macosx_bundle.cmake
 #
+# Copyright (c) 2013 mattintosh4
+#
 # Require variables
 # -----------------
 #   - PROJECT_NAME
