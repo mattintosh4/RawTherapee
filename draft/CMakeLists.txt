@@ -1,5 +1,6 @@
 set (MACOSX_BUNDLE_COMMAND  ${CMAKE_COMMAND}
                             -D PROJECT_NAME:STRING="${PROJECT_NAME}"
+                            -D PROJECT_VERSION:STRING="${PROJECT_VERSION}"
                             -D PROJECT_SOURCE_DIR:PATH="${PROJECT_SOURCE_DIR}"
                             -D CMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
                             -D GTK_PREFIX:PATH="${GTK_PREFIX}"
