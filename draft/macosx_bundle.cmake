@@ -146,5 +146,20 @@ string (SUBSTRING "${PROJECT_VERSION}" 0 3 MACOSX_BUNDLE_SHORT_VERSION_STRING)
 configure_file ("${CMAKE_ROOT}/Modules/MacOSXBundleInfo.plist.in" "${BUNDLE_CONTENTS_DIR}/Info.plist")
 
 
+if (PROC_BIT_DEPTH EQUAL 64)
+    message (STATUS "Excluding 32-bit binary")
+    file (GLOB_RECURSE object "${LIBDIR}/*.dylib" "${LIBDIR}/*.so")
+    foreach (x IN LISTS object)
+        execute_process (
+            COMMAND lipo -info "${x}"
+            OUTPUT_VARIABLE arch
+        )
+        if (arch MATCHES "i386")
+            execute_process (
+                COMMAND sh -v -c "lipo -thin x86_64 -output ${x} ${x}"
+            )
+        endif (arch MATCHES "i386")
+    endforeach (x IN LISTS object)
+endif (PROC_BIT_DEPTH EQUAL 64)
 message (STATUS "Creating distribution disk image")
 execute_process (COMMAND hdiutil create -srcdir "${PROJECT_NAME}.app" "${PROJECT_NAME_LOWERCASE}_mac${PROC_BIT_DEPTH}_${PROJECT_VERSION}.dmg")
