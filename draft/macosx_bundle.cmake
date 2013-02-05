@@ -146,7 +146,7 @@ registModules ("${GTK_PREFIX}/bin/pango-querymodules ${LIBDIR}/pango/*/modules/*
                "${ETCDIR}/pango/pango.modules")
 ### pangorc
 message (STATUS "Installing: ${CMAKE_BINARY_DIR}/${ETCDIR}/pango/pangorc")
-file (WRITE "${ETCDIR}/pango/pangorc" "[Pango]\nModuleFiles = /tmp/${ETCDIR}/pango/pango.modules")
+file (WRITE "${ETCDIR}/pango/pangorc" "[Pango]\nModuleFiles = /tmp/${ETCDIR}/pango/pango.modules\n")
 
 
 # --------------------------------------
