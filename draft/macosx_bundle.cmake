@@ -1,7 +1,7 @@
 # **************************************************************
 # Create Mac OS X application bundle - macosx_bundle.cmake
 #
-# Copyright (c) 2013 mattintosh4
+# Copyright (c) 2013 Makoto Yoshida
 #
 # Require variables
 # -----------------
@@ -40,7 +40,7 @@ file (RENAME "${BUNDLE_CONTENTS_DIR}/${CMAKE_BUILD_TYPE}" "${BUNDLE_MACOS_DIR}")
 
 
 # --------------------------------------
-# Dependency libraries
+# Dependent libraries
 # --------------------------------------
 function (checkLink)
     execute_process(
@@ -49,6 +49,7 @@ function (checkLink)
         OUTPUT_VARIABLE dependencies
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+    ### Convert strings to list
     string (REPLACE "\n" ";" dependencies ${dependencies})
     foreach (x IN LISTS dependencies)
         get_filename_component (xname "${x}" NAME)
@@ -62,7 +63,7 @@ function (checkLink)
         endif ()
     endforeach ()
 endfunction ()
-message (STATUS "Copying dependency libraries")
+message (STATUS "Copying dependent libraries")
 checkLink ("${BUNDLE_MACOS_DIR}/rawtherapee")
 
 
