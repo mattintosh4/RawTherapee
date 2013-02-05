@@ -231,12 +231,12 @@ endif (PROC_BIT_DEPTH EQUAL 64)
 # --------------------------------------
 # Disk image
 # --------------------------------------
-set (DMG_NAME       "${PROJECT_NAME_LOWERCASE}_mac${PROC_BIT_DEPTH}_${PROJECT_VERSION}.dmg")
-set (DMG_SOURCE_DIR "${PROJECT_NAME}${PROJECT_VERSION}") # Use as disk image volume name
-set (DMG_SOURCE_FILES   "${PROJECT_NAME}.app"
-                        "AboutThisBuild.txt"
-                        "${PROJECT_SOURCE_DIR}/doc/RawTherapeeManual_en.pdf"
-)
+set (DMG_NAME           "${PROJECT_NAME_LOWERCASE}_mac${PROC_BIT_DEPTH}_${PROJECT_VERSION}.dmg")
+set (DMG_SOURCE_DIR     "${PROJECT_NAME}${PROJECT_VERSION}") # Use as disk image volume name
+set (DMG_SOURCE_FILES   "${PROJECT_NAME}.app")
+list (APPEND DMG_SOURCE_FILES "AboutThisBuild.txt")
+list (APPEND DMG_SOURCE_FILES "${PROJECT_SOURCE_DIR}/doc/RawTherapeeManual_en.pdf")
+
 set (HDIUTIL_COMMAND hdiutil create)
 list (APPEND HDIUTIL_COMMAND -format UDBZ) # bzip2-compressed (default: zlib-compressed)
 list (APPEND HDIUTIL_COMMAND -srcdir "${DMG_SOURCE_DIR}")
