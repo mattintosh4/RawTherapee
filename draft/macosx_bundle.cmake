@@ -76,8 +76,7 @@ function (checkLink)
         OUTPUT_VARIABLE dependencies
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    ### Convert strings to list
-    string (REPLACE "\n" ";" dependencies ${dependencies})
+    string (REPLACE "\n" ";" dependencies ${dependencies}) # Convert strings to list
     foreach (x IN LISTS dependencies)
         get_filename_component (xname "${x}" NAME)
         if (NOT EXISTS "${LIBDIR}/${xname}")
@@ -162,12 +161,13 @@ file (INSTALL "${GTK_PREFIX}/share/mime" DESTINATION "${BUNDLE_MACOS_DIR}/share"
 if (GTK_LIBRARIES MATCHES "gtk-x11")
     message (STATUS "Copying fontconfig files")
     execute_process(
-        ### All symbolic links are followed
-        COMMAND cp -RL "${GTK_PREFIX}/etc/fonts" "${ETCDIR}"
+        COMMAND cp -RL "${GTK_PREFIX}/etc/fonts" "${ETCDIR}" # All symbolic links are followed
         RESULT_VARIABLE x
     )
     if (x EQUAL 0)
         message (STATUS "Installing: ${CMAKE_BINARY_DIR}/${ETCDIR}/fonts")
+    else ()
+        message (WARNING "fontconfig directory is not found. If you know the place then copy it to ${ETCDIR}/fonts manually.")
     endif (x EQUAL 0)
 endif ()
 
