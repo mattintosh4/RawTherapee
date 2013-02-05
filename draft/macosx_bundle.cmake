@@ -3,6 +3,7 @@
 #
 # Copyright (c) 2013 Makoto Yoshida
 #
+#
 # Require variables
 # -----------------
 #   - PROJECT_NAME
@@ -12,6 +13,34 @@
 #   - GTK_PREFIX
 #   - GTK_LIBRARIES
 #   - PROC_BIT_DEPTH
+#
+#
+# Layout and variables
+# --------------------
+#
+# * = mported variable
+#
+#   source directory/                   PROJECT_SOURCE_DIR *
+#       tools/
+#           osx/
+#               macosx_bundle.cmake (This file)
+#
+#   GTK+ resources/                     GTK_PREFIX *
+#       lib/
+#       etc/
+#       share/
+#
+#   build directory/                    CMAKE_BINARY_DIR *
+#       bundle resources/               CMAKE_BUILD_TYPE *
+#       bundle.app/                     PROJECT_NAME.app *
+#           Contents/                   BUNDLE_CONTENTS_DIR
+#               Info.plist
+#               MacOS/                  BUNDLE_MACOS_DIR
+#                   start
+#                   lib/                LIBDIR
+#                   etc/                ETCDIR
+#               Resources/              BUNDLE_RESOURCES_DIR
+#                   Icons.icns
 #
 # **************************************************************
 
