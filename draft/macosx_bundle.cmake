@@ -1,9 +1,9 @@
 # **************************************************************
 # Create Mac OS X application bundle - macosx_bundle.cmake
-#
+# 
 # Copyright (c) 2013 Makoto Yoshida
-#
-#
+# 
+# 
 # Require variables
 # -----------------
 #   - PROJECT_NAME
@@ -17,9 +17,9 @@
 #
 # Layout and variables
 # --------------------
-#
+# 
 # * = mported variable
-#
+# 
 #   source directory/                   PROJECT_SOURCE_DIR *
 #       tools/
 #           osx/
@@ -41,7 +41,7 @@
 #                   etc/                ETCDIR
 #               Resources/              BUNDLE_RESOURCES_DIR
 #                   Icons.icns
-#
+# 
 # **************************************************************
 
 set (BUNDLE_CONTENTS_DIR    "${PROJECT_NAME}.app/Contents")
