@@ -194,7 +194,7 @@ if (NOT MERCURIAL STREQUAL MERCURIAL-NOTFOUND AND EXISTS "${PROJECT_SOURCE_DIR}/
     )
 endif ()
 
-### Variables required for Info.plist
+### Variables for Info.plist
 set (MACOSX_BUNDLE_COPYRIGHT            "Copyright © 2004-2013 Gábor Horváth")
 set (MACOSX_BUNDLE_INFO_STRING          "${PROJECT_VERSION}, ${MACOSX_BUNDLE_COPYRIGHT}")
 set (MACOSX_BUNDLE_BUNDLE_NAME          "${PROJECT_NAME}")
@@ -229,18 +229,23 @@ endif (PROC_BIT_DEPTH EQUAL 64)
 
 
 # --------------------------------------
-# Distribution disk image
+# Disk image
 # --------------------------------------
-message (STATUS "Creating distribution disk image")
+set (DMG_NAME       "${PROJECT_NAME_LOWERCASE}_mac${PROC_BIT_DEPTH}_${PROJECT_VERSION}.dmg")
+set (DMG_SOURCE_DIR "${PROJECT_NAME}${PROJECT_VERSION}") # Use as disk image volume name
+set (DMG_SOURCE_FILES   "${PROJECT_NAME}.app"
+                        "AboutThisBuild.txt"
+                        "${PROJECT_SOURCE_DIR}/doc/RawTherapeeManual_en.pdf"
+)
 set (HDIUTIL_COMMAND hdiutil create)
+list (APPEND HDIUTIL_COMMAND -format UDBZ) # bzip2-compressed (default: zlib-compressed)
+list (APPEND HDIUTIL_COMMAND -srcdir "${DMG_SOURCE_DIR}")
+list (APPEND HDIUTIL_COMMAND "${DMG_NAME}")
 
-### bzip2-compressed (default: zlib-compressed)
-list (APPEND HDIUTIL_COMMAND -format UDBZ)
-
-### Source directory
-list (APPEND HDIUTIL_COMMAND -srcdir "${PROJECT_NAME}.app")
-
-### Disk image name
-list (APPEND HDIUTIL_COMMAND "${PROJECT_NAME_LOWERCASE}_mac${PROC_BIT_DEPTH}_${PROJECT_VERSION}.dmg")
-
+message (STATUS "Creating disk image, please wait")
+file (COPY ${DMG_SOURCE_FILES} DESTINATION "${DMG_SOURCE_DIR}")
+execute_process (COMMAND ln -s /Applications "${DMG_SOURCE_DIR}")
 execute_process (COMMAND ${HDIUTIL_COMMAND})
+
+message (STATUS "Cleaning disk image source")
+file (REMOVE_RECURSE "${DMG_SOURCE_DIR}")
