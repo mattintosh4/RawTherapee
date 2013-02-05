@@ -13,8 +13,8 @@
 #   - GTK_PREFIX
 #   - GTK_LIBRARIES
 #   - PROC_BIT_DEPTH
-#
-#
+# 
+# 
 # Layout and variables
 # --------------------
 # 
@@ -24,12 +24,12 @@
 #       tools/
 #           osx/
 #               macosx_bundle.cmake (This file)
-#
+# 
 #   GTK+ resources/                     GTK_PREFIX *
 #       lib/
 #       etc/
 #       share/
-#
+# 
 #   build directory/                    CMAKE_BINARY_DIR *
 #       bundle resources/               CMAKE_BUILD_TYPE *
 #       bundle.app/                     PROJECT_NAME.app *
