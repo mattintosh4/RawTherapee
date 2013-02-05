@@ -18,7 +18,7 @@
 # Layout and variables
 # --------------------
 # 
-# * = mported variable
+# * = Imported variable
 # 
 #   source directory/                   PROJECT_SOURCE_DIR *
 #       tools/
