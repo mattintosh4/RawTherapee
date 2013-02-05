@@ -61,8 +61,6 @@ endif ()
 
 message (STATUS "Creating bundle container")
 file (MAKE_DIRECTORY "${BUNDLE_RESOURCES_DIR}")
-
-
 message (STATUS "Copying main files")
 file (COPY "${CMAKE_BUILD_TYPE}" DESTINATION "${BUNDLE_CONTENTS_DIR}")
 file (RENAME "${BUNDLE_CONTENTS_DIR}/${CMAKE_BUILD_TYPE}" "${BUNDLE_MACOS_DIR}")
