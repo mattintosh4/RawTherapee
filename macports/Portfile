@@ -2,22 +2,22 @@
 # $Id$
 
 PortSystem                  1.0
+
 name                        rawtherapee
 version                     4.0.9
-revision                    188
-platforms                   darwin
 categories                  graphics
-maintainers                 Makoto Yoshida
 license                     GPL-3
 description                 The powerful 64-bit open source raw converter
 long_description            RawTherapee is a cross platform image processing software equipped with \
                             the essential tools for high quality and efficient RAW photo development.
 
+platforms                   darwin
+maintainers                 openmaintainer
+
 use_parallel_build          yes
 universal_variant           no
 
 homepage                    http://rawtherapee.com
-use_zip                     yes
 
 depends_build               port:pkgconfig \
                             port:gcc47 \
@@ -31,27 +31,14 @@ depends_lib                 port:gtk2 \
                             port:libiptcdata \
                             port:fftw-3-single
 
-variant devel {
-    depends_fetch           port:mercurial
-}
-
-if {![variant_isset devel]} {
-    master_sites            http://rawtherapee.googlecode.com/archive
-    distfiles               924d2a8c79e00b60e5af275dcfb44587fe2d9c42.zip
-    post-extract {
-        move ${workpath}/rawtherapee-924d2a8c79e0 ${workpath}/${distname}
-    }
-} else {
-    fetch.type              hg
-    hg.url                  https://code.google.com/p/rawtherapee/
-    hg.tag                  tip
-}
+fetch.type                  hg
+hg.url                      https://code.google.com/p/rawtherapee/
+hg.tag                      tip
 
 patch_sites                 https://raw.github.com/mattintosh4/RawTherapee/master/macports/files
 patchfiles                  patch-CMakeLists.txt.diff
-checksums                   924d2a8c79e00b60e5af275dcfb44587fe2d9c42.zip \
-                            md5 87bca5ae08b8aa3b5252e034b9237a28 \
-                            patch-CMakeLists.txt.diff \
+
+checksums                   patch-CMakeLists.txt.diff \
                             md5 d1a6dc5e5e55bab2f53609bd413b0a50
 
 build.dir                   ${worksrcpath}/build
@@ -68,11 +55,27 @@ configure.optflags-delete   -O2
 
 set origin ${destroot}${prefix}/libexec/${distname}
 
+# *** CMAKE_BUILD_TYPE ***
+# Release: -O3 -DNDEBUG
+# Debug: -g
+# RELWITHDEBINFO: -O2 -g -DNDEBUG
+set build_type RELWITHDEBINFO
+
+# *** PROC_TARGET_NUMBER ***
+# 0: none
+# 1: -mtune=generic
+# 2: -march=native
+# 3: -march=pentium
+# 4: -march=pentium4
+# 5: -march=core2
+# 6: -march=corei7
+set proc_target 1
+
 configure.args              -D BUNDLE_BASE_INSTALL_DIR=${origin} \
-                            -D CMAKE_BUILD_TYPE=Release \
-                            -D PROC_TARGET_NUMBER=1 \
-                            -D CMAKE_OSX_ARCHITECTURES=x86_64 \
-                            -D CMAKE_VERBOSE_MAKEFILE=ON
+                            -D CMAKE_BUILD_TYPE=${build_type} \
+                            -D PROC_TARGET_NUMBER=${proc_target} \
+                            -D CMAKE_VERBOSE_MAKEFILE=ON \
+                            -D CMAKE_EXE_LINKER_FLAGS="-Wl,-framework,CoreServices"
 
 configure.post_args         ${worksrcpath}
 
@@ -92,13 +95,4 @@ destroot {
     # install man files
     xinstall -m 0644 ${worksrcpath}/doc/manpage/${name}.1 ${destroot}${prefix}/share/man/man1
     file delete -force ${origin}/share/man
-}
-
-platform darwin 10 {
-    configure.args-append   -D CMAKE_OSX_DEPLOYMENT_TARGET=10.6 \
-                            -D CMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.6.sdk
-}
-platform darwin 11 {
-    configure.args-append   -D CMAKE_OSX_DEPLOYMENT_TARGET=10.7 \
-                            -D CMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.7.sdk
 }
