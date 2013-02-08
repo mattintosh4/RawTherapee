@@ -69,13 +69,12 @@ set build_type RELWITHDEBINFO
 # 4: -march=pentium4
 # 5: -march=core2
 # 6: -march=corei7
-set proc_target 1
+set proc_target 2
 
 configure.args              -D BUNDLE_BASE_INSTALL_DIR=${origin} \
                             -D CMAKE_BUILD_TYPE=${build_type} \
                             -D PROC_TARGET_NUMBER=${proc_target} \
-                            -D CMAKE_VERBOSE_MAKEFILE=ON \
-                            -D CMAKE_EXE_LINKER_FLAGS="-Wl,-framework,CoreServices"
+                            -D CMAKE_VERBOSE_MAKEFILE=ON
 
 configure.post_args         ${worksrcpath}
 
