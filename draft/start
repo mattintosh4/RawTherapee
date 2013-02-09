@@ -1,11 +1,11 @@
 #!/bin/bash
 
 MACOS="${0%/*}"
-LIB="${MACOS}"/lib
+#LIB="${MACOS}"/lib
 ETC="${MACOS}"/etc
 
 ## Environment variables for Quartz and X11 backend
-export DYLD_LIBRARY_PATH="${LIB}:${DYLD_LIBRARY_PATH}"
+#export DYLD_LIBRARY_PATH="${LIB}:${DYLD_LIBRARY_PATH}" # changed the method @loader_path and @rpath since 2013-02-09
 export GTK_PATH="${MACOS}"
 export GTK_EXE_PREFIX="${MACOS}"
 export GTK_DATA_PREFIX="${MACOS}"
