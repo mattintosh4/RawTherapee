@@ -1,4 +1,0 @@
-#!/bin/bash
-
-echo "URL has been chenged at 2013-01-08."
-bash <(curl -L raw.github.com/mattintosh4/RawTherapee/buildkit)
