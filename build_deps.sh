@@ -38,6 +38,7 @@ function BuildDeps_ {
   test -n "$1" || exit
   local f=${srcdir}/$1 &&
   shift &&
+  
   cd ${builddir} &&
   case ${f} in
     *.xz)
@@ -47,9 +48,18 @@ function BuildDeps_ {
       tar -xf ${f}
     ;;
   esac &&
-  cd $(basename ${f%.tar.*}) &&
+  
   case ${f} in
-    /glib-*)
+    */icu*)
+      cd icu/source
+    ;;
+    *)
+      cd $(basename ${f%.tar.*})
+    ;;
+  esac &&
+  
+  case ${f} in
+    */glib-2.*)
       sh autogen.sh ${configure_args}
     ;;
     *)
@@ -60,10 +70,10 @@ function BuildDeps_ {
   make install || exit
 }
 
-rm -rf ${destroot} ${builddir}
-: && {
-install -d ${prefix}/{bin,include,share} ${builddir} &&
+#rm -rf ${destroot} ${builddir}
+#install -d ${prefix}/{bin,include,share} ${builddir}
 
+! : && {
 if test -f ${bootstrap_tar}; then tar -xvPf ${bootstrap_tar}
 else
   BuildDeps_ m4-1.4.16.tar.bz2 --program-prefix=g && (
@@ -97,11 +107,18 @@ BuildDeps_ libjpeg-turbo-1.2.1.tar.gz --with-jpeg8
 BuildDeps_ tiff-4.0.3.tar.gz
 BuildDeps_ pixman-0.28.2.tar.gz
 BuildDeps_ lzo-2.06.tar.gz
-BuildDeps_ cairo-1.12.14.tar.xz \
-  --enable-tee \
-  --enable-xml \
-  --enable-quartz-image
-}
+BuildDeps_ cairo-1.12.14.tar.xz --enable-tee --enable-xml --enable-quartz-image
+BuildDeps_ icu4c-51_1-src.tgz
+(
+  cd ${builddir} &&
+  tar xf ${srcdir}/graphite2-1.2.1.tgz &&
+  install -d graphite2-1.2.1/build
+  cd $_ &&
+  /usr/local/bin/cmake -DCMAKE_INSTALL_PREFIX=${prefix} -DCMAKE_PREFIX_PATH=${prefix} -DCMAKE_BUILD_TYPE=Release -DDOXYGEN= .. &&
+  make ${make_args} &&
+  make install
+) || exit
+
 
 
 :
