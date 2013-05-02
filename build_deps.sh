@@ -30,8 +30,10 @@ configure_args="\
 --prefix=${prefix} \
 --build=x86_64-apple-darwin10 \
 --enable-shared --enable-static \
+--disable-maintainer-mode \
 --disable-dependency-tracking \
 --disable-gtk-doc \
+--disable-scrollkeeper \
 --without-x"
 
 function BuildDeps_ {
@@ -59,8 +61,20 @@ function BuildDeps_ {
   esac &&
   
   case ${f} in
-    */glib-2.*)
-      sh autogen.sh ${configure_args}
+    */glib-*|*/gobject-introspection*)
+      sh autogen.sh ${configure_args} "$@"
+    ;;
+    */pango-*)
+      autoreconf -i || :
+      sh configure ${configure_args} "$@"
+    ;;
+    */harfbuzz-*)
+      autoreconf -i &&
+      sh autogen.sh ${configure_args} "$@"
+    ;;
+    */GTK_DOC_*)
+      autoreconf -i || :
+      sh configure ${configure_args} "$@"
     ;;
     *)
       sh configure ${configure_args} "$@"
@@ -70,10 +84,23 @@ function BuildDeps_ {
   make install || exit
 }
 
-#rm -rf ${destroot} ${builddir}
-#install -d ${prefix}/{bin,include,share} ${builddir}
+function ReposBuild_ {
+  (($# >= 2)) || exit
+  du -sh /usr/local/src/repos/$1 &&
+  ditto $_ ${builddir}/$1
+  cd $_ &&
+  shift &&
+  git checkout -f $1 &&
+  shift &&
+  sh autogen.sh ${configure_args} "$@" &&
+  make ${make_args} &&
+  make install
+}
 
-! : && {
+#rm -rf ${destroot} ${builddir}
+install -d ${prefix}/{bin,include,share} ${builddir}
+
+: && {
 if test -f ${bootstrap_tar}; then tar -xvPf ${bootstrap_tar}
 else
   BuildDeps_ m4-1.4.16.tar.bz2 --program-prefix=g && (
@@ -88,10 +115,12 @@ else
     ln -sf {g,}libtoolize
   ) || exit
   BuildDeps_ valgrind-3.8.1.tar.bz2 --enable-only64bit --without-mpicc
-  BuildDeps_ pkg-config-0.28.tar.gz --disable-host-tool --with-internal-glib --with-pc-path=${prefix}/lib/pkgconfig:${prefix}/share/pkgconfig:/usr/lib
+  BuildDeps_ pkg-config-0.28.tar.gz --disable-host-tool --with-internal-glib --with-pc-path=${prefix}/lib/pkgconfig:${prefix}/share/pkgconfig:/usr/lib/pkgconfig
   BuildDeps_ gettext-0.18.2.tar.gz
-  BuildDeps_ libiconv-1.14.tar.gz
-  BuildDeps_ binutils-2.23.2.tar.bz2 --program-prefix=g
+  ReposBuild_ libiconv master
+  ReposBuild_ libxml2 v2.9.1
+  ReposBuild_ libxslt v1.1.28
+  ReposBuild_ binutils binutils-2_23-branch --program-prefix=g
   BuildDeps_ gdb-7.6.tar.bz2
   BuildDeps_ xz-5.0.4.tar.bz2
   BuildDeps_ libffi-3.0.13.tar.gz
@@ -101,14 +130,14 @@ else
   tar -cP ${destroot} | bzip2 > ${bootstrap_tar}
 fi
 
-BuildDeps_ libpng-1.6.1.tar.gz
-BuildDeps_ nasm-2.10.07.tar.xz
-BuildDeps_ libjpeg-turbo-1.2.1.tar.gz --with-jpeg8
-BuildDeps_ tiff-4.0.3.tar.gz
-BuildDeps_ pixman-0.28.2.tar.gz
-BuildDeps_ lzo-2.06.tar.gz
-BuildDeps_ cairo-1.12.14.tar.xz --enable-tee --enable-xml --enable-quartz-image
-BuildDeps_ icu4c-51_1-src.tgz
+ReposBuild_ libpng libpng16
+BuildDeps_  nasm-2.10.07.tar.xz
+BuildDeps_  libjpeg-turbo-1.2.1.tar.gz --with-jpeg8
+BuildDeps_  tiff-4.0.3.tar.gz
+BuildDeps_  pixman-0.28.2.tar.gz
+BuildDeps_  lzo-2.06.tar.gz
+ReposBuild_ cairo 1.12.14 --enable-tee --enable-xml --enable-quartz-image
+BuildDeps_  icu4c-51_1-src.tgz
 (
   cd ${builddir} &&
   tar xf ${srcdir}/graphite2-1.2.1.tgz &&
@@ -118,8 +147,21 @@ BuildDeps_ icu4c-51_1-src.tgz
   make ${make_args} &&
   make install
 ) || exit
+BuildDeps_ ragel-6.8.tar.gz
+BuildDeps_ harfbuzz-0.9.16.tar.gz
+BuildDeps_ gobject-introspection-GOBJECT_INTROSPECTION_1_36_0.tar.gz
+  tar -cP ${destroot} | bzip2 > ${bootstrap_tar}_2
 
+BuildDeps_ pkg-config-0.28.tar.gz --with-pc-path=${prefix}/lib/pkgconfig:${prefix}/share/pkgconfig:/usr/lib/pkgconfig
+BuildDeps_ intltool-0.40.6.tar.bz2
+ReposBuild_ gnome-common 3.7.4
+ReposBuild_ gnome-doc-utils 0.20.10 --disable-documentation
+BuildDeps_ rarian-0.8.1.tar.bz2
+}
 
+#BuildDeps_ docbook-xsl-1.78.1.tar.bz2
+#ReposBuild_ gtk-doc GTK_DOC_1_18
+#BuildDeps_ pango-1.34.0.tar.gz --enable-introspection --disable-silent-rules
 
 :
 afplay /System/Library/Sounds/Hero.aiff
